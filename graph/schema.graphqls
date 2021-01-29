@@ -1,0 +1,68 @@
+# GraphQL schema example
+#
+# https://gqlgen.com/getting-started/
+
+enum MiniSize {
+  TINY
+  REGULAR
+  LARGE
+  TITANIC
+}
+
+type MiniCost {
+  size: MiniSize!
+  cost: Float!
+}
+
+type Mini {
+  id: ID!
+  name: String!
+  size: MiniSize!
+  cost: Float!
+}
+
+type Estimate {
+  id: ID!
+  minis: [MiniQty!]!
+  user: User!
+}
+
+type MiniQty {
+  qty: Int!
+  mini: Mini!
+}
+
+type Quote {
+  id: ID!
+  estimate: Estimate!
+  minis: [MiniQty!]!
+  user: User!
+}
+
+type User {
+  id: ID!
+  name: String!
+}
+
+type Query {
+  esitmate(input: ID!): Estimate!
+  estimates: [Estimate!]!
+  estimatesForUserID(input: ID!): [Estimate!]!
+  minis: [Mini!]!
+  minisWithName(input: String!): [Mini!]!
+}
+
+input NewEstimate {
+  userId: String!
+}
+
+input NewMini {
+  name: String!
+  size: MiniSize!
+}
+
+type Mutation {
+  createEstimate(input: NewEstimate!): Estimate!
+  createMini(input: NewMini!): Mini!
+  saveMiniCost(size: MiniSize!, cost: Float!): MiniCost!
+}
