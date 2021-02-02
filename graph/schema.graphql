@@ -1,0 +1,119 @@
+input NewEstimate {
+  userId:String!
+}
+input NewQuote {
+  estimate:ID!
+}
+input NewMini {
+  name:String!
+  size:MiniSize!
+}
+input NewComment {
+  body:String!
+}
+input NewDefaultMiniCost {
+  size:MiniSize!
+  cost:Float!
+}
+type DefaultMiniCost {
+  id:ID!
+  size:MiniSize!
+  cost:Float!
+}
+type DefaultMiniOptionCost {
+  id:ID!
+  size:MiniSize!
+  name:String!
+  cost:Float!
+}
+type Mini {
+  id:ID!
+  name:String!
+  size:MiniSize!
+  cost:Float!
+}
+"""
+Estimate type is automatically generated based on default stored values
+"""
+type Estimate {
+  id:ID!
+  createdAt:Time!
+  minis:[MiniQuantity]!
+  total:Float!
+  user:User!
+}
+type MiniQuantity {
+  id:ID!
+  quantity:Int!
+  mini:Mini!
+  options:[MiniOption]!
+}
+type Quote {
+  id:ID!
+  createdAt:Time!
+  estimate:Estimate!
+  minis:[MiniQuantity]!
+  user:User!
+}
+type QuoteComment {
+  id:ID!
+  quote:Quote!
+  createdAt:Time!
+  body:String!
+  user:User!
+}
+type QuoteMiniQuantityComment {
+  id:ID!
+  quote:Quote!
+  miniQuantity:MiniQuantity!
+  createdAt:Time!
+  body:String!
+  user:User!
+}
+type User {
+  id:ID!
+  createdAt:Time!
+  name:String!
+}
+type Query {
+  esitmate(input: ID!):Estimate!
+  estimates:[Estimate]!
+  estimatesForUserID(input: ID!):[Estimate]!
+  minis:[Mini]!
+  minisWithName(input: String!):[Mini]!
+  quote(input: ID!):Quote!
+  quotes:[Quote]!
+  quotesForUserID(input: ID!):[Quote]!
+}
+type Mutation {
+  createEstimate(input: NewEstimate!):Estimate!
+  createMini(input: NewMini!):Mini!
+  saveDefaultMiniCost(input: NewDefaultMiniCost!):DefaultMiniCost!
+  createQuote(input: NewQuote!):Quote!
+  createQuoteComment(input: NewComment!,quote: ID!):QuoteComment!
+  createQuoteMiniQuantityComment(input: NewComment!,quote: ID!,MiniQuantity: ID!):QuoteMiniQuantityComment!
+}
+"""
+Optional treatment for minis
+"""
+type MiniOption {
+  id:ID!
+  name:String!
+  cost:Float!
+}
+
+
+"""
+Enum MiniSize 
+"""
+enum MiniSize {
+TINY
+REGULAR
+LARGE
+TITANIC
+}
+
+"""
+Scalar Time 
+"""
+scalar Time  

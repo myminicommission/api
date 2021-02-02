@@ -9,6 +9,7 @@ import (
 
 	"github.com/myminicommission/api/graph/generated"
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/api/resolver"
 )
 
 func (r *mutationResolver) CreateEstimate(ctx context.Context, input model.NewEstimate) (*model.Estimate, error) {
@@ -19,12 +20,28 @@ func (r *mutationResolver) CreateMini(ctx context.Context, input model.NewMini) 
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Esitmate(ctx context.Context, input string) (*model.Estimate, error) {
+func (r *mutationResolver) SaveDefaultMiniCost(ctx context.Context, input model.NewDefaultMiniCost) (*model.DefaultMiniCost, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Estimates(ctx context.Context) ([]*model.Estimate, error) {
+func (r *mutationResolver) CreateQuote(ctx context.Context, input model.NewQuote) (*model.Quote, error) {
 	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) CreateQuoteComment(ctx context.Context, input model.NewComment, quote string) (*model.QuoteComment, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) CreateQuoteMiniQuantityComment(ctx context.Context, input model.NewComment, quote string, miniQuantity string) (*model.QuoteMiniQuantityComment, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) Esitmate(ctx context.Context, input string) (*model.Estimate, error) {
+	return resolver.GetEstimate(input)
+}
+
+func (r *queryResolver) Estimates(ctx context.Context) ([]*model.Estimate, error) {
+	return resolver.GetEstimates()
 }
 
 func (r *queryResolver) EstimatesForUserID(ctx context.Context, input string) ([]*model.Estimate, error) {
@@ -32,19 +49,22 @@ func (r *queryResolver) EstimatesForUserID(ctx context.Context, input string) ([
 }
 
 func (r *queryResolver) Minis(ctx context.Context) ([]*model.Mini, error) {
-	silentKing := model.Mini{
-		ID:   "c84b3f7a-b402-4bb4-a5eb-a08194e98aa3",
-		Name: "Silent King",
-		Size: model.MiniSizeLarge,
-		Cost: 100,
-	}
-	minis := []*model.Mini{
-		&silentKing,
-	}
-	return minis, nil
+	return resolver.GetMinis()
 }
 
 func (r *queryResolver) MinisWithName(ctx context.Context, input string) ([]*model.Mini, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) Quote(ctx context.Context, input string) (*model.Quote, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) Quotes(ctx context.Context) ([]*model.Quote, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) QuotesForUserID(ctx context.Context, input string) ([]*model.Quote, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 
