@@ -4,7 +4,8 @@ clean:
 	go clean .
 
 test:
-	go test ./...
+	go test -coverprofile=coverage.out ./...
+	go tool cover -func=coverage.out
 
 build:
 	go build .
