@@ -20,3 +20,5 @@
 api
 
 !internal/api/
+
+.env

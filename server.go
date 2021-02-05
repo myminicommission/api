@@ -9,6 +9,8 @@ import (
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
+
+	_ "github.com/joho/godotenv/autoload"
 )
 
 const defaultPort = "8080"

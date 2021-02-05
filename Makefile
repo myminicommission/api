@@ -13,5 +13,8 @@ build:
 run:
 	go run .
 
+run-db:
+	docker-compose up pgadmin
+
 generate:
 	go generate ./...

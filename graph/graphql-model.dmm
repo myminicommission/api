@@ -1,1 +1,1774 @@
-{"tables":{"9353cf04-cbac-4dc8-99fc-4b4fcf9d3c75":{"id":"9353cf04-cbac-4dc8-99fc-4b4fcf9d3c75","name":"NewEstimate","embeddable":false,"visible":true,"x":137,"y":839,"gHeight":45,"gWidth":215,"desc":"","color":"#ffffff","background":"#ff9800","resized":true,"cols":[{"id":"992045e8-4cac-49b3-93f0-0f6f8df90e4c","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"f489f839-61fc-4aa4-894d-bd79cdb4fad0","name":"userId","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"63809596-b943-448b-ac37-0a8980e897b8","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"143b0dcd-7f1a-4427-8f67-1edd10a4c263","colid":"992045e8-4cac-49b3-93f0-0f6f8df90e4c"}]}],"indexes":[],"objectType":"input","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"0cf96897-c6a7-496e-a874-dce72c58bb38":{"id":"0cf96897-c6a7-496e-a874-dce72c58bb38","name":"NewQuote","embeddable":false,"visible":true,"x":479,"y":839,"gHeight":45,"gWidth":209,"desc":"","color":"#ffffff","background":"#ff9800","resized":true,"cols":[{"id":"53ea3cda-5eb2-48f1-91ca-96d51346b2b6","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"5ac4c3f5-bf9f-49f1-98d1-04765dd9e5be","name":"estimate","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"8834308d-f6a3-4b5b-b792-492bbf851e65","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"5ae2e2a7-a45f-4f1a-a707-f8128d1db3f0","colid":"53ea3cda-5eb2-48f1-91ca-96d51346b2b6"}]}],"indexes":[],"objectType":"input","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"75f87d9b-71db-4a64-83ea-cead7761db10":{"id":"75f87d9b-71db-4a64-83ea-cead7761db10","name":"NewMini","embeddable":false,"visible":true,"x":825,"y":839,"gHeight":63,"gWidth":215,"desc":"","color":"#ffffff","background":"#ff9800","resized":true,"cols":[{"id":"c50e32bb-fedb-45af-9d48-b206878e8282","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"41a1ed94-e481-4101-a47f-48e18d5eb6f3","name":"name","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"106d22d6-450f-4b89-aa4a-08f2d136fe23","name":"size","datatype":"99384957-4abb-471e-9f67-18136e53436d","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"a7e12764-1bf5-4af1-bfac-b4683d57f4ef","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"ef444c64-381f-4acb-83a9-5122cb16a57b","colid":"c50e32bb-fedb-45af-9d48-b206878e8282"}]}],"indexes":[],"objectType":"input","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"30da24d0-19b1-4d86-8d0a-e64927780b25":{"id":"30da24d0-19b1-4d86-8d0a-e64927780b25","name":"NewComment","embeddable":false,"visible":true,"x":1177,"y":839,"gHeight":45,"gWidth":205,"desc":"","color":"#ffffff","background":"#ff9800","resized":true,"cols":[{"id":"c52827c8-bca1-47fa-8414-f85b76eed521","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"4446e470-f4d1-4ccc-8023-b44583eebfa9","name":"body","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"21d5d84b-263d-4e06-a43d-dc7efcbd7694","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"123b91d1-56fa-4e09-955c-5e245ee15769","colid":"c52827c8-bca1-47fa-8414-f85b76eed521"}]}],"indexes":[],"objectType":"input","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"381b7f8a-7291-463a-80ec-9a710ac0b68f":{"id":"381b7f8a-7291-463a-80ec-9a710ac0b68f","name":"NewDefaultMiniCost","embeddable":false,"visible":true,"x":137,"y":947,"gHeight":63,"gWidth":215,"desc":"","color":"#ffffff","background":"#ff9800","resized":true,"cols":[{"id":"113f1546-7315-4bce-8c11-30e216e2f43c","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"ab8ee3d0-cc16-46e2-9a6b-7074dd626fab","name":"size","datatype":"99384957-4abb-471e-9f67-18136e53436d","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"053ec756-e686-47b3-9ebb-dcc8104861ea","name":"cost","datatype":"Float","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"89b04c5f-a407-411a-abef-9c9c5d999976","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"871335e8-62c0-46b5-8872-5e7ad3868182","colid":"113f1546-7315-4bce-8c11-30e216e2f43c"}]}],"indexes":[],"objectType":"input","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"d54bbcc9-3eca-417e-94d5-98e13db1bc9e":{"id":"d54bbcc9-3eca-417e-94d5-98e13db1bc9e","name":"DefaultMiniCost","embeddable":false,"visible":true,"x":752,"y":703,"gHeight":81,"gWidth":215,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"5553a6bf-1ab2-4230-92f6-1d5d1f297413","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"0574333e-5c44-44f8-b3fe-2abc4947aa57","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"96afa360-98c4-4ddd-96ad-ce1187410645","name":"size","datatype":"99384957-4abb-471e-9f67-18136e53436d","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"de5c594a-78d4-43d3-aecb-12758e293945","name":"cost","datatype":"Float","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":["ddf118f1-fc89-4a17-9e7e-4be08945517f"],"lines":[],"keys":[{"id":"c9cb1f83-f8ab-4e34-8979-72b58322d98b","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"e496c2a1-5a20-46bb-b048-669532283680","colid":"5553a6bf-1ab2-4230-92f6-1d5d1f297413"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"58c1ee09-14ac-492d-8997-f9480f8bcd41":{"id":"58c1ee09-14ac-492d-8997-f9480f8bcd41","name":"DefaultMiniOptionCost","embeddable":false,"visible":true,"x":479,"y":947,"gHeight":99,"gWidth":217.5,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"c60ef83d-1e83-41b9-8888-c7cf0bf1defd","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"ffc716bd-24d0-43a1-9a9b-a5f1b311e45d","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"a3d23885-ac8c-4e8a-93c9-9feaddcce0b6","name":"size","datatype":"99384957-4abb-471e-9f67-18136e53436d","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"800e6f42-a2a8-414e-912a-9798ddc4a293","name":"name","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"64451078-387f-4c7f-8d5d-847579b19fb5","name":"cost","datatype":"Float","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":[],"lines":[],"keys":[{"id":"51b2b237-33d4-4196-ad6f-d7441e951726","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"32e05097-c785-4332-9f54-408a09005a65","colid":"c60ef83d-1e83-41b9-8888-c7cf0bf1defd"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3":{"id":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","name":"Mini","embeddable":false,"visible":true,"x":1262,"y":493,"gHeight":99,"gWidth":215,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"6f3b5256-3846-4954-80b1-f6120ffd8aa4","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"4a1dfd46-2663-4387-8f76-d6b3db9d2cdb","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"584a1191-ab6a-40c6-b718-70be9cc27406","name":"name","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"bf1886f9-4829-4c58-8765-06ee33af5c06","name":"size","datatype":"99384957-4abb-471e-9f67-18136e53436d","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"132555a5-1bc7-4067-b0d4-9b5648e55e5d","name":"cost","datatype":"Float","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":["158a78ba-bd66-4fc4-bd5c-04bccffdfcac","b8511587-859d-435e-8a47-a7ce2fbfb85f","fe242ce7-9252-4b73-af0a-389d10fe6e2a","0584cc69-8bb9-4d77-a368-15ba5f839e3e"],"lines":[],"keys":[{"id":"f990301c-98eb-490b-bcae-b222eba0dcbb","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"c404c6aa-07b0-4a6b-98a5-c320a76a7219","colid":"6f3b5256-3846-4954-80b1-f6120ffd8aa4"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"2475304e-154c-4647-bcbf-1913d62899a9":{"id":"2475304e-154c-4647-bcbf-1913d62899a9","name":"Estimate","embeddable":false,"visible":true,"x":1250,"y":283,"gHeight":117,"gWidth":240,"desc":"Estimate type is automatically generated based on default stored values","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"f94ae663-c780-4ac3-bfda-387f351d58be","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"40b2f72d-b813-449a-aef8-bbbad5d1c61e","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"973b6f8c-101b-453c-ad6e-a1a7e6a60439","name":"createdAt","datatype":"237205f3-806e-4a97-9f24-d5b0f6f00aea","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"8d746e64-d21b-4134-82ea-0624824f9aa0","name":"minis","datatype":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"MiniQuantity"},{"id":"f0740701-9daa-4b64-9980-2864063768e7","name":"total","datatype":"Float","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"1611cb9b-17bd-4824-a13c-97291ef34837","name":"user","datatype":"3bc72f96-27da-45ab-88b5-f6f960322ffa","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"User"}],"relations":["9a2bb9bb-8b27-4706-8874-5ca0925513ad","793e39a9-305c-49a2-809b-a8854da70012","1de4e695-73b2-4d2b-a54a-bf821cc1197a","a29a5cc6-d930-4f6b-9c6a-01504f527a81","9a6fe9df-75f8-4585-8cdd-26ffc4fb7926","85d895bb-2456-4dc7-bc9a-2306e29dcd34","d2355f0b-5234-4988-a9d1-375123262753"],"lines":[],"keys":[{"id":"d5fdad6c-ad51-4c00-8514-4429c5594329","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"e60db609-830b-4532-a3f9-e8bb2ba1125c","colid":"f94ae663-c780-4ac3-bfda-387f351d58be"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"9ddd45c9-43a8-4811-8832-5f60c6dbc71a":{"id":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","name":"MiniQuantity","embeddable":false,"visible":true,"x":245,"y":301,"gHeight":113,"gWidth":233,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"28386c33-46bf-45db-8845-0b31da67219b","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"a112f3e5-67d8-40c9-834b-cfe18242d3e3","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"99f1b413-2329-4ba3-bad6-9bd0b56ee988","name":"quantity","datatype":"Int","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"c026edf3-98a6-4e41-9380-ea3b52bce720","name":"mini","datatype":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Mini"},{"id":"13d30eea-c116-4b85-9eab-936ddd5d31d7","name":"miniOptions","datatype":"6aaacd1a-2b85-4205-b54f-048644a4d431","param":"","pk":false,"nn":true,"comment":"","defaultvalue":"","data":"","list":true,"fieldArguments":null,"isHidden":false,"isArrayItemNn":false,"fieldDirective":null,"fk":true,"ref":"MiniOption"}],"relations":["9a2bb9bb-8b27-4706-8874-5ca0925513ad","158a78ba-bd66-4fc4-bd5c-04bccffdfcac","55d7e5f3-1925-4e2f-8c2e-7916ec4b589e","5af9b1d5-33ce-4bf1-84ad-1fa44a4711fb","5ed89065-7822-4311-8e8a-b028325d15a6"],"lines":[],"keys":[{"id":"862cc952-10c7-4391-9c78-4dbe83d7f5ed","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"ff454e7d-0fa9-4ae7-925f-36e09232c8d7","colid":"28386c33-46bf-45db-8845-0b31da67219b"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"d3767415-74e0-411b-a052-18a1b288e475":{"id":"d3767415-74e0-411b-a052-18a1b288e475","name":"Quote","embeddable":false,"visible":true,"x":230,"y":82,"gHeight":117,"gWidth":240,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"ada3140d-e55a-493c-9111-fbd656342027","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"dfc2ffa8-803e-4996-a061-96bda195753a","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"cc859a99-a596-4949-8f45-83a5e8015373","name":"createdAt","datatype":"237205f3-806e-4a97-9f24-d5b0f6f00aea","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"c1b0de9b-ac9d-404f-8dc8-beb26863e282","name":"estimate","datatype":"2475304e-154c-4647-bcbf-1913d62899a9","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Estimate"},{"id":"556094ac-3d65-4090-b7c6-e183e1bf455b","name":"minis","datatype":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"MiniQuantity"},{"id":"ef56e947-f869-4a79-aa93-474b14fdb783","name":"user","datatype":"3bc72f96-27da-45ab-88b5-f6f960322ffa","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"User"}],"relations":["1de4e695-73b2-4d2b-a54a-bf821cc1197a","55d7e5f3-1925-4e2f-8c2e-7916ec4b589e","1e47fb94-930b-4f50-8300-334ed9dcf6bd","72aa06a4-4c7d-4c3b-bbd5-b9659cf8f3ce","086caca8-445f-43c9-85bb-379e79ba7790","251d7573-ed12-45f2-81cf-13e729aa3b64","6a6fcf12-d1e1-4f0b-b80b-87342234323d","a78eeb58-6b31-47df-b731-a28e1ebf3e2a","d6de1d4b-e7ca-4ef2-afe1-15e6efcaf6f2"],"lines":[],"keys":[{"id":"057cb85c-508f-417b-a182-0037f82d4830","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"e2139266-dbf4-4291-b563-8544d513e650","colid":"ada3140d-e55a-493c-9111-fbd656342027"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"00e305b7-0ee5-40c1-9ba9-73b22332bb89":{"id":"00e305b7-0ee5-40c1-9ba9-73b22332bb89","name":"QuoteComment","embeddable":false,"visible":true,"x":240,"y":484,"gHeight":117,"gWidth":220,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"3bf01148-7089-4f21-99df-8a78dbea0022","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"8595a12e-ca6c-45ae-8ad1-4f63491a2c1b","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"d280bdcc-458c-4547-998b-f4843acd51d1","name":"quote","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"},{"id":"5e380a72-5f0d-4207-a851-f46da67a6982","name":"createdAt","datatype":"237205f3-806e-4a97-9f24-d5b0f6f00aea","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"c1278756-efcc-4ab4-a4b0-e96b4cb1e8af","name":"body","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"2a4f2b49-e312-431a-9924-109862a9d991","name":"user","datatype":"3bc72f96-27da-45ab-88b5-f6f960322ffa","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"User"}],"relations":["72aa06a4-4c7d-4c3b-bbd5-b9659cf8f3ce","56aa19ec-c01d-4cf7-bdea-089f461e9e60","95a9c686-436c-4333-8d2a-162892da7ba0"],"lines":[],"keys":[{"id":"1197265d-1f5d-4409-a0f2-92ff7004385c","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"974d8be8-a543-4c64-a955-7dc53b197fbd","colid":"3bf01148-7089-4f21-99df-8a78dbea0022"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"5955f15b-9ad7-4fea-9b60-6a3b9e858357":{"id":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","name":"QuoteMiniQuantityComment","embeddable":false,"visible":true,"x":1742,"y":475,"gHeight":135,"gWidth":275,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"30ea8c85-853a-4f69-b4a8-6cf9e86e70ec","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"5703cf92-ac2b-4590-b59b-d9b834203252","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"73d29a05-d92a-4fe0-9956-d87546a4f364","name":"quote","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"},{"id":"320ca5f8-460b-40b7-a28d-990538c5da13","name":"miniQuantity","datatype":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"MiniQuantity"},{"id":"c0da107f-2c6e-495d-bcb6-2b42075d66b1","name":"createdAt","datatype":"237205f3-806e-4a97-9f24-d5b0f6f00aea","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"6e613b96-56e7-4987-8ba6-42212b37b0a4","name":"body","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"dd17e5bf-d8ca-4dc8-84bc-46b3a1264935","name":"user","datatype":"3bc72f96-27da-45ab-88b5-f6f960322ffa","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"User"}],"relations":["086caca8-445f-43c9-85bb-379e79ba7790","5af9b1d5-33ce-4bf1-84ad-1fa44a4711fb","c0247c40-03a5-4026-b70f-9fd5c6d03131","960884be-cc6b-431c-912f-33108c050b0c"],"lines":[],"keys":[{"id":"a99e5d8a-540d-48aa-911e-76ce082e6d9b","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"623ec9cc-e4b7-479f-b8cc-e81179a5099e","colid":"30ea8c85-853a-4f69-b4a8-6cf9e86e70ec"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"3bc72f96-27da-45ab-88b5-f6f960322ffa":{"id":"3bc72f96-27da-45ab-88b5-f6f960322ffa","name":"User","embeddable":false,"visible":true,"x":750,"y":502,"gHeight":81,"gWidth":220,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"3cb369fd-8a99-44b0-b246-b8e60fc318f9","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"c75b6545-2996-458b-b582-b9a5262d75a8","name":"id","datatype":"ID","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"08333d7b-030d-4cfe-93b5-9d4fb8a2c8b4","name":"createdAt","datatype":"237205f3-806e-4a97-9f24-d5b0f6f00aea","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"d9ac97b7-9eb9-48f2-9c01-9a47c8ab4e27","name":"name","datatype":"String","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false}],"relations":["793e39a9-305c-49a2-809b-a8854da70012","1e47fb94-930b-4f50-8300-334ed9dcf6bd","56aa19ec-c01d-4cf7-bdea-089f461e9e60","c0247c40-03a5-4026-b70f-9fd5c6d03131"],"lines":[],"keys":[{"id":"432830fd-30c1-4064-8e5c-b0bc0928fff6","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"e8e33272-6fe6-4dbc-a24a-57ce716331ed","colid":"3cb369fd-8a99-44b0-b246-b8e60fc318f9"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"c0fb43a1-708c-45da-a159-f3787b6484a4":{"id":"c0fb43a1-708c-45da-a159-f3787b6484a4","name":"Query","embeddable":false,"visible":true,"x":717,"y":256,"gHeight":171,"gWidth":285,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"e6b50b8c-06fe-462c-9620-7512e9fe81ab","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"fddacb6f-93c6-459c-a3db-78201f74a50a","name":"esitmate","datatype":"2475304e-154c-4647-bcbf-1913d62899a9","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Estimate"},{"id":"ac0acb59-ce61-4400-a0ff-6ebf4bc3a3bd","name":"estimates","datatype":"2475304e-154c-4647-bcbf-1913d62899a9","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Estimate"},{"id":"0ddbef70-f073-4db2-a2ec-efb76d16c7dc","name":"estimatesForUserID","datatype":"2475304e-154c-4647-bcbf-1913d62899a9","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"(input: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Estimate"},{"id":"8c37d8b5-26e2-4db2-a9b6-fb85dd6be49c","name":"minis","datatype":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Mini"},{"id":"acc445ac-0796-4c4a-a11a-6a222dddd518","name":"minisWithName","datatype":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"(input: String!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Mini"},{"id":"4a925bf0-f974-4c27-b199-315caa218930","name":"quote","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"},{"id":"f96d305c-b008-490a-866c-3182720a51ae","name":"quotes","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"},{"id":"a6054309-2f78-4745-8d77-846688cb41a1","name":"quotesForUserID","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":true,"isHidden":false,"fieldArguments":"(input: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"}],"relations":["a29a5cc6-d930-4f6b-9c6a-01504f527a81","9a6fe9df-75f8-4585-8cdd-26ffc4fb7926","85d895bb-2456-4dc7-bc9a-2306e29dcd34","b8511587-859d-435e-8a47-a7ce2fbfb85f","fe242ce7-9252-4b73-af0a-389d10fe6e2a","251d7573-ed12-45f2-81cf-13e729aa3b64","6a6fcf12-d1e1-4f0b-b80b-87342234323d","a78eeb58-6b31-47df-b731-a28e1ebf3e2a"],"lines":[],"keys":[{"id":"1caf5d43-9458-4c2a-940a-22f65da29f3b","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"439b81cb-c33b-459d-a233-056fe138dae3","colid":"e6b50b8c-06fe-462c-9620-7512e9fe81ab"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"20b04ed2-1d34-4ed4-b16d-8d467a2009e6":{"id":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","name":"Mutation","embeddable":false,"visible":true,"x":1667,"y":274,"gHeight":135,"gWidth":425,"desc":"","color":"#ffffff","background":"#03a9f4","resized":true,"cols":[{"id":"76e7c476-ad7b-4a0a-ba2e-59852993b6a8","name":"FakeIdForInternalUse","datatype":"ID","pk":true,"nn":true,"list":true,"isHidden":true,"fieldArguments":"","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false},{"id":"6676974a-1402-43e8-bb35-843537ea3e02","name":"createEstimate","datatype":"2475304e-154c-4647-bcbf-1913d62899a9","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewEstimate!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Estimate"},{"id":"67d61dca-df17-4568-9658-2f20fb421e32","name":"createMini","datatype":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewMini!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Mini"},{"id":"b37e9d50-9463-47d3-abd0-b9f35a5d67a4","name":"saveDefaultMiniCost","datatype":"d54bbcc9-3eca-417e-94d5-98e13db1bc9e","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewDefaultMiniCost!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"DefaultMiniCost"},{"id":"7b416f54-99d2-45ff-a06f-7e365cfec13c","name":"createQuote","datatype":"d3767415-74e0-411b-a052-18a1b288e475","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewQuote!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"Quote"},{"id":"4851b905-b395-4a70-b579-98a725086072","name":"createQuoteComment","datatype":"00e305b7-0ee5-40c1-9ba9-73b22332bb89","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewComment!,quote: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"QuoteComment"},{"id":"9177dea5-b0e7-4b0d-807e-a3b2f9949a3f","name":"createQuoteMiniQuantityComment","datatype":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","pk":false,"nn":true,"list":false,"isHidden":false,"fieldArguments":"(input: NewComment!,quote: ID!,MiniQuantity: ID!)","fieldDirective":"","data":"","param":"","isArrayItemNn":false,"after":"","autoinc":false,"charset":"","collation":"","comment":"","defaultvalue":"","enum":"","unsigned":false,"zerofill":false,"fk":true,"ref":"QuoteMiniQuantityComment"}],"relations":["d2355f0b-5234-4988-a9d1-375123262753","0584cc69-8bb9-4d77-a368-15ba5f839e3e","ddf118f1-fc89-4a17-9e7e-4be08945517f","d6de1d4b-e7ca-4ef2-afe1-15e6efcaf6f2","95a9c686-436c-4333-8d2a-162892da7ba0","960884be-cc6b-431c-912f-33108c050b0c"],"lines":[],"keys":[{"id":"056eb036-bd9c-476d-84eb-2ab188397204","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"00e484ea-4a26-49f3-8a34-43b7c6b364d0","colid":"76e7c476-ad7b-4a0a-ba2e-59852993b6a8"}]}],"indexes":[],"objectType":"type","directive":"","afterScript":"","charset":"","database":"","initautoinc":"","paranoid":false,"rowformat":"","tabletype":"","timestamps":false,"version":false},"6aaacd1a-2b85-4205-b54f-048644a4d431":{"id":"6aaacd1a-2b85-4205-b54f-048644a4d431","visible":true,"name":"MiniOption","x":346,"y":703,"desc":"Optional treatment for minis","cols":[{"id":"d37c40a9-69ae-4f98-9195-d5eb67806214","name":"FakeIdForInternalUse","datatype":"ID","param":"","pk":true,"nn":true,"comment":"","defaultvalue":"","data":"","list":false,"fieldArguments":null,"isHidden":true,"isArrayItemNn":false,"fieldDirective":null},{"id":"67e1043f-1d71-46a5-ac36-ad5580d3f1cb","name":"id","datatype":"ID","param":"","pk":false,"nn":true,"comment":"","defaultvalue":"","data":"","list":false,"fieldArguments":null,"isHidden":false,"isArrayItemNn":false},{"id":"f84e4af4-7bed-4515-931b-ee73a1affa2b","name":"name","datatype":"String","param":"","pk":false,"nn":true,"comment":"","defaultvalue":"","data":"","list":false,"fieldArguments":null,"isHidden":false,"isArrayItemNn":false},{"id":"c8653a5d-bb74-4ef2-a343-a8468b7998dc","name":"cost","datatype":"Float","param":"","pk":false,"nn":true,"comment":"","defaultvalue":"","data":"","list":false,"fieldArguments":null,"isHidden":false,"isArrayItemNn":false}],"relations":["5ed89065-7822-4311-8e8a-b028325d15a6"],"lines":[],"keys":[{"id":"cf96b27a-2585-4c67-984a-5cef1b717a58","name":"Identifier","isPk":true,"using":"na","cols":[{"id":"89f1e37c-9643-4104-894e-29a442a73596","colid":"d37c40a9-69ae-4f98-9195-d5eb67806214"}]}],"indexes":[],"gHeight":106,"gWidth":180,"color":"#ffffff","background":"#03a9f4","resized":false,"embeddable":false,"objectType":"type","others":"","directive":null}},"relations":{"9a2bb9bb-8b27-4706-8874-5ca0925513ad":{"id":"9a2bb9bb-8b27-4706-8874-5ca0925513ad","visible":true,"name":"MiniQuantity-Estimate","desc":"","type":"simple","parent_key":"862cc952-10c7-4391-9c78-4dbe83d7f5ed","parent":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","child":"2475304e-154c-4647-bcbf-1913d62899a9","c_mp":"true","c_mch":"true","cols":[{"id":"11cf2a6b-a308-45d2-ab80-ef4aa016a431","parentcol":"28386c33-46bf-45db-8845-0b31da67219b","childcol":"8d746e64-d21b-4134-82ea-0624824f9aa0"}],"c_cch":"1","ri_pd":"","ri_pu":""},"793e39a9-305c-49a2-809b-a8854da70012":{"id":"793e39a9-305c-49a2-809b-a8854da70012","visible":true,"name":"User-Estimate","desc":"","type":"simple","parent_key":"432830fd-30c1-4064-8e5c-b0bc0928fff6","parent":"3bc72f96-27da-45ab-88b5-f6f960322ffa","child":"2475304e-154c-4647-bcbf-1913d62899a9","c_mp":"true","c_mch":"true","cols":[{"id":"843c4774-b43d-4d5a-a70f-5b29ceee971f","parentcol":"3cb369fd-8a99-44b0-b246-b8e60fc318f9","childcol":"1611cb9b-17bd-4824-a13c-97291ef34837"}],"c_cch":"1","ri_pd":"","ri_pu":""},"158a78ba-bd66-4fc4-bd5c-04bccffdfcac":{"id":"158a78ba-bd66-4fc4-bd5c-04bccffdfcac","visible":true,"name":"Mini-MiniQuantity","desc":"","type":"simple","parent_key":"f990301c-98eb-490b-bcae-b222eba0dcbb","parent":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","child":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","c_mp":"true","c_mch":"true","cols":[{"id":"52a33a81-1b62-43c4-bcff-534db258fbb2","parentcol":"6f3b5256-3846-4954-80b1-f6120ffd8aa4","childcol":"c026edf3-98a6-4e41-9380-ea3b52bce720"}],"c_cch":"1","ri_pd":"","ri_pu":""},"1de4e695-73b2-4d2b-a54a-bf821cc1197a":{"id":"1de4e695-73b2-4d2b-a54a-bf821cc1197a","visible":true,"name":"Estimate-Quote","desc":"","type":"simple","parent_key":"d5fdad6c-ad51-4c00-8514-4429c5594329","parent":"2475304e-154c-4647-bcbf-1913d62899a9","child":"d3767415-74e0-411b-a052-18a1b288e475","c_mp":"true","c_mch":"true","cols":[{"id":"9297312d-6b26-4bfa-8df6-a6422da4366f","parentcol":"f94ae663-c780-4ac3-bfda-387f351d58be","childcol":"c1b0de9b-ac9d-404f-8dc8-beb26863e282"}],"c_cch":"1","ri_pd":"","ri_pu":""},"55d7e5f3-1925-4e2f-8c2e-7916ec4b589e":{"id":"55d7e5f3-1925-4e2f-8c2e-7916ec4b589e","visible":true,"name":"MiniQuantity-Quote","desc":"","type":"simple","parent_key":"862cc952-10c7-4391-9c78-4dbe83d7f5ed","parent":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","child":"d3767415-74e0-411b-a052-18a1b288e475","c_mp":"true","c_mch":"true","cols":[{"id":"f2d63103-ad99-4d01-834d-b54a0bdf8b91","parentcol":"28386c33-46bf-45db-8845-0b31da67219b","childcol":"556094ac-3d65-4090-b7c6-e183e1bf455b"}],"c_cch":"1","ri_pd":"","ri_pu":""},"1e47fb94-930b-4f50-8300-334ed9dcf6bd":{"id":"1e47fb94-930b-4f50-8300-334ed9dcf6bd","visible":true,"name":"User-Quote","desc":"","type":"simple","parent_key":"432830fd-30c1-4064-8e5c-b0bc0928fff6","parent":"3bc72f96-27da-45ab-88b5-f6f960322ffa","child":"d3767415-74e0-411b-a052-18a1b288e475","c_mp":"true","c_mch":"true","cols":[{"id":"43397721-58bf-4122-b4d7-67f78dea019e","parentcol":"3cb369fd-8a99-44b0-b246-b8e60fc318f9","childcol":"ef56e947-f869-4a79-aa93-474b14fdb783"}],"c_cch":"1","ri_pd":"","ri_pu":""},"72aa06a4-4c7d-4c3b-bbd5-b9659cf8f3ce":{"id":"72aa06a4-4c7d-4c3b-bbd5-b9659cf8f3ce","visible":true,"name":"Quote-QuoteComment","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"00e305b7-0ee5-40c1-9ba9-73b22332bb89","c_mp":"true","c_mch":"true","cols":[{"id":"ccbeb2fe-9b60-450f-80c5-db252d62d6e1","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"d280bdcc-458c-4547-998b-f4843acd51d1"}],"c_cch":"1","ri_pd":"","ri_pu":""},"56aa19ec-c01d-4cf7-bdea-089f461e9e60":{"id":"56aa19ec-c01d-4cf7-bdea-089f461e9e60","visible":true,"name":"User-QuoteComment","desc":"","type":"simple","parent_key":"432830fd-30c1-4064-8e5c-b0bc0928fff6","parent":"3bc72f96-27da-45ab-88b5-f6f960322ffa","child":"00e305b7-0ee5-40c1-9ba9-73b22332bb89","c_mp":"true","c_mch":"true","cols":[{"id":"ab30aac3-3f79-44fc-8ff1-8c6580c6df9f","parentcol":"3cb369fd-8a99-44b0-b246-b8e60fc318f9","childcol":"2a4f2b49-e312-431a-9924-109862a9d991"}],"c_cch":"1","ri_pd":"","ri_pu":""},"086caca8-445f-43c9-85bb-379e79ba7790":{"id":"086caca8-445f-43c9-85bb-379e79ba7790","visible":true,"name":"Quote-QuoteMiniQuantityComment","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","c_mp":"true","c_mch":"true","cols":[{"id":"257f166c-8fc9-47a3-a206-ec84731b490e","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"73d29a05-d92a-4fe0-9956-d87546a4f364"}],"c_cch":"1","ri_pd":"","ri_pu":""},"5af9b1d5-33ce-4bf1-84ad-1fa44a4711fb":{"id":"5af9b1d5-33ce-4bf1-84ad-1fa44a4711fb","visible":true,"name":"MiniQuantity-QuoteMiniQuantityComment","desc":"","type":"simple","parent_key":"862cc952-10c7-4391-9c78-4dbe83d7f5ed","parent":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","child":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","c_mp":"true","c_mch":"true","cols":[{"id":"a2824542-7303-45e8-a989-4c441109da33","parentcol":"28386c33-46bf-45db-8845-0b31da67219b","childcol":"320ca5f8-460b-40b7-a28d-990538c5da13"}],"c_cch":"1","ri_pd":"","ri_pu":""},"c0247c40-03a5-4026-b70f-9fd5c6d03131":{"id":"c0247c40-03a5-4026-b70f-9fd5c6d03131","visible":true,"name":"User-QuoteMiniQuantityComment","desc":"","type":"simple","parent_key":"432830fd-30c1-4064-8e5c-b0bc0928fff6","parent":"3bc72f96-27da-45ab-88b5-f6f960322ffa","child":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","c_mp":"true","c_mch":"true","cols":[{"id":"21751861-0833-4737-a460-656596fd1b83","parentcol":"3cb369fd-8a99-44b0-b246-b8e60fc318f9","childcol":"dd17e5bf-d8ca-4dc8-84bc-46b3a1264935"}],"c_cch":"1","ri_pd":"","ri_pu":""},"a29a5cc6-d930-4f6b-9c6a-01504f527a81":{"id":"a29a5cc6-d930-4f6b-9c6a-01504f527a81","visible":true,"name":"Estimate-Query","desc":"","type":"simple","parent_key":"d5fdad6c-ad51-4c00-8514-4429c5594329","parent":"2475304e-154c-4647-bcbf-1913d62899a9","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"c0816e8d-fc7a-4195-9094-8dbe47459dc1","parentcol":"f94ae663-c780-4ac3-bfda-387f351d58be","childcol":"fddacb6f-93c6-459c-a3db-78201f74a50a"}],"c_cch":"1","ri_pd":"","ri_pu":""},"9a6fe9df-75f8-4585-8cdd-26ffc4fb7926":{"id":"9a6fe9df-75f8-4585-8cdd-26ffc4fb7926","visible":true,"name":"Estimate-Query","desc":"","type":"simple","parent_key":"d5fdad6c-ad51-4c00-8514-4429c5594329","parent":"2475304e-154c-4647-bcbf-1913d62899a9","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"ee061664-3aa1-4cc6-ba15-d4bbf1d1dbd4","parentcol":"f94ae663-c780-4ac3-bfda-387f351d58be","childcol":"ac0acb59-ce61-4400-a0ff-6ebf4bc3a3bd"}],"c_cch":"1","ri_pd":"","ri_pu":""},"85d895bb-2456-4dc7-bc9a-2306e29dcd34":{"id":"85d895bb-2456-4dc7-bc9a-2306e29dcd34","visible":true,"name":"Estimate-Query","desc":"","type":"simple","parent_key":"d5fdad6c-ad51-4c00-8514-4429c5594329","parent":"2475304e-154c-4647-bcbf-1913d62899a9","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"7b8bfea1-143b-445e-80f5-1dd64a028e19","parentcol":"f94ae663-c780-4ac3-bfda-387f351d58be","childcol":"0ddbef70-f073-4db2-a2ec-efb76d16c7dc"}],"c_cch":"1","ri_pd":"","ri_pu":""},"b8511587-859d-435e-8a47-a7ce2fbfb85f":{"id":"b8511587-859d-435e-8a47-a7ce2fbfb85f","visible":true,"name":"Mini-Query","desc":"","type":"simple","parent_key":"f990301c-98eb-490b-bcae-b222eba0dcbb","parent":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"7751c729-a373-4ec5-96ad-b40b4283e010","parentcol":"6f3b5256-3846-4954-80b1-f6120ffd8aa4","childcol":"8c37d8b5-26e2-4db2-a9b6-fb85dd6be49c"}],"c_cch":"1","ri_pd":"","ri_pu":""},"fe242ce7-9252-4b73-af0a-389d10fe6e2a":{"id":"fe242ce7-9252-4b73-af0a-389d10fe6e2a","visible":true,"name":"Mini-Query","desc":"","type":"simple","parent_key":"f990301c-98eb-490b-bcae-b222eba0dcbb","parent":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"42c6f60a-aa25-42d7-9747-cbba870e1c1a","parentcol":"6f3b5256-3846-4954-80b1-f6120ffd8aa4","childcol":"acc445ac-0796-4c4a-a11a-6a222dddd518"}],"c_cch":"1","ri_pd":"","ri_pu":""},"251d7573-ed12-45f2-81cf-13e729aa3b64":{"id":"251d7573-ed12-45f2-81cf-13e729aa3b64","visible":true,"name":"Quote-Query","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"de1f14cd-058d-4683-83f0-86251cdde8bf","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"4a925bf0-f974-4c27-b199-315caa218930"}],"c_cch":"1","ri_pd":"","ri_pu":""},"6a6fcf12-d1e1-4f0b-b80b-87342234323d":{"id":"6a6fcf12-d1e1-4f0b-b80b-87342234323d","visible":true,"name":"Quote-Query","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"835d87df-c5fc-4377-b428-90783549ee65","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"f96d305c-b008-490a-866c-3182720a51ae"}],"c_cch":"1","ri_pd":"","ri_pu":""},"a78eeb58-6b31-47df-b731-a28e1ebf3e2a":{"id":"a78eeb58-6b31-47df-b731-a28e1ebf3e2a","visible":true,"name":"Quote-Query","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"c0fb43a1-708c-45da-a159-f3787b6484a4","c_mp":"true","c_mch":"true","cols":[{"id":"a61e5a37-f299-4338-9a8e-5a8469b6df41","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"a6054309-2f78-4745-8d77-846688cb41a1"}],"c_cch":"1","ri_pd":"","ri_pu":""},"d2355f0b-5234-4988-a9d1-375123262753":{"id":"d2355f0b-5234-4988-a9d1-375123262753","visible":true,"name":"Estimate-Mutation","desc":"","type":"simple","parent_key":"d5fdad6c-ad51-4c00-8514-4429c5594329","parent":"2475304e-154c-4647-bcbf-1913d62899a9","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"ff7af34a-f0b5-4f09-83cc-b729617ef2a8","parentcol":"f94ae663-c780-4ac3-bfda-387f351d58be","childcol":"6676974a-1402-43e8-bb35-843537ea3e02"}],"c_cch":"1","ri_pd":"","ri_pu":""},"0584cc69-8bb9-4d77-a368-15ba5f839e3e":{"id":"0584cc69-8bb9-4d77-a368-15ba5f839e3e","visible":true,"name":"Mini-Mutation","desc":"","type":"simple","parent_key":"f990301c-98eb-490b-bcae-b222eba0dcbb","parent":"a16ca0dd-7b80-46a4-9e59-9aeb454fffa3","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"5e4b4407-9523-413f-86ac-95a36bbb2c49","parentcol":"6f3b5256-3846-4954-80b1-f6120ffd8aa4","childcol":"67d61dca-df17-4568-9658-2f20fb421e32"}],"c_cch":"1","ri_pd":"","ri_pu":""},"ddf118f1-fc89-4a17-9e7e-4be08945517f":{"id":"ddf118f1-fc89-4a17-9e7e-4be08945517f","visible":true,"name":"DefaultMiniCost-Mutation","desc":"","type":"simple","parent_key":"c9cb1f83-f8ab-4e34-8979-72b58322d98b","parent":"d54bbcc9-3eca-417e-94d5-98e13db1bc9e","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"ed49089b-755e-430d-90f5-f64eb3080712","parentcol":"5553a6bf-1ab2-4230-92f6-1d5d1f297413","childcol":"b37e9d50-9463-47d3-abd0-b9f35a5d67a4"}],"c_cch":"1","ri_pd":"","ri_pu":""},"d6de1d4b-e7ca-4ef2-afe1-15e6efcaf6f2":{"id":"d6de1d4b-e7ca-4ef2-afe1-15e6efcaf6f2","visible":true,"name":"Quote-Mutation","desc":"","type":"simple","parent_key":"057cb85c-508f-417b-a182-0037f82d4830","parent":"d3767415-74e0-411b-a052-18a1b288e475","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"8b63eb00-6df4-4d2d-8dbe-fdf5ecda4122","parentcol":"ada3140d-e55a-493c-9111-fbd656342027","childcol":"7b416f54-99d2-45ff-a06f-7e365cfec13c"}],"c_cch":"1","ri_pd":"","ri_pu":""},"95a9c686-436c-4333-8d2a-162892da7ba0":{"id":"95a9c686-436c-4333-8d2a-162892da7ba0","visible":true,"name":"QuoteComment-Mutation","desc":"","type":"simple","parent_key":"1197265d-1f5d-4409-a0f2-92ff7004385c","parent":"00e305b7-0ee5-40c1-9ba9-73b22332bb89","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"50b4a358-000c-4c41-a35b-7fd38a8fd84e","parentcol":"3bf01148-7089-4f21-99df-8a78dbea0022","childcol":"4851b905-b395-4a70-b579-98a725086072"}],"c_cch":"1","ri_pd":"","ri_pu":""},"960884be-cc6b-431c-912f-33108c050b0c":{"id":"960884be-cc6b-431c-912f-33108c050b0c","visible":true,"name":"QuoteMiniQuantityComment-Mutation","desc":"","type":"simple","parent_key":"a99e5d8a-540d-48aa-911e-76ce082e6d9b","parent":"5955f15b-9ad7-4fea-9b60-6a3b9e858357","child":"20b04ed2-1d34-4ed4-b16d-8d467a2009e6","c_mp":"true","c_mch":"true","cols":[{"id":"82d836ac-aad5-4f14-afbe-99e7d57d9c68","parentcol":"30ea8c85-853a-4f69-b4a8-6cf9e86e70ec","childcol":"9177dea5-b0e7-4b0d-807e-a3b2f9949a3f"}],"c_cch":"1","ri_pd":"","ri_pu":""},"5ed89065-7822-4311-8e8a-b028325d15a6":{"id":"5ed89065-7822-4311-8e8a-b028325d15a6","visible":true,"name":"MiniOption-MiniQuantity","desc":"","type":"simple","parent_key":"cf96b27a-2585-4c67-984a-5cef1b717a58","parent":"6aaacd1a-2b85-4205-b54f-048644a4d431","child":"9ddd45c9-43a8-4811-8832-5f60c6dbc71a","c_mp":"true","c_mch":"true","cols":[{"id":"312b436f-8cef-4f18-9a68-7c00da8f4dde","parentcol":"d37c40a9-69ae-4f98-9195-d5eb67806214","childcol":"13d30eea-c116-4b85-9eab-936ddd5d31d7"}],"c_cch":"1"}},"notes":{},"lines":{},"model":{"name":"GraphQL schema","id":"f0f1c9fd-17b0-40e5-8a50-7cab1757a3f0","desc":"","path":"","type":"GRAPHQL","version":1,"keysgraphics":true,"linegraphics":"detailed","zoom":100,"parentTableInFkCols":false,"caseConvention":"under","replaceSpace":"_","color":"transparent","background":"transparent","sideSelections":true,"isDirty":true,"storedin":{"major":2,"minor":6,"extra":1},"def_coltopk":true,"def_others":"","filePath":"","lastSaved":"","def_charset":"","def_collation":"","def_rowformat":"","def_tabletype":"","reversed":true},"otherObjects":{"99384957-4abb-471e-9f67-18136e53436d":{"id":"99384957-4abb-471e-9f67-18136e53436d","visible":true,"name":"MiniSize","x":833.5,"y":947,"desc":"","gHeight":45,"gWidth":120,"color":"#eee","background":"#9c27b0","resized":false,"type":"Enum","code":"","lines":[],"enumValues":"TINY\nREGULAR\nLARGE\nTITANIC","directive":""},"237205f3-806e-4a97-9f24-d5b0f6f00aea":{"id":"237205f3-806e-4a97-9f24-d5b0f6f00aea","visible":true,"name":"Time","x":1090.5,"y":947,"desc":"","gHeight":45,"gWidth":90,"color":"#eee","background":"#000","resized":false,"type":"Scalar","code":"scalar Time","lines":[],"directive":""}}}
+{
+  "tables": {
+    "ef33d5cf-fff9-44ef-b05d-068255f99a03": {
+      "id": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "visible": true,
+      "name": "Commission",
+      "x": 437,
+      "y": 74,
+      "desc": "This is the heart of the application. Without this, nothing else matters.",
+      "cols": [
+        {
+          "id": "9487d355-cec5-466f-a8e2-1fd13931d3b1",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "5aa83d58-ef6e-4cf5-9d8a-51037f216b8d",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "7374f089-b4c1-4723-876f-7f91e936974d",
+          "name": "artist",
+          "datatype": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "User"
+        },
+        {
+          "id": "0c6bb7e4-8a3c-4d64-888b-37bfa283790f",
+          "name": "patron",
+          "datatype": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "User"
+        },
+        {
+          "id": "e6800ba8-fd83-4790-8230-065b3b20e5c7",
+          "name": "status",
+          "datatype": "debf4c96-a0dd-43af-80d9-4721f8bd6e0e",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "211c3c0e-710d-42b7-9646-272a4e572f0a",
+          "name": "minis",
+          "datatype": "ac0950f3-98ea-4449-81d7-e27cd0c2e097",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": true,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "CommissionMini"
+        },
+        {
+          "id": "e413502a-905e-431b-9727-9a6af61d3f89",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "54596154-54b4-436a-9c4e-b27789eba9af",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "f999322b-3080-444e-9abb-c917757670ce",
+          "name": "total",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        }
+      ],
+      "relations": [
+        "e52c1fb9-831a-4327-92f5-e286ca38f18c",
+        "b338a895-e460-4e1c-8197-388c5af66720",
+        "6ccf3d36-38a0-43fc-a842-5089ccc5b022",
+        "8aca81f9-b6f5-4245-9dd0-4c21111ecb8d",
+        "651a3a0c-7df8-4cbf-8d0b-c4264a3d57f5"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "23dbd62d-5f6b-49d2-bd0b-9d82758346eb",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "63cae114-111a-46c3-aad4-ba8570a79e0b",
+              "colid": "9487d355-cec5-466f-a8e2-1fd13931d3b1"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 196,
+      "gWidth": 285,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5": {
+      "id": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "visible": true,
+      "name": "User",
+      "x": 864,
+      "y": 110,
+      "desc": "Basic user representation.",
+      "cols": [
+        {
+          "id": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "aa679a88-9336-418b-b5bb-0dc7bf932116",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "b7cf8b12-b590-4dec-ba7d-9956f49ebe79",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "31744c27-dca9-46b6-b629-0ee73f4d3201",
+          "name": "roles",
+          "datatype": "4eb38a4d-5874-4043-b759-32e5fdc2ffb1",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": true,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "51021e9c-0cfc-4599-b515-e4848a4aeece",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "f4909a6b-678a-425e-a39d-5b85bb4d6bb3",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "ce3f6644-1871-448a-aa51-05d02d20b05b",
+          "name": "nickname",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        }
+      ],
+      "relations": [
+        "e52c1fb9-831a-4327-92f5-e286ca38f18c",
+        "b338a895-e460-4e1c-8197-388c5af66720",
+        "d3506fee-8349-497b-bb25-47c29498eb47",
+        "8ecca4b9-86a4-4346-8b6d-9f41bef14ec7",
+        "3c146312-188b-4c51-88c9-ff98d08fe398"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "cbfdf355-d5a9-452e-b01f-73750f9727d6",
+              "colid": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 160,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "940e9f55-a962-4ae1-98d5-de6632f0b49d": {
+      "id": "940e9f55-a962-4ae1-98d5-de6632f0b49d",
+      "visible": true,
+      "name": "GameMini",
+      "x": 864,
+      "y": 486,
+      "desc": "Represents a miniature. This type represents all miniatures across the system.",
+      "cols": [
+        {
+          "id": "91402ac1-ef29-4d81-b340-c439746f64f3",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "61f0bb0c-0639-43fa-b1dc-79b24be8c8f6",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "7cc8d6c2-090b-43aa-9969-15eee0a1dce8",
+          "name": "game",
+          "datatype": "01338dfa-65df-471a-8435-754c1b9c24d4",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "Game"
+        },
+        {
+          "id": "d6ddf4a9-ee2c-48c3-9ac4-1f6f588d8916",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "7b506be7-c4a5-408e-9ee6-1d1fb2939cc6",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "6d2d885b-90a9-443a-a439-70848d2bb61d",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "IMini"
+        },
+        {
+          "id": "8e50ec79-54cc-4c7e-abb2-de674984acbc",
+          "name": "size",
+          "datatype": "47228f20-51dc-4288-9794-f1a98d47fd11",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "IMini"
+        }
+      ],
+      "relations": [
+        "51132a66-df4e-4821-821e-0914894248a8",
+        "3c54e915-55ee-4c53-b672-a5cfff6a641c",
+        "21c733dd-f968-4b99-b897-414a32f0e683"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "f53e38db-53bf-4b5d-8f25-a82abaceddd7",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "13d2575c-90b7-44a6-be5f-1c04cdf3247f",
+              "colid": "91402ac1-ef29-4d81-b340-c439746f64f3"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 160,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "01338dfa-65df-471a-8435-754c1b9c24d4": {
+      "id": "01338dfa-65df-471a-8435-754c1b9c24d4",
+      "visible": true,
+      "name": "Game",
+      "x": 437,
+      "y": 468,
+      "desc": "Games are collections of minis",
+      "cols": [
+        {
+          "id": "0efcbc92-cccc-48df-af4b-b0126d96c303",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "075bbe13-15e9-4400-81e4-5c9eacd6b977",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "a681c6da-6bf1-448c-8af1-8e9f85471609",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "0b71e3cb-117a-49c9-8fb9-1ab5fb871ef9",
+          "name": "minis",
+          "datatype": "940e9f55-a962-4ae1-98d5-de6632f0b49d",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": true,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "Mini"
+        },
+        {
+          "id": "0b7adfdf-fe80-4341-8b19-6e725cf62a0a",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "6bed776b-e26f-4675-862b-d04fe1010a05",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        }
+      ],
+      "relations": [
+        "51132a66-df4e-4821-821e-0914894248a8",
+        "3c54e915-55ee-4c53-b672-a5cfff6a641c"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "ffb685f1-c514-49e5-a7ef-5ab2e8d1e08e",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "bdfa0d50-6b7c-4155-a8b4-6128558f8af5",
+              "colid": "0efcbc92-cccc-48df-af4b-b0126d96c303"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 142,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "b323e50c-fee0-4a47-90c3-a356890299e1": {
+      "id": "b323e50c-fee0-4a47-90c3-a356890299e1",
+      "visible": true,
+      "name": "Prices",
+      "x": 437,
+      "y": 620,
+      "desc": "Default prices as configured by the user",
+      "cols": [
+        {
+          "id": "9b656617-f9b7-441e-ad44-c2627bfc3908",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "cd9bd8fc-8c14-4d76-bab2-4b5b888ba2fc",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "3f02c694-7e73-4838-8559-2b1bb750d68c",
+          "name": "TINY",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "fa2cab3c-7938-43eb-928b-3cbfb2395c8e",
+          "name": "SMALL",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "3f01e2a1-a680-4f05-b652-434875950f3d",
+          "name": "MEDIUM",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "ed3fc49c-ebc4-4b56-96e7-a1d4ec7dfef5",
+          "name": "LARGE",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "b20e66b5-5719-4fbf-bb2a-3174302aa42a",
+          "name": "EXTRALARGE",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "21d5855f-768f-4b78-a147-4749ab70c059",
+          "name": "TITANIC",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "c49cc953-93b9-42ab-ae55-007427586267",
+          "name": "user",
+          "datatype": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "User"
+        }
+      ],
+      "relations": [
+        "d3506fee-8349-497b-bb25-47c29498eb47"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "5b153955-8803-4682-b487-b7d62b9ace27",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "5b0498d7-2295-43f5-a653-da9806f35d7b",
+              "colid": "9b656617-f9b7-441e-ad44-c2627bfc3908"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 186,
+      "gWidth": 191,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": true,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "ac0950f3-98ea-4449-81d7-e27cd0c2e097": {
+      "id": "ac0950f3-98ea-4449-81d7-e27cd0c2e097",
+      "visible": true,
+      "name": "CommissionedMini",
+      "x": 864,
+      "y": 280,
+      "desc": "Minis that belong to a commission. This is where the details of treatment are recorded as well as the price and quantity.",
+      "cols": [
+        {
+          "id": "b9dc9161-7a46-41a7-8a52-c5eb77704cee",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "9b0c030d-dbf9-4f80-8487-06914ebbbff8",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "b7dcfbb5-af46-4bbb-96ae-88a9ab023080",
+          "name": "price",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "472b32f9-a9f2-4d48-a29b-03c61797a4dd",
+          "name": "quantity",
+          "datatype": "Int",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "a829bb9c-bda7-45fe-866b-96c2f7b50242",
+          "name": "notes",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": false,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "058b93d9-17c1-4e29-a5c0-e164464479c7",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "e23cc589-a4a6-4115-8dba-2da7571359a6",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "c92a7948-c0fd-4461-85ed-a4bec2d42590",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "IMini"
+        },
+        {
+          "id": "db0f5535-5956-4311-b598-4cd5b680eead",
+          "name": "size",
+          "datatype": "47228f20-51dc-4288-9794-f1a98d47fd11",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "IMini"
+        }
+      ],
+      "relations": [
+        "6ccf3d36-38a0-43fc-a842-5089ccc5b022",
+        "89877bee-ff58-4c61-a787-8276123a433b"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "a19a57db-5797-442e-9288-65245b055abc",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "ae28df13-6296-4fbc-b75c-9f8f19952782",
+              "colid": "b9dc9161-7a46-41a7-8a52-c5eb77704cee"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 196,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "415edd3d-b7c7-4826-bae7-23bd6033c651": {
+      "id": "415edd3d-b7c7-4826-bae7-23bd6033c651",
+      "visible": true,
+      "name": "Mini",
+      "x": 1291,
+      "y": 406,
+      "desc": "Interface describing all minis",
+      "cols": [
+        {
+          "id": "1c334188-d298-4671-86f2-20f7efdf59d4",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "a1bb0dc3-9a58-4ea5-818d-1d4f0305e083",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "e1c3b7d2-47fc-439b-ab46-9421fbd2100a",
+          "name": "size",
+          "datatype": "47228f20-51dc-4288-9794-f1a98d47fd11",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        }
+      ],
+      "relations": [
+        "21c733dd-f968-4b99-b897-414a32f0e683",
+        "89877bee-ff58-4c61-a787-8276123a433b",
+        "2c6b5d80-c5c0-4546-b970-5332b7900cfd"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "9918fdb9-b756-438f-96ee-94f6fd5de1f2",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "c1e63ac2-fa37-4cda-aa50-502da053484b",
+              "colid": "1c334188-d298-4671-86f2-20f7efdf59d4"
+            },
+            {
+              "id": "855a10c9-8fb4-40b9-8e34-cacb2917ebee",
+              "colid": "a1bb0dc3-9a58-4ea5-818d-1d4f0305e083"
+            },
+            {
+              "id": "9580e15b-1664-4f1a-a25a-2e8dd47a5f2b",
+              "colid": "e1c3b7d2-47fc-439b-ab46-9421fbd2100a"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 88,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#8bc34a",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "interface",
+      "others": "",
+      "directive": null
+    },
+    "fe446598-3869-4108-b7c0-8c6ecb87fa38": {
+      "id": "fe446598-3869-4108-b7c0-8c6ecb87fa38",
+      "visible": true,
+      "name": "Query",
+      "x": 10,
+      "y": 56,
+      "desc": "",
+      "cols": [
+        {
+          "id": "ac1e0db4-9896-43bf-85a2-78ac3b21e01d",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "e0abb446-7716-4f27-b413-1d8d2051a9a7",
+          "name": "commissions",
+          "datatype": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "Returns commissions for the authenticated and authorized user with optional status, artist, and patron arguments.",
+          "defaultvalue": "",
+          "data": "",
+          "list": true,
+          "fieldArguments": "(status: Status, artist: ID, patron: ID)",
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "Commission"
+        },
+        {
+          "id": "19f3acc5-90ec-49cc-9b3e-87faabe8d8be",
+          "name": "commission",
+          "datatype": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "Retrieves a single commission based on ID. Requesting user must be authenticated and authorized.",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": "(id: ID!)",
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "Commission"
+        },
+        {
+          "id": "a13e28c2-1fb3-430a-9674-8fe818586999",
+          "name": "user",
+          "datatype": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "Fetches a single user by their ID",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": "(id: ID!)",
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "User"
+        },
+        {
+          "id": "a085fb65-bb88-4119-bbda-29c4dd26be3c",
+          "name": "savedMinis",
+          "datatype": "64c09d87-5221-45ac-afbf-6ccb34502ebb",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": true,
+          "fieldArguments": "(user: ID!)",
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "SavedMini"
+        }
+      ],
+      "relations": [
+        "8aca81f9-b6f5-4245-9dd0-4c21111ecb8d",
+        "651a3a0c-7df8-4cbf-8d0b-c4264a3d57f5",
+        "8ecca4b9-86a4-4346-8b6d-9f41bef14ec7",
+        "3ac55682-a2ab-4802-93a1-ee3f4bb2f51b"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "29091d65-2877-4c25-866c-a8b32f3cf0b8",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "413df5bb-1de2-4025-b93c-9b0cb21d8122",
+              "colid": "ac1e0db4-9896-43bf-85a2-78ac3b21e01d"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 101,
+      "gWidth": 292,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": true,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    },
+    "64c09d87-5221-45ac-afbf-6ccb34502ebb": {
+      "id": "64c09d87-5221-45ac-afbf-6ccb34502ebb",
+      "visible": true,
+      "name": "SavedMini",
+      "x": 487,
+      "y": 280,
+      "desc": "Saved mini configuration. This is used to override the default pricing for a specific mini.",
+      "cols": [
+        {
+          "id": "7511098d-8a06-4b1e-ad49-8c43075b84c6",
+          "name": "FakeIdForInternalUse",
+          "datatype": "ID",
+          "param": "",
+          "pk": true,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": true,
+          "isArrayItemNn": false,
+          "fieldDirective": null
+        },
+        {
+          "id": "f176a5b0-e864-4c9e-b8fe-91e7b736e006",
+          "name": "id",
+          "datatype": "ID",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "b4d3dc0e-f62f-4d76-bac0-57a942aa4171",
+          "name": "price",
+          "datatype": "Float",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "0b887896-ea89-4a78-b4e9-30ab7a216054",
+          "name": "createdAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "77f78cda-00c4-4d36-8612-f70766cc8de0",
+          "name": "updatedAt",
+          "datatype": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false
+        },
+        {
+          "id": "8b303a10-79fa-429b-bba9-9294f9bf8a19",
+          "name": "user",
+          "datatype": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fieldDirective": null,
+          "fk": true,
+          "ref": "User"
+        },
+        {
+          "id": "c687ef18-4187-4761-a1b3-bb31f319c9d6",
+          "name": "name",
+          "datatype": "String",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "Mini"
+        },
+        {
+          "id": "35d40610-2467-4cc8-a58c-8f472bfa7760",
+          "name": "size",
+          "datatype": "47228f20-51dc-4288-9794-f1a98d47fd11",
+          "param": "",
+          "pk": false,
+          "nn": true,
+          "comment": "",
+          "defaultvalue": "",
+          "data": "",
+          "list": false,
+          "fieldArguments": null,
+          "isHidden": false,
+          "isArrayItemNn": false,
+          "fk": true,
+          "ref": "Mini"
+        }
+      ],
+      "relations": [
+        "3c146312-188b-4c51-88c9-ff98d08fe398",
+        "2c6b5d80-c5c0-4546-b970-5332b7900cfd",
+        "3ac55682-a2ab-4802-93a1-ee3f4bb2f51b"
+      ],
+      "lines": [],
+      "keys": [
+        {
+          "id": "07aa1362-5517-43f1-a54c-51143e1fef88",
+          "name": "Identifier",
+          "isPk": true,
+          "using": "na",
+          "cols": [
+            {
+              "id": "f1191cc2-a287-4dc9-9ee3-7f54bda4a487",
+              "colid": "7511098d-8a06-4b1e-ad49-8c43075b84c6"
+            }
+          ]
+        }
+      ],
+      "indexes": [],
+      "gHeight": 178,
+      "gWidth": 180,
+      "color": "#ffffff",
+      "background": "#03a9f4",
+      "resized": false,
+      "embeddable": false,
+      "objectType": "type",
+      "others": "",
+      "directive": null
+    }
+  },
+  "relations": {
+    "e52c1fb9-831a-4327-92f5-e286ca38f18c": {
+      "id": "e52c1fb9-831a-4327-92f5-e286ca38f18c",
+      "visible": true,
+      "name": "User-Commission",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+      "parent": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "child": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "087b6fe5-c2a2-4eb5-81ea-96d8bd227001",
+          "parentcol": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "childcol": "7374f089-b4c1-4723-876f-7f91e936974d"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "b338a895-e460-4e1c-8197-388c5af66720": {
+      "id": "b338a895-e460-4e1c-8197-388c5af66720",
+      "visible": true,
+      "name": "User-Commission",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+      "parent": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "child": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "cdf6d4d5-959e-427e-a876-b7afc2c43f08",
+          "parentcol": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "childcol": "0c6bb7e4-8a3c-4d64-888b-37bfa283790f"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "51132a66-df4e-4821-821e-0914894248a8": {
+      "id": "51132a66-df4e-4821-821e-0914894248a8",
+      "visible": true,
+      "name": "Mini-Game",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "f53e38db-53bf-4b5d-8f25-a82abaceddd7",
+      "parent": "940e9f55-a962-4ae1-98d5-de6632f0b49d",
+      "child": "01338dfa-65df-471a-8435-754c1b9c24d4",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "0f7e6443-dc77-4ea7-b074-7cec11d97c35",
+          "parentcol": "91402ac1-ef29-4d81-b340-c439746f64f3",
+          "childcol": "0b71e3cb-117a-49c9-8fb9-1ab5fb871ef9"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "3c54e915-55ee-4c53-b672-a5cfff6a641c": {
+      "id": "3c54e915-55ee-4c53-b672-a5cfff6a641c",
+      "visible": true,
+      "name": "Game-Mini",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "ffb685f1-c514-49e5-a7ef-5ab2e8d1e08e",
+      "parent": "01338dfa-65df-471a-8435-754c1b9c24d4",
+      "child": "940e9f55-a962-4ae1-98d5-de6632f0b49d",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "dad484d7-9a21-4730-bfaa-af0f1db5424c",
+          "parentcol": "0efcbc92-cccc-48df-af4b-b0126d96c303",
+          "childcol": "7cc8d6c2-090b-43aa-9969-15eee0a1dce8"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "d3506fee-8349-497b-bb25-47c29498eb47": {
+      "id": "d3506fee-8349-497b-bb25-47c29498eb47",
+      "visible": true,
+      "name": "User-Prices",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+      "parent": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "child": "b323e50c-fee0-4a47-90c3-a356890299e1",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "afa20903-dc7d-432c-b4da-c8f5a2edef0f",
+          "parentcol": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "childcol": "c49cc953-93b9-42ab-ae55-007427586267"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "6ccf3d36-38a0-43fc-a842-5089ccc5b022": {
+      "id": "6ccf3d36-38a0-43fc-a842-5089ccc5b022",
+      "visible": true,
+      "name": "CommissionMini-Commission",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "a19a57db-5797-442e-9288-65245b055abc",
+      "parent": "ac0950f3-98ea-4449-81d7-e27cd0c2e097",
+      "child": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "656b95e0-cc0c-4b8b-b054-5b7efe1eb7e6",
+          "parentcol": "b9dc9161-7a46-41a7-8a52-c5eb77704cee",
+          "childcol": "211c3c0e-710d-42b7-9646-272a4e572f0a"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "21c733dd-f968-4b99-b897-414a32f0e683": {
+      "id": "21c733dd-f968-4b99-b897-414a32f0e683",
+      "visible": true,
+      "name": "IMini-Mini",
+      "desc": "",
+      "type": "identifying",
+      "parent_key": "9918fdb9-b756-438f-96ee-94f6fd5de1f2",
+      "parent": "415edd3d-b7c7-4826-bae7-23bd6033c651",
+      "child": "940e9f55-a962-4ae1-98d5-de6632f0b49d",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "fdbc90bb-d673-4468-a864-56100f186a26",
+          "parentcol": "a1bb0dc3-9a58-4ea5-818d-1d4f0305e083",
+          "childcol": "6d2d885b-90a9-443a-a439-70848d2bb61d"
+        },
+        {
+          "id": "c10fa17e-8545-4dc5-8821-ac746994c2c4",
+          "parentcol": "e1c3b7d2-47fc-439b-ab46-9421fbd2100a",
+          "childcol": "8e50ec79-54cc-4c7e-abb2-de674984acbc"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "89877bee-ff58-4c61-a787-8276123a433b": {
+      "id": "89877bee-ff58-4c61-a787-8276123a433b",
+      "visible": true,
+      "name": "IMini-CommissionedMini",
+      "desc": "",
+      "type": "identifying",
+      "parent_key": "9918fdb9-b756-438f-96ee-94f6fd5de1f2",
+      "parent": "415edd3d-b7c7-4826-bae7-23bd6033c651",
+      "child": "ac0950f3-98ea-4449-81d7-e27cd0c2e097",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "9e4255de-4af4-4c81-b35a-227a6f5b5dee",
+          "parentcol": "a1bb0dc3-9a58-4ea5-818d-1d4f0305e083",
+          "childcol": "c92a7948-c0fd-4461-85ed-a4bec2d42590"
+        },
+        {
+          "id": "bffd385a-6fb7-4404-a962-44b6cc9ed45b",
+          "parentcol": "e1c3b7d2-47fc-439b-ab46-9421fbd2100a",
+          "childcol": "db0f5535-5956-4311-b598-4cd5b680eead"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "8aca81f9-b6f5-4245-9dd0-4c21111ecb8d": {
+      "id": "8aca81f9-b6f5-4245-9dd0-4c21111ecb8d",
+      "visible": true,
+      "name": "Commission-Query",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "23dbd62d-5f6b-49d2-bd0b-9d82758346eb",
+      "parent": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "child": "fe446598-3869-4108-b7c0-8c6ecb87fa38",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "4c2ebeb5-c060-456b-96be-cf9fa8cc05f6",
+          "parentcol": "9487d355-cec5-466f-a8e2-1fd13931d3b1",
+          "childcol": "e0abb446-7716-4f27-b413-1d8d2051a9a7"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "651a3a0c-7df8-4cbf-8d0b-c4264a3d57f5": {
+      "id": "651a3a0c-7df8-4cbf-8d0b-c4264a3d57f5",
+      "visible": true,
+      "name": "Commission-Query",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "23dbd62d-5f6b-49d2-bd0b-9d82758346eb",
+      "parent": "ef33d5cf-fff9-44ef-b05d-068255f99a03",
+      "child": "fe446598-3869-4108-b7c0-8c6ecb87fa38",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "a4859c9b-24eb-4d55-8ebf-63eb32d33bdc",
+          "parentcol": "9487d355-cec5-466f-a8e2-1fd13931d3b1",
+          "childcol": "19f3acc5-90ec-49cc-9b3e-87faabe8d8be"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "8ecca4b9-86a4-4346-8b6d-9f41bef14ec7": {
+      "id": "8ecca4b9-86a4-4346-8b6d-9f41bef14ec7",
+      "visible": true,
+      "name": "User-Query",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+      "parent": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "child": "fe446598-3869-4108-b7c0-8c6ecb87fa38",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "7871de3e-9340-4786-8560-7018724d8807",
+          "parentcol": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "childcol": "a13e28c2-1fb3-430a-9674-8fe818586999"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "3c146312-188b-4c51-88c9-ff98d08fe398": {
+      "id": "3c146312-188b-4c51-88c9-ff98d08fe398",
+      "visible": true,
+      "name": "User-SavedMini",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "2094b465-845c-4614-9d8e-b1061c1e81b6",
+      "parent": "f37cf456-b358-4c0f-9ecb-9e6d5f6dcfe5",
+      "child": "64c09d87-5221-45ac-afbf-6ccb34502ebb",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "0e39e610-904e-4947-b95f-1410c5f2738b",
+          "parentcol": "ec4ea97a-003c-4a65-9be7-6b1ca5f600f0",
+          "childcol": "8b303a10-79fa-429b-bba9-9294f9bf8a19"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "2c6b5d80-c5c0-4546-b970-5332b7900cfd": {
+      "id": "2c6b5d80-c5c0-4546-b970-5332b7900cfd",
+      "visible": true,
+      "name": "Mini-SavedMini",
+      "desc": "",
+      "type": "identifying",
+      "parent_key": "9918fdb9-b756-438f-96ee-94f6fd5de1f2",
+      "parent": "415edd3d-b7c7-4826-bae7-23bd6033c651",
+      "child": "64c09d87-5221-45ac-afbf-6ccb34502ebb",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "36e94af8-2384-4937-860f-ea176a05749b",
+          "parentcol": "a1bb0dc3-9a58-4ea5-818d-1d4f0305e083",
+          "childcol": "c687ef18-4187-4761-a1b3-bb31f319c9d6"
+        },
+        {
+          "id": "b7e9273e-ce68-485c-a30d-6d27236a30d6",
+          "parentcol": "e1c3b7d2-47fc-439b-ab46-9421fbd2100a",
+          "childcol": "35d40610-2467-4cc8-a58c-8f472bfa7760"
+        }
+      ],
+      "c_cch": "1"
+    },
+    "3ac55682-a2ab-4802-93a1-ee3f4bb2f51b": {
+      "id": "3ac55682-a2ab-4802-93a1-ee3f4bb2f51b",
+      "visible": true,
+      "name": "SavedMini-Query",
+      "desc": "",
+      "type": "simple",
+      "parent_key": "07aa1362-5517-43f1-a54c-51143e1fef88",
+      "parent": "64c09d87-5221-45ac-afbf-6ccb34502ebb",
+      "child": "fe446598-3869-4108-b7c0-8c6ecb87fa38",
+      "c_mp": "true",
+      "c_mch": "true",
+      "cols": [
+        {
+          "id": "10a6ee7a-00a0-4476-90ba-674c918a5576",
+          "parentcol": "7511098d-8a06-4b1e-ad49-8c43075b84c6",
+          "childcol": "a085fb65-bb88-4119-bbda-29c4dd26be3c"
+        }
+      ],
+      "c_cch": "1"
+    }
+  },
+  "notes": {},
+  "lines": {},
+  "model": {
+    "name": "My Mini Commission API",
+    "id": "f0f1c9fd-17b0-40e5-8a50-7cab1757a3f0",
+    "desc": "",
+    "path": "",
+    "type": "GRAPHQL",
+    "version": 1,
+    "keysgraphics": true,
+    "linegraphics": "detailed",
+    "zoom": 100,
+    "parentTableInFkCols": false,
+    "caseConvention": "under",
+    "replaceSpace": "_",
+    "color": "transparent",
+    "background": "transparent",
+    "sideSelections": true,
+    "isDirty": true,
+    "storedin": {
+      "major": 2,
+      "minor": 6,
+      "extra": 1
+    },
+    "def_coltopk": true,
+    "def_others": "",
+    "filePath": "C:\\Users\\Steve\\Dropbox\\Documents\\My Mini Commission API.dmm",
+    "lastSaved": "Fri Feb 05 2021 14:13:09 GMT-0800 (Pacific Standard Time)",
+    "def_charset": "",
+    "def_collation": "",
+    "def_rowformat": "",
+    "def_tabletype": "",
+    "reversed": true,
+    "writeFileParam": true,
+    "description": "GraphQL API schema for myminicommission.com"
+  },
+  "otherObjects": {
+    "47228f20-51dc-4288-9794-f1a98d47fd11": {
+      "id": "47228f20-51dc-4288-9794-f1a98d47fd11",
+      "visible": true,
+      "name": "MiniSize",
+      "x": 110,
+      "y": 906,
+      "desc": "The size of a mini",
+      "gHeight": 40,
+      "gWidth": 120,
+      "color": "#eee",
+      "background": "#9c27b0",
+      "resized": false,
+      "type": "Enum",
+      "code": "",
+      "lines": [],
+      "enumValues": "TINY\nSMALL\nMEDIUM\nLARGE\nEXTRALARGE\nTITANIC"
+    },
+    "debf4c96-a0dd-43af-80d9-4721f8bd6e0e": {
+      "id": "debf4c96-a0dd-43af-80d9-4721f8bd6e0e",
+      "visible": true,
+      "name": "Status",
+      "x": 330,
+      "y": 906,
+      "desc": "Commission status",
+      "gHeight": 40,
+      "gWidth": 120,
+      "color": "#eee",
+      "background": "#9c27b0",
+      "resized": false,
+      "type": "Enum",
+      "code": "",
+      "lines": [],
+      "enumValues": "ESTIMATE\nQUOTE\nACCEPTED\nWAITING\nIN_PROGRESS\nSHIPPED\nCOMPLETE"
+    },
+    "4eb38a4d-5874-4043-b759-32e5fdc2ffb1": {
+      "id": "4eb38a4d-5874-4043-b759-32e5fdc2ffb1",
+      "visible": true,
+      "name": "Role",
+      "x": 560,
+      "y": 906,
+      "desc": "User roles",
+      "gHeight": 40,
+      "gWidth": 120,
+      "color": "#eee",
+      "background": "#9c27b0",
+      "resized": false,
+      "type": "Enum",
+      "code": "",
+      "lines": [],
+      "enumValues": "ADMIN\nARTIST"
+    },
+    "b792db48-0f36-4ede-87ba-6f56dc046f46": {
+      "id": "b792db48-0f36-4ede-87ba-6f56dc046f46",
+      "visible": true,
+      "name": "Time",
+      "x": 790,
+      "y": 906,
+      "desc": "A generic date time value",
+      "gHeight": 40,
+      "gWidth": 120,
+      "color": "#eee",
+      "background": "#000",
+      "resized": false,
+      "type": "Scalar",
+      "code": "",
+      "lines": []
+    }
+  }
+}
