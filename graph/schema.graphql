@@ -23,27 +23,6 @@ type User {
   nickname: String!
 }
 """
-Represents a miniature. This type represents all miniatures across the system.
-"""
-type GameMini implements Mini {
-  id: ID!
-  game: Game!
-  createdAt: Time!
-  updatedAt: Time!
-  name: String!
-  size: MiniSize!
-}
-"""
-Games are collections of minis
-"""
-type Game {
-  id: ID!
-  name: String!
-  minis: [GameMini]!
-  createdAt: Time!
-  updatedAt: Time!
-}
-"""
 Default prices as configured by the user
 """
 type Prices {

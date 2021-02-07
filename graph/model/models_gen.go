@@ -40,27 +40,6 @@ type CommissionedMini struct {
 
 func (CommissionedMini) IsMini() {}
 
-// Games are collections of minis
-type Game struct {
-	ID        string      `json:"id"`
-	Name      string      `json:"name"`
-	Minis     []*GameMini `json:"minis"`
-	CreatedAt time.Time   `json:"createdAt"`
-	UpdatedAt time.Time   `json:"updatedAt"`
-}
-
-// Represents a miniature. This type represents all miniatures across the system.
-type GameMini struct {
-	ID        string    `json:"id"`
-	Game      *Game     `json:"game"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	Name      string    `json:"name"`
-	Size      MiniSize  `json:"size"`
-}
-
-func (GameMini) IsMini() {}
-
 // Default prices as configured by the user
 type Prices struct {
 	ID         string  `json:"id"`
