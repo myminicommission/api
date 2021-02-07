@@ -20,7 +20,7 @@ RUN --mount=target=. \
   --mount=type=cache,target=/root/.cache/go-build \
   GOOS=${TARGETOS} \
   GOARCH=${TARGETARCH} \
-  go test -v
+  go test -v ./...
 
 FROM golangci/golangci-lint:v1.27-alpine AS lint-base
 
