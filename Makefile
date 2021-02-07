@@ -1,20 +1,19 @@
-all: clean test build
+all: bin/api
+test: unit-test
 
-clean:
-	go clean .
+PLATFORM=local
 
-test:
-	go test -coverprofile=coverage.out ./...
-	go tool cover -func=coverage.out
+.PHONY: bin/api
+bin/api:
+	@docker build --target bin --output bin/ --platform ${PLATFORM} .
 
-build:
-	go build .
+.PHONY: unit-test
+unit-test:
+	@docker build . --target unit-test
 
-run:
-	go run .
-
-run-db:
-	docker-compose up pgadmin
+.PHONY: lint
+lint:
+	@docker build . --target lint
 
 generate:
 	go generate ./...
