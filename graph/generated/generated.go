@@ -4383,6 +4383,13 @@ func (ec *executionContext) _Mini(ctx context.Context, sel ast.SelectionSet, obj
 	switch obj := (obj).(type) {
 	case nil:
 		return graphql.Null
+	case model.GameMini:
+		return ec._GameMini(ctx, sel, &obj)
+	case *model.GameMini:
+		if obj == nil {
+			return graphql.Null
+		}
+		return ec._GameMini(ctx, sel, obj)
 	case model.CommissionedMini:
 		return ec._CommissionedMini(ctx, sel, &obj)
 	case *model.CommissionedMini:
@@ -5290,6 +5297,53 @@ func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.S
 		}
 	}
 	return res
+}
+
+func (ec *executionContext) marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx context.Context, sel ast.SelectionSet, v *model.Game) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._Game(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalNGameMini2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx context.Context, sel ast.SelectionSet, v []*model.GameMini) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
