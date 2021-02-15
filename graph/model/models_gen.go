@@ -26,6 +26,13 @@ type Commission struct {
 	Total     float64             `json:"total"`
 }
 
+// Input for maintaining commissions
+type CommissionInput struct {
+	ID     string   `json:"id"`
+	Status *Status  `json:"status"`
+	Total  *float64 `json:"total"`
+}
+
 // Minis that belong to a commission. This is where the details of treatment are recorded as well as the price and quantity.
 type CommissionedMini struct {
 	ID        string    `json:"id"`
@@ -40,6 +47,60 @@ type CommissionedMini struct {
 
 func (CommissionedMini) IsMini() {}
 
+// Games are collections of minis
+type Game struct {
+	ID        string      `json:"id"`
+	Name      string      `json:"name"`
+	Minis     []*GameMini `json:"minis"`
+	CreatedAt time.Time   `json:"createdAt"`
+	UpdatedAt time.Time   `json:"updatedAt"`
+}
+
+// Represents a miniature. This type represents all miniatures across the system.
+type GameMini struct {
+	ID        string    `json:"id"`
+	Game      *Game     `json:"game"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Name      string    `json:"name"`
+	Size      MiniSize  `json:"size"`
+}
+
+func (GameMini) IsMini() {}
+
+// Saved mini configuration. This is used to override the default pricing for a specific mini.
+type MiniConfig struct {
+	ID        string    `json:"id"`
+	Price     float64   `json:"price"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	User      *User     `json:"user"`
+	Name      string    `json:"name"`
+	Size      MiniSize  `json:"size"`
+}
+
+func (MiniConfig) IsMini() {}
+
+type MiniConfigInput struct {
+	Mini  string    `json:"mini"`
+	Size  *MiniSize `json:"size"`
+	Price *float64  `json:"price"`
+}
+
+type MiniInput struct {
+	ID       string   `json:"id"`
+	Quantity int      `json:"quantity"`
+	Name     string   `json:"name"`
+	Size     MiniSize `json:"size"`
+}
+
+// Input for creating a new commission (automatically sets the status to ESTIMATE)
+type NewCommission struct {
+	Comments *string      `json:"comments"`
+	Minis    []*MiniInput `json:"minis"`
+	Artist   string       `json:"artist"`
+}
+
 // Default prices as configured by the user
 type Prices struct {
 	ID         string  `json:"id"`
@@ -51,19 +112,6 @@ type Prices struct {
 	TItanic    float64 `json:"tITANIC"`
 	User       *User   `json:"user"`
 }
-
-// Saved mini configuration. This is used to override the default pricing for a specific mini.
-type SavedMini struct {
-	ID        string    `json:"id"`
-	Price     float64   `json:"price"`
-	CreatedAt time.Time `json:"createdAt"`
-	UpdatedAt time.Time `json:"updatedAt"`
-	User      *User     `json:"user"`
-	Name      string    `json:"name"`
-	Size      MiniSize  `json:"size"`
-}
-
-func (SavedMini) IsMini() {}
 
 // Basic user representation.
 type User struct {
@@ -131,16 +179,18 @@ type Role string
 const (
 	RoleAdmin  Role = "ADMIN"
 	RoleArtist Role = "ARTIST"
+	RoleClient Role = "CLIENT"
 )
 
 var AllRole = []Role{
 	RoleAdmin,
 	RoleArtist,
+	RoleClient,
 }
 
 func (e Role) IsValid() bool {
 	switch e {
-	case RoleAdmin, RoleArtist:
+	case RoleAdmin, RoleArtist, RoleClient:
 		return true
 	}
 	return false

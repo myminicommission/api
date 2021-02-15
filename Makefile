@@ -1,5 +1,7 @@
 all: bin/api
 test: unit-test
+start:
+	go run .
 
 PLATFORM=local
 
@@ -15,5 +17,14 @@ unit-test:
 lint:
 	@docker build . --target lint
 
+.PHONY: generate
 generate:
 	go generate ./...
+
+.PHONY: start/bin
+start/bin:
+	bin/api
+
+.PHONY: start/db
+start/db:
+	docker-compose up
