@@ -13,6 +13,7 @@ import (
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/orm"
 
 	_ "github.com/joho/godotenv/autoload"
 )
@@ -25,7 +26,15 @@ func main() {
 		port = defaultPort
 	}
 
-	config := generated.Config{Resolvers: &graph.Resolver{}}
+	// ORM stuff
+	orm, err := orm.Factory()
+	if err != nil {
+		log.Panic(err)
+	}
+
+	config := generated.Config{Resolvers: &graph.Resolver{
+		ORM: orm,
+	}}
 	config.Directives.HasRole = func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (interface{}, error) {
 		// stubbed out hasRole value.
 		// This clearly needs to be replaced with

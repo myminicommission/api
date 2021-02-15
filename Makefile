@@ -1,6 +1,7 @@
 all: bin/api
 test: unit-test
-start: bin/api start/bin
+start:
+	go run .
 
 PLATFORM=local
 

@@ -7,7 +7,9 @@ import (
 	"context"
 	"fmt"
 
+	"github.com/gofrs/uuid"
 	"github.com/myminicommission/api/graph/generated"
+	"github.com/myminicommission/api/graph/helpers"
 	"github.com/myminicommission/api/graph/model"
 )
 
@@ -32,7 +34,7 @@ func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commi
 }
 
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
-	panic(fmt.Errorf("not implemented"))
+	return helpers.GetUser(r.ORM, uuid.FromStringOrNil(id))
 }
 
 func (r *queryResolver) MiniConfigs(ctx context.Context, user string) ([]*model.MiniConfig, error) {
