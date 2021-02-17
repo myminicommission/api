@@ -11,7 +11,7 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var autoMigrate, logMode, seedDB bool
+var autoMigrate, logMode bool
 var dsn, dialect string
 
 // ORM struct to hold the GORM pointer to the DB
@@ -22,7 +22,6 @@ type ORM struct {
 func init() {
 	dialect = utils.MustGet("GORM_DIALECT")
 	dsn = utils.MustGet("GORM_CONNECTION_DSN")
-	seedDB = utils.MustGetBool("GORM_SEED_DB")
 	logMode = utils.MustGetBool("GORM_LOGMODE")
 	autoMigrate = utils.MustGetBool("GORM_AUTOMIGRATE")
 }
