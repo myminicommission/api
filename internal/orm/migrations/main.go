@@ -35,7 +35,9 @@ func ServiceAutoMigration(db *gorm.DB) error {
 		return nil
 	})
 
-	m.Migrate()
+	if err := m.Migrate(); err != nil {
+		return err
+	}
 
 	if err := updateMigration(db); err != nil {
 		return err
