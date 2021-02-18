@@ -25,8 +25,25 @@ func (r *mutationResolver) SaveMiniConfig(ctx context.Context, input model.MiniC
 	panic(fmt.Errorf("not implemented"))
 }
 
-func (r *queryResolver) Commissions(ctx context.Context, status *model.Status, artist *string, patron *string) ([]*model.Commission, error) {
+func (r *mutationResolver) CreateGame(ctx context.Context, name string) (*model.Game, error) {
 	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) UpdateGame(ctx context.Context, input model.GameInput) (*model.Game, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
+	// TODO: determine current user or reject request
+	return helpers.MyCommissions(r.ORM, uuid.FromStringOrNil("af8f7135-07e5-47c8-bced-36b782b8ff64"))
 }
 
 func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commission, error) {
@@ -39,6 +56,22 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 
 func (r *queryResolver) MiniConfigs(ctx context.Context, user string) ([]*model.MiniConfig, error) {
 	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *queryResolver) Games(ctx context.Context) ([]*model.Game, error) {
+	return helpers.GetGames(r.ORM)
+}
+
+func (r *queryResolver) Game(ctx context.Context, id string) (*model.Game, error) {
+	return helpers.GetGame(r.ORM, uuid.FromStringOrNil(id))
+}
+
+func (r *queryResolver) GameMinis(ctx context.Context, game string) ([]*model.GameMini, error) {
+	return helpers.GetGameMinis(r.ORM, uuid.FromStringOrNil(game))
+}
+
+func (r *queryResolver) GameMini(ctx context.Context, id string) (*model.GameMini, error) {
+	return helpers.GetGameMini(r.ORM, uuid.FromStringOrNil(id))
 }
 
 // Mutation returns generated.MutationResolver implementation.

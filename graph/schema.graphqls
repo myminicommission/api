@@ -19,7 +19,6 @@ enum MiniSize {
 Enum Status
 """
 enum Status {
-  ESTIMATE
   QUOTE
   ACCEPTED
   WAITING
@@ -86,7 +85,6 @@ Represents a miniature. This type represents all miniatures across the system.
 """
 type GameMini implements Mini {
   id: ID!
-  game: Game!
   createdAt: Time!
   updatedAt: Time!
   name: String!
@@ -147,9 +145,9 @@ type MiniConfig implements Mini {
 
 type Query {
   """
-  Returns commissions for the authenticated and authorized user with optional status, artist, and patron arguments.
+  Returns commissions where the authenticated user is either the artist or the patron.
   """
-  commissions(status: Status, artist: ID, patron: ID): [Commission]!
+  myCommissions: [Commission]!
 
   """
   Retrieves a single commission based on ID. Requesting user must be authenticated and authorized.
@@ -161,6 +159,26 @@ type Query {
   """
   user(id: ID!): User!
   MiniConfigs(user: ID!): [MiniConfig]!
+
+  """
+  Fetches list of games
+  """
+  games: [Game]!
+
+  """
+  Fetches a specific game
+  """
+  game(id: ID!): Game!
+
+  """
+  Fetches minis for a specfic game
+  """
+  gameMinis(game: ID!): [GameMini]!
+
+  """
+  Fetches a specific game mini
+  """
+  gameMini(id: ID!): GameMini!
 }
 
 """
@@ -194,6 +212,17 @@ input MiniConfigInput {
   price: Float
 }
 
+input GameInput {
+  id: ID!
+  name: String!
+}
+
+input GameMiniInput {
+  game: ID!
+  name: String!
+  size: MiniSize!
+}
+
 """
 All the mutations.  Authentication required.
 """
@@ -212,4 +241,24 @@ type Mutation {
   Save a mini configuration
   """
   saveMiniConfig(input: MiniConfigInput!): MiniConfig!
+
+  """
+  Create a game
+  """
+  createGame(name: String!): Game!
+
+  """
+  Update a game
+  """
+  updateGame(input: GameInput!): Game!
+
+  """
+  Create a mini for a game
+  """
+  createGameMini(input: GameMiniInput): GameMini!
+
+  """
+  Update a mini for a game
+  """
+  updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
 }

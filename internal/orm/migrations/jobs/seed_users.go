@@ -7,22 +7,50 @@ import (
 )
 
 var (
-	uname                  = "Test User"
-	email                  = "test@user.com"
-	nname                  = "TestUser123"
+	uname1                 = "Test User 1"
+	email1                 = "testuser1@localhost"
+	nname1                 = "TestUser1"
 	firstUser *models.User = &models.User{
-		Email:    email,
-		Name:     &uname,
-		NickName: &nname,
+		Email:    email1,
+		Name:     &uname1,
+		NickName: &nname1,
+	}
+
+	uname2                  = "Test User 2"
+	email2                  = "testuser2@localhost"
+	nname2                  = "TestUser2"
+	secondUser *models.User = &models.User{
+		Email:    email2,
+		Name:     &uname2,
+		NickName: &nname2,
 	}
 )
 
+// SeedUsers populates the database with some starting data
 var SeedUsers *gormigrate.Migration = &gormigrate.Migration{
 	ID: "SEED_USERS",
 	Migrate: func(db *gorm.DB) error {
-		return db.Create(&firstUser).Error
+		err := db.Create(&firstUser).Error
+		if err != nil {
+			return err
+		}
+
+		err = db.Create(&secondUser).Error
+		if err != nil {
+			return err
+		}
+		return nil
 	},
 	Rollback: func(db *gorm.DB) error {
-		return db.Delete(&firstUser).Error
+		err := db.Delete(&firstUser).Error
+		if err != nil {
+			return err
+		}
+
+		err = db.Delete(&secondUser).Error
+		if err != nil {
+			return err
+		}
+		return nil
 	},
 }

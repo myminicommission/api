@@ -1,7 +1,6 @@
-all: bin/api
+all: lint test bin/api
 test: unit-test
-start:
-	go run .
+start: lint test bin/api start/bin
 
 PLATFORM=local
 

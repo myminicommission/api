@@ -56,10 +56,14 @@ type Game struct {
 	UpdatedAt time.Time   `json:"updatedAt"`
 }
 
+type GameInput struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 // Represents a miniature. This type represents all miniatures across the system.
 type GameMini struct {
 	ID        string    `json:"id"`
-	Game      *Game     `json:"game"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Name      string    `json:"name"`
@@ -67,6 +71,12 @@ type GameMini struct {
 }
 
 func (GameMini) IsMini() {}
+
+type GameMiniInput struct {
+	Game string   `json:"game"`
+	Name string   `json:"name"`
+	Size MiniSize `json:"size"`
+}
 
 // Saved mini configuration. This is used to override the default pricing for a specific mini.
 type MiniConfig struct {
@@ -221,7 +231,6 @@ func (e Role) MarshalGQL(w io.Writer) {
 type Status string
 
 const (
-	StatusEstimate   Status = "ESTIMATE"
 	StatusQuote      Status = "QUOTE"
 	StatusAccepted   Status = "ACCEPTED"
 	StatusWaiting    Status = "WAITING"
@@ -231,7 +240,6 @@ const (
 )
 
 var AllStatus = []Status{
-	StatusEstimate,
 	StatusQuote,
 	StatusAccepted,
 	StatusWaiting,
@@ -242,7 +250,7 @@ var AllStatus = []Status{
 
 func (e Status) IsValid() bool {
 	switch e {
-	case StatusEstimate, StatusQuote, StatusAccepted, StatusWaiting, StatusInProgress, StatusShipped, StatusComplete:
+	case StatusQuote, StatusAccepted, StatusWaiting, StatusInProgress, StatusShipped, StatusComplete:
 		return true
 	}
 	return false

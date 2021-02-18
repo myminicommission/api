@@ -13,6 +13,10 @@ import (
 func updateMigration(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.User{},
+		&models.Game{},
+		&models.GameMini{},
+		&models.Commission{},
+		&models.CommissionedMini{},
 	).Error
 }
 
@@ -45,6 +49,8 @@ func ServiceAutoMigration(db *gorm.DB) error {
 
 	m = gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
 		jobs.SeedUsers,
+		jobs.SeedGames,
+		jobs.SeedCommissions,
 	})
 
 	return m.Migrate()

@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1-experimental
 
-FROM --platform=${BUILDPLATFORM} golang:1.15-alpine AS base
+FROM --platform=${BUILDPLATFORM} golang:1.16-alpine AS base
 RUN apk add git
 ENV CGO_ENABLED=0
 WORKDIR /src
