@@ -26,4 +26,8 @@ start/bin:
 
 .PHONY: start/db
 start/db:
-	docker-compose up
+	docker-compose up pgadmin postgres
+
+.PHONY: stop/db
+stop/db:
+	docker-compose stop pgadmin postgres
