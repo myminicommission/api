@@ -87,6 +87,7 @@ type MiniConfig struct {
 	User      *User     `json:"user"`
 	Name      string    `json:"name"`
 	Size      MiniSize  `json:"size"`
+	Mini      *GameMini `json:"mini"`
 }
 
 func (MiniConfig) IsMini() {}

@@ -17,6 +17,7 @@ func updateMigration(db *gorm.DB) error {
 		&models.GameMini{},
 		&models.Commission{},
 		&models.CommissionedMini{},
+		&models.MiniConfig{},
 	).Error
 }
 
@@ -51,6 +52,7 @@ func ServiceAutoMigration(db *gorm.DB) error {
 		jobs.SeedUsers,
 		jobs.SeedGames,
 		jobs.SeedCommissions,
+		jobs.SeedMiniConfigs,
 	})
 
 	return m.Migrate()

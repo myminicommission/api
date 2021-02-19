@@ -88,6 +88,7 @@ type ComplexityRoot struct {
 	MiniConfig struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
+		Mini      func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Price     func(childComplexity int) int
 		Size      func(childComplexity int) int
@@ -122,7 +123,7 @@ type ComplexityRoot struct {
 		GameMini      func(childComplexity int, id string) int
 		GameMinis     func(childComplexity int, game string) int
 		Games         func(childComplexity int) int
-		MiniConfigs   func(childComplexity int, user string) int
+		MiniConfigs   func(childComplexity int) int
 		MyCommissions func(childComplexity int) int
 		User          func(childComplexity int, id string) int
 	}
@@ -150,7 +151,7 @@ type QueryResolver interface {
 	MyCommissions(ctx context.Context) ([]*model.Commission, error)
 	Commission(ctx context.Context, id string) (*model.Commission, error)
 	User(ctx context.Context, id string) (*model.User, error)
-	MiniConfigs(ctx context.Context, user string) ([]*model.MiniConfig, error)
+	MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error)
 	Games(ctx context.Context) ([]*model.Game, error)
 	Game(ctx context.Context, id string) (*model.Game, error)
 	GameMinis(ctx context.Context, game string) ([]*model.GameMini, error)
@@ -367,6 +368,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.MiniConfig.ID(childComplexity), true
+
+	case "MiniConfig.mini":
+		if e.complexity.MiniConfig.Mini == nil {
+			break
+		}
+
+		return e.complexity.MiniConfig.Mini(childComplexity), true
 
 	case "MiniConfig.name":
 		if e.complexity.MiniConfig.Name == nil {
@@ -598,17 +606,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Games(childComplexity), true
 
-	case "Query.MiniConfigs":
+	case "Query.miniConfigs":
 		if e.complexity.Query.MiniConfigs == nil {
 			break
 		}
 
-		args, err := ec.field_Query_MiniConfigs_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Query.MiniConfigs(childComplexity, args["user"].(string)), true
+		return e.complexity.Query.MiniConfigs(childComplexity), true
 
 	case "Query.myCommissions":
 		if e.complexity.Query.MyCommissions == nil {
@@ -878,6 +881,7 @@ type MiniConfig implements Mini {
   user: User!
   name: String!
   size: MiniSize!
+  mini: GameMini!
 }
 
 type Query {
@@ -895,7 +899,11 @@ type Query {
   Fetches a single user by their ID
   """
   user(id: ID!): User!
-  MiniConfigs(user: ID!): [MiniConfig]!
+
+  """
+  Fetches mini configs for the authenticated user
+  """
+  miniConfigs: [MiniConfig]!
 
   """
   Fetches list of games
@@ -1148,21 +1156,6 @@ func (ec *executionContext) field_Mutation_updateGame_args(ctx context.Context, 
 		}
 	}
 	args["input"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Query_MiniConfigs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 string
-	if tmp, ok := rawArgs["user"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("user"))
-		arg0, err = ec.unmarshalNID2string(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["user"] = arg0
 	return args, nil
 }
 
@@ -2446,6 +2439,41 @@ func (ec *executionContext) _MiniConfig_size(ctx context.Context, field graphql.
 	return ec.marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _MiniConfig_mini(ctx context.Context, field graphql.CollectedField, obj *model.MiniConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "MiniConfig",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Mini, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Mutation_newCommission(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -3163,7 +3191,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_miniConfigs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -3179,16 +3207,9 @@ func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphq
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_MiniConfigs_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().MiniConfigs(rctx, args["user"].(string))
+		return ec.resolvers.Query().MiniConfigs(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -5249,6 +5270,11 @@ func (ec *executionContext) _MiniConfig(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "mini":
+			out.Values[i] = ec._MiniConfig_mini(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5440,7 +5466,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "MiniConfigs":
+		case "miniConfigs":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -5448,7 +5474,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_MiniConfigs(ctx, field)
+				res = ec._Query_miniConfigs(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

@@ -43,7 +43,11 @@ func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input 
 
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
 	// TODO: determine current user or reject request
-	return helpers.MyCommissions(r.ORM, uuid.FromStringOrNil("af8f7135-07e5-47c8-bced-36b782b8ff64"))
+	user, err := r.GetUser("TestUser1")
+	if err != nil {
+		return nil, err
+	}
+	return helpers.MyCommissions(r.ORM, user.ID)
 }
 
 func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commission, error) {
@@ -54,8 +58,13 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 	return helpers.GetUser(r.ORM, uuid.FromStringOrNil(id))
 }
 
-func (r *queryResolver) MiniConfigs(ctx context.Context, user string) ([]*model.MiniConfig, error) {
-	panic(fmt.Errorf("not implemented"))
+func (r *queryResolver) MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error) {
+	// TODO: determine current user or reject request
+	user, err := r.GetUser("TestUser1")
+	if err != nil {
+		return []*model.MiniConfig{}, err
+	}
+	return helpers.GetMiniConfigs(r.ORM, user)
 }
 
 func (r *queryResolver) Games(ctx context.Context) ([]*model.Game, error) {
