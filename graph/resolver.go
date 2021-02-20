@@ -11,10 +11,12 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 
+// Resolver holds the commons items for resolvers (think DI)
 type Resolver struct {
 	ORM *orm.ORM
 }
 
+// GetUser returns the DB model for a User for the given nickname
 func (r *Resolver) GetUser(nickName string) (*models.User, error) {
 	var user models.User
 	db := r.ORM.DB.New()
