@@ -51,7 +51,7 @@ func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission,
 }
 
 func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commission, error) {
-	panic(fmt.Errorf("not implemented"))
+	return helpers.GetCommission(r.ORM, uuid.FromStringOrNil(id))
 }
 
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {

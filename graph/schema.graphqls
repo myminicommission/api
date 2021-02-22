@@ -37,16 +37,6 @@ enum Role {
 }
 
 """
-hasRole directive
-"""
-directive @hasRole(role: Role!) on FIELD_DEFINITION
-
-"""
-isOwner directive
-"""
-directive @isOwner(isOwner: Boolean!) on FIELD_DEFINITION
-
-"""
 Interface describing all minis
 """
 interface Mini {
@@ -240,7 +230,7 @@ type Mutation {
   """
   Updates a commission
   """
-  updateCommission(input: CommissionInput!): Commission! @isOwner(isOwner: True)
+  updateCommission(input: CommissionInput!): Commission!
 
   """
   Save a mini configuration

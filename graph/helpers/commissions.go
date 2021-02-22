@@ -31,3 +31,13 @@ func MyCommissions(orm *orm.ORM, id uuid.UUID) ([]*model.Commission, error) {
 
 	return commissions, nil
 }
+
+// GetCommission retrieves a commission from the DB by its ID
+func GetCommission(orm *orm.ORM, id uuid.UUID) (*model.Commission, error) {
+	dbCommission, err := queries.GetCommission(orm, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return transformations.DBCommissionToGQLCommission(dbCommission)
+}
