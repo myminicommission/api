@@ -20,3 +20,17 @@ func GetUser(orm *orm.ORM, id uuid.UUID) (*models.User, error) {
 
 	return &user, nil
 }
+
+// CreateUser creates a User record
+func CreateUser(orm *orm.ORM, nickname, name, email string) (*models.User, error) {
+	user := models.User{
+		NickName: &nickname,
+		Name:     &name,
+		Email:    email,
+	}
+
+	db := orm.DB.New()
+	db = db.Create(&user)
+
+	return &user, db.Error
+}

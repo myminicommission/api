@@ -78,6 +78,13 @@ type GameMiniInput struct {
 	Size MiniSize `json:"size"`
 }
 
+type LoginEvent struct {
+	Nickname      string  `json:"nickname"`
+	Name          *string `json:"name"`
+	Email         string  `json:"email"`
+	EmailVerified *bool   `json:"email_verified"`
+}
+
 // Saved mini configuration. This is used to override the default pricing for a specific mini.
 type MiniConfig struct {
 	ID        string    `json:"id"`

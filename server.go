@@ -7,6 +7,7 @@ import (
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
+	mlog "github.com/google/martian/v3/log"
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
 	"github.com/myminicommission/api/internal/orm"
@@ -17,6 +18,8 @@ import (
 const defaultPort = "8080"
 
 func main() {
+	mlog.SetLevel(mlog.Debug)
+
 	port := os.Getenv("PORT")
 	if port == "" {
 		port = defaultPort
