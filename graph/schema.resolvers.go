@@ -6,6 +6,7 @@ package graph
 import (
 	"context"
 	"fmt"
+	"github.com/myminicommission/api/graph/helpers/transformations"
 
 	"github.com/gofrs/uuid"
 	"github.com/myminicommission/api/graph/generated"
@@ -14,7 +15,13 @@ import (
 )
 
 func (r *mutationResolver) NewCommission(ctx context.Context, input model.NewCommission) (*model.Commission, error) {
-	panic(fmt.Errorf("not implemented"))
+	// TODO: determine current user or reject request
+	user, err := r.GetUser("TestUser2")
+	if err != nil {
+		return nil, err
+	}
+
+	return helpers.NewCommission(r.ORM, &input, user.ID)
 }
 
 func (r *mutationResolver) UpdateCommission(ctx context.Context, input model.CommissionInput) (*model.Commission, error) {
@@ -22,7 +29,13 @@ func (r *mutationResolver) UpdateCommission(ctx context.Context, input model.Com
 }
 
 func (r *mutationResolver) SaveMiniConfig(ctx context.Context, input model.MiniConfigInput) (*model.MiniConfig, error) {
-	panic(fmt.Errorf("not implemented"))
+	// TODO: determine current user or reject request
+	user, err := r.GetUser("TestUser1")
+	if err != nil {
+		return nil, err
+	}
+
+	return helpers.SaveMiniConfig(r.ORM, &input, user)
 }
 
 func (r *mutationResolver) CreateGame(ctx context.Context, name string) (*model.Game, error) {
@@ -56,6 +69,15 @@ func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commi
 
 func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error) {
 	return helpers.GetUser(r.ORM, uuid.FromStringOrNil(id))
+}
+
+func (r *queryResolver) UserWithNickname(ctx context.Context, nname string) (*model.User, error) {
+	user, err := r.GetUser(nname)
+	if err != nil {
+		return nil, err
+	}
+
+	return transformations.DBUserToGQLUser(user)
 }
 
 func (r *queryResolver) MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error) {

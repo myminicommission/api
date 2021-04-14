@@ -42,8 +42,6 @@ type ResolverRoot interface {
 }
 
 type DirectiveRoot struct {
-	HasRole func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error)
-	IsOwner func(ctx context.Context, obj interface{}, next graphql.Resolver, isOwner bool) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -107,25 +105,26 @@ type ComplexityRoot struct {
 	}
 
 	Prices struct {
-		EXtralarge func(childComplexity int) int
+		Extralarge func(childComplexity int) int
 		ID         func(childComplexity int) int
-		LArge      func(childComplexity int) int
-		MEdium     func(childComplexity int) int
-		SMall      func(childComplexity int) int
-		TIny       func(childComplexity int) int
-		TItanic    func(childComplexity int) int
+		Large      func(childComplexity int) int
+		Medium     func(childComplexity int) int
+		Small      func(childComplexity int) int
+		Tiny       func(childComplexity int) int
+		Titanic    func(childComplexity int) int
 		User       func(childComplexity int) int
 	}
 
 	Query struct {
-		Commission    func(childComplexity int, id string) int
-		Game          func(childComplexity int, id string) int
-		GameMini      func(childComplexity int, id string) int
-		GameMinis     func(childComplexity int, game string) int
-		Games         func(childComplexity int) int
-		MiniConfigs   func(childComplexity int) int
-		MyCommissions func(childComplexity int) int
-		User          func(childComplexity int, id string) int
+		Commission       func(childComplexity int, id string) int
+		Game             func(childComplexity int, id string) int
+		GameMini         func(childComplexity int, id string) int
+		GameMinis        func(childComplexity int, game string) int
+		Games            func(childComplexity int) int
+		MiniConfigs      func(childComplexity int) int
+		MyCommissions    func(childComplexity int) int
+		User             func(childComplexity int, id string) int
+		UserWithNickname func(childComplexity int, nname string) int
 	}
 
 	User struct {
@@ -151,6 +150,7 @@ type QueryResolver interface {
 	MyCommissions(ctx context.Context) ([]*model.Commission, error)
 	Commission(ctx context.Context, id string) (*model.Commission, error)
 	User(ctx context.Context, id string) (*model.User, error)
+	UserWithNickname(ctx context.Context, nname string) (*model.User, error)
 	MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error)
 	Games(ctx context.Context) ([]*model.Game, error)
 	Game(ctx context.Context, id string) (*model.Game, error)
@@ -495,12 +495,12 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateGameMini(childComplexity, args["id"].(string), args["input"].(model.GameMiniInput)), true
 
-	case "Prices.eXTRALARGE":
-		if e.complexity.Prices.EXtralarge == nil {
+	case "Prices.EXTRALARGE":
+		if e.complexity.Prices.Extralarge == nil {
 			break
 		}
 
-		return e.complexity.Prices.EXtralarge(childComplexity), true
+		return e.complexity.Prices.Extralarge(childComplexity), true
 
 	case "Prices.id":
 		if e.complexity.Prices.ID == nil {
@@ -509,40 +509,40 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Prices.ID(childComplexity), true
 
-	case "Prices.lARGE":
-		if e.complexity.Prices.LArge == nil {
+	case "Prices.LARGE":
+		if e.complexity.Prices.Large == nil {
 			break
 		}
 
-		return e.complexity.Prices.LArge(childComplexity), true
+		return e.complexity.Prices.Large(childComplexity), true
 
-	case "Prices.mEDIUM":
-		if e.complexity.Prices.MEdium == nil {
+	case "Prices.MEDIUM":
+		if e.complexity.Prices.Medium == nil {
 			break
 		}
 
-		return e.complexity.Prices.MEdium(childComplexity), true
+		return e.complexity.Prices.Medium(childComplexity), true
 
-	case "Prices.sMALL":
-		if e.complexity.Prices.SMall == nil {
+	case "Prices.SMALL":
+		if e.complexity.Prices.Small == nil {
 			break
 		}
 
-		return e.complexity.Prices.SMall(childComplexity), true
+		return e.complexity.Prices.Small(childComplexity), true
 
-	case "Prices.tINY":
-		if e.complexity.Prices.TIny == nil {
+	case "Prices.TINY":
+		if e.complexity.Prices.Tiny == nil {
 			break
 		}
 
-		return e.complexity.Prices.TIny(childComplexity), true
+		return e.complexity.Prices.Tiny(childComplexity), true
 
-	case "Prices.tITANIC":
-		if e.complexity.Prices.TItanic == nil {
+	case "Prices.TITANIC":
+		if e.complexity.Prices.Titanic == nil {
 			break
 		}
 
-		return e.complexity.Prices.TItanic(childComplexity), true
+		return e.complexity.Prices.Titanic(childComplexity), true
 
 	case "Prices.user":
 		if e.complexity.Prices.User == nil {
@@ -631,6 +631,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.User(childComplexity, args["id"].(string)), true
+
+	case "Query.userWithNickname":
+		if e.complexity.Query.UserWithNickname == nil {
+			break
+		}
+
+		args, err := ec.field_Query_userWithNickname_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.UserWithNickname(childComplexity, args["nname"].(string)), true
 
 	case "User.createdAt":
 		if e.complexity.User.CreatedAt == nil {
@@ -777,16 +789,6 @@ enum Role {
 }
 
 """
-hasRole directive
-"""
-directive @hasRole(role: Role!) on FIELD_DEFINITION
-
-"""
-isOwner directive
-"""
-directive @isOwner(isOwner: Boolean!) on FIELD_DEFINITION
-
-"""
 Interface describing all minis
 """
 interface Mini {
@@ -847,12 +849,12 @@ Default prices as configured by the user
 """
 type Prices {
   id: ID!
-  tINY: Float!
-  sMALL: Float!
-  mEDIUM: Float!
-  lARGE: Float!
-  eXTRALARGE: Float!
-  tITANIC: Float!
+  TINY: Float!
+  SMALL: Float!
+  MEDIUM: Float!
+  LARGE: Float!
+  EXTRALARGE: Float!
+  TITANIC: Float!
   user: User!
 }
 
@@ -899,6 +901,11 @@ type Query {
   Fetches a single user by their ID
   """
   user(id: ID!): User!
+
+  """
+  Fetches a single user by their nickname
+  """
+  userWithNickname(nname: String!): User!
 
   """
   Fetches mini configs for the authenticated user
@@ -949,6 +956,7 @@ input MiniInput {
   quantity: Int!
   name: String!
   size: MiniSize!
+  notes: String
 }
 
 input MiniConfigInput {
@@ -980,7 +988,7 @@ type Mutation {
   """
   Updates a commission
   """
-  updateCommission(input: CommissionInput!): Commission! @isOwner(isOwner: True)
+  updateCommission(input: CommissionInput!): Commission!
 
   """
   Save a mini configuration
@@ -1014,36 +1022,6 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 // endregion ************************** generated!.gotpl **************************
 
 // region    ***************************** args.gotpl *****************************
-
-func (ec *executionContext) dir_hasRole_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 model.Role
-	if tmp, ok := rawArgs["role"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-		arg0, err = ec.unmarshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["role"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) dir_isOwner_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 bool
-	if tmp, ok := rawArgs["isOwner"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isOwner"))
-		arg0, err = ec.unmarshalNBoolean2bool(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["isOwner"] = arg0
-	return args, nil
-}
 
 func (ec *executionContext) field_Mutation_createGameMini_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
@@ -1231,6 +1209,21 @@ func (ec *executionContext) field_Query_game_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_userWithNickname_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["nname"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nname"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["nname"] = arg0
 	return args, nil
 }
 
@@ -2540,32 +2533,8 @@ func (ec *executionContext) _Mutation_updateCommission(ctx context.Context, fiel
 	}
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateCommission(rctx, args["input"].(model.CommissionInput))
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			isOwner, err := ec.unmarshalNBoolean2bool(ctx, "True")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.IsOwner == nil {
-				return nil, errors.New("directive isOwner is not implemented")
-			}
-			return ec.directives.IsOwner(ctx, nil, directive0, isOwner)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(*model.Commission); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/myminicommission/api/graph/model.Commission`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCommission(rctx, args["input"].(model.CommissionInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2827,7 +2796,7 @@ func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.Collec
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_TINY(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2845,7 +2814,7 @@ func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.Coll
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TIny, nil
+		return obj.Tiny, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2862,7 +2831,7 @@ func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.Coll
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_SMALL(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2880,7 +2849,7 @@ func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.SMall, nil
+		return obj.Small, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2897,7 +2866,7 @@ func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.Col
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_MEDIUM(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2915,7 +2884,7 @@ func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.Co
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MEdium, nil
+		return obj.Medium, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2932,7 +2901,7 @@ func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.Co
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_LARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2950,7 +2919,7 @@ func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.LArge, nil
+		return obj.Large, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2967,7 +2936,7 @@ func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.Col
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_EXTRALARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2985,7 +2954,7 @@ func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphq
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.EXtralarge, nil
+		return obj.Extralarge, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3002,7 +2971,7 @@ func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphq
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_tITANIC(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_TITANIC(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -3020,7 +2989,7 @@ func (ec *executionContext) _Prices_tITANIC(ctx context.Context, field graphql.C
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TItanic, nil
+		return obj.Titanic, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -3175,6 +3144,48 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Query().User(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_userWithNickname(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_userWithNickname_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().UserWithNickname(rctx, args["nname"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4929,6 +4940,14 @@ func (ec *executionContext) unmarshalInputMiniInput(ctx context.Context, obj int
 			if err != nil {
 				return it, err
 			}
+		case "notes":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			it.Notes, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
 		}
 	}
 
@@ -5363,33 +5382,33 @@ func (ec *executionContext) _Prices(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "tINY":
-			out.Values[i] = ec._Prices_tINY(ctx, field, obj)
+		case "TINY":
+			out.Values[i] = ec._Prices_TINY(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "sMALL":
-			out.Values[i] = ec._Prices_sMALL(ctx, field, obj)
+		case "SMALL":
+			out.Values[i] = ec._Prices_SMALL(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "mEDIUM":
-			out.Values[i] = ec._Prices_mEDIUM(ctx, field, obj)
+		case "MEDIUM":
+			out.Values[i] = ec._Prices_MEDIUM(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "lARGE":
-			out.Values[i] = ec._Prices_lARGE(ctx, field, obj)
+		case "LARGE":
+			out.Values[i] = ec._Prices_LARGE(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "eXTRALARGE":
-			out.Values[i] = ec._Prices_eXTRALARGE(ctx, field, obj)
+		case "EXTRALARGE":
+			out.Values[i] = ec._Prices_EXTRALARGE(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "tITANIC":
-			out.Values[i] = ec._Prices_tITANIC(ctx, field, obj)
+		case "TITANIC":
+			out.Values[i] = ec._Prices_TITANIC(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -5461,6 +5480,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_user(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "userWithNickname":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_userWithNickname(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -6203,16 +6236,6 @@ func (ec *executionContext) marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋa
 func (ec *executionContext) unmarshalNNewCommission2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommission(ctx context.Context, v interface{}) (model.NewCommission, error) {
 	res, err := ec.unmarshalInputNewCommission(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) (model.Role, error) {
-	var res model.Role
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v model.Role) graphql.Marshaler {
-	return v
 }
 
 func (ec *executionContext) unmarshalNRole2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) ([]*model.Role, error) {

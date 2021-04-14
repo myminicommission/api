@@ -97,12 +97,12 @@ Default prices as configured by the user
 """
 type Prices {
   id: ID!
-  tINY: Float!
-  sMALL: Float!
-  mEDIUM: Float!
-  lARGE: Float!
-  eXTRALARGE: Float!
-  tITANIC: Float!
+  TINY: Float!
+  SMALL: Float!
+  MEDIUM: Float!
+  LARGE: Float!
+  EXTRALARGE: Float!
+  TITANIC: Float!
   user: User!
 }
 
@@ -149,6 +149,11 @@ type Query {
   Fetches a single user by their ID
   """
   user(id: ID!): User!
+
+  """
+  Fetches a single user by their nickname
+  """
+  userWithNickname(nname: String!): User!
 
   """
   Fetches mini configs for the authenticated user
@@ -199,6 +204,7 @@ input MiniInput {
   quantity: Int!
   name: String!
   size: MiniSize!
+  notes: String
 }
 
 input MiniConfigInput {

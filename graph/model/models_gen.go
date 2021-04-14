@@ -103,6 +103,7 @@ type MiniInput struct {
 	Quantity int      `json:"quantity"`
 	Name     string   `json:"name"`
 	Size     MiniSize `json:"size"`
+	Notes    *string  `json:"notes"`
 }
 
 // Input for creating a new commission (automatically sets the status to ESTIMATE)
@@ -115,12 +116,12 @@ type NewCommission struct {
 // Default prices as configured by the user
 type Prices struct {
 	ID         string  `json:"id"`
-	TIny       float64 `json:"tINY"`
-	SMall      float64 `json:"sMALL"`
-	MEdium     float64 `json:"mEDIUM"`
-	LArge      float64 `json:"lARGE"`
-	EXtralarge float64 `json:"eXTRALARGE"`
-	TItanic    float64 `json:"tITANIC"`
+	Tiny       float64 `json:"TINY"`
+	Small      float64 `json:"SMALL"`
+	Medium     float64 `json:"MEDIUM"`
+	Large      float64 `json:"LARGE"`
+	Extralarge float64 `json:"EXTRALARGE"`
+	Titanic    float64 `json:"TITANIC"`
 	User       *User   `json:"user"`
 }
 

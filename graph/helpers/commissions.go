@@ -5,6 +5,7 @@ import (
 	"github.com/myminicommission/api/graph/helpers/transformations"
 	"github.com/myminicommission/api/graph/model"
 	"github.com/myminicommission/api/internal/orm"
+	"github.com/myminicommission/api/internal/orm/mutations"
 	"github.com/myminicommission/api/internal/orm/queries"
 )
 
@@ -35,6 +36,16 @@ func MyCommissions(orm *orm.ORM, id uuid.UUID) ([]*model.Commission, error) {
 // GetCommission retrieves a commission from the DB by its ID
 func GetCommission(orm *orm.ORM, id uuid.UUID) (*model.Commission, error) {
 	dbCommission, err := queries.GetCommission(orm, id)
+	if err != nil {
+		return nil, err
+	}
+
+	return transformations.DBCommissionToGQLCommission(dbCommission)
+}
+
+// NewCommission creates a new commission from the input
+func NewCommission(orm *orm.ORM, input *model.NewCommission, patronID uuid.UUID) (*model.Commission, error) {
+	dbCommission, err := mutations.CreateCommission(orm, input, patronID)
 	if err != nil {
 		return nil, err
 	}
