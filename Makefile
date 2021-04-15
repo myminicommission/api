@@ -1,6 +1,6 @@
 all: lint test bin/api
 test: unit-test
-start: lint test bin/api start/bin
+start: lint test start/api start/bin
 
 PLATFORM=local
 
@@ -24,10 +24,14 @@ generate:
 start/bin:
 	bin/api
 
+.PHONY: start/api
+start/api:
+	docker-compose --compatibility up --build api
+
 .PHONY: start/db
 start/db:
-	docker-compose up pgadmin postgres
+	docker-compose up postgres
 
 .PHONY: stop/db
 stop/db:
-	docker-compose stop pgadmin postgres
+	docker-compose stop postgres

@@ -44,3 +44,10 @@ FROM scratch AS bin-windows
 COPY --from=build /out/api /api.exe
 
 FROM bin-${TARGETOS} AS bin
+
+FROM scratch
+COPY --from=build /out/api /
+
+EXPOSE 8080
+
+CMD [ "/api" ]

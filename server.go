@@ -1,24 +1,24 @@
 package main
 
 import (
-	"log"
 	"net/http"
 	"os"
 
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
-	mlog "github.com/google/martian/v3/log"
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
+	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
+	"github.com/sirupsen/logrus"
 
 	_ "github.com/joho/godotenv/autoload"
 )
 
-const defaultPort = "8080"
+const defaultPort = "3001"
 
 func main() {
-	mlog.SetLevel(mlog.Debug)
+	logrus.SetLevel(logrus.DebugLevel)
 
 	port := os.Getenv("PORT")
 	if port == "" {
@@ -40,6 +40,6 @@ func main() {
 	http.Handle("/", playground.Handler("GraphQL playground", "/query"))
 	http.Handle("/query", srv)
 
-	log.Printf("connect to http://localhost:%s/ for GraphQL playground", port)
+	log.Infof("connect to http://localhost:%s/ for GraphQL playground", port)
 	log.Fatal(http.ListenAndServe(":"+port, nil))
 }

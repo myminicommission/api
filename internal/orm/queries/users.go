@@ -2,7 +2,7 @@ package queries
 
 import (
 	"github.com/gofrs/uuid"
-	"github.com/google/martian/v3/log"
+	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/orm/models"
 )
@@ -22,11 +22,10 @@ func GetUser(orm *orm.ORM, id uuid.UUID) (*models.User, error) {
 }
 
 // CreateUser creates a User record
-func CreateUser(orm *orm.ORM, nickname, name, email string) (*models.User, error) {
+func CreateUser(orm *orm.ORM, nickname, name string) (*models.User, error) {
 	user := models.User{
 		NickName: &nickname,
 		Name:     &name,
-		Email:    email,
 	}
 
 	db := orm.DB.New()

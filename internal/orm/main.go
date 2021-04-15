@@ -1,9 +1,8 @@
 package orm
 
 import (
-	"log"
-
 	"github.com/jinzhu/gorm"
+	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm/migrations"
 	"github.com/myminicommission/api/internal/utils"
 
@@ -45,6 +44,6 @@ func Factory() (*ORM, error) {
 		err = migrations.ServiceAutoMigration(orm.DB)
 	}
 
-	log.Println("[ORM] Database connection initialized")
+	log.Info("[ORM] Database connection initialized")
 	return orm, err
 }

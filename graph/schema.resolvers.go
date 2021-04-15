@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/gofrs/uuid"
-	"github.com/google/martian/v3/log"
 	"github.com/myminicommission/api/graph/generated"
 	"github.com/myminicommission/api/graph/helpers"
 	"github.com/myminicommission/api/graph/helpers/transformations"
@@ -53,30 +52,6 @@ func (r *mutationResolver) CreateGameMini(ctx context.Context, input *model.Game
 
 func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error) {
 	panic(fmt.Errorf("not implemented"))
-}
-
-func (r *mutationResolver) HandleLogin(ctx context.Context, event model.LoginEvent) (*model.User, error) {
-	log.Debugf("HandleLogin: { nickname: %s, email: %s, name: %v }", event.Nickname, event.Email, event.Name)
-
-	existingUser, err := r.GetUserWithEmail(event.Email)
-
-	if err != nil {
-		if err.Error() == "record not found" {
-			log.Debugf("[GraphQL][HandleLogin] user did not exist, creating a new user: %s", event.Nickname)
-			// create the user record
-			newUser, err := helpers.CreateUser(r.ORM, &event)
-			if err != nil {
-				log.Errorf("[GraphQL][HandleLogin] there was an error creating the user: %s - %v", event.Email, err)
-				return nil, err
-			}
-
-			return newUser, nil
-		}
-		log.Errorf("[GraphQL][HandleLogin] there was an error looking up the user: %s - %v", event.Email, err)
-		return nil, err
-	}
-
-	return transformations.DBUserToGQLUser(existingUser)
 }
 
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {

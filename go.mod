@@ -8,6 +8,7 @@ require (
 	github.com/google/martian/v3 v3.1.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.3.0
+	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/vektah/gqlparser/v2 v2.1.0
 	gopkg.in/gormigrate.v1 v1.6.0

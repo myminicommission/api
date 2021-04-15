@@ -2,7 +2,8 @@ package migrations
 
 import (
 	"fmt"
-	"log"
+
+	log "github.com/myminicommission/api/internal/logger"
 
 	"github.com/jinzhu/gorm"
 	"github.com/myminicommission/api/internal/orm/migrations/jobs"
@@ -26,7 +27,7 @@ func ServiceAutoMigration(db *gorm.DB) error {
 	// keep a lit of migrations
 	m := gormigrate.New(db, gormigrate.DefaultOptions, nil)
 	m.InitSchema(func(db *gorm.DB) error {
-		log.Println("[Migration.InitSchema] Initializing database scheme")
+		log.Info("[Migration.InitSchema] Initializing database scheme")
 		switch db.Dialect().GetName() {
 		case "postgres":
 			// lets create the UUID extension, the user has to have superuser permission

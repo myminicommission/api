@@ -224,13 +224,6 @@ input GameMiniInput {
   size: MiniSize!
 }
 
-input LoginEvent {
-  nickname: String!
-  name: String
-  email: String!
-  email_verified: Boolean
-}
-
 """
 All the mutations.  Authentication required.
 """
@@ -269,9 +262,4 @@ type Mutation {
   Update a mini for a game
   """
   updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
-
-  """
-  Handle login event
-  """
-  handleLogin(event: LoginEvent!): User!
 }

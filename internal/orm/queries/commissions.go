@@ -2,7 +2,7 @@ package queries
 
 import (
 	"github.com/gofrs/uuid"
-	"github.com/google/martian/v3/log"
+	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/orm/models"
 )

@@ -1,9 +1,10 @@
 package utils
 
 import (
-	"log"
 	"os"
 	"strconv"
+
+	log "github.com/myminicommission/api/internal/logger"
 
 	_ "github.com/joho/godotenv/autoload"
 )

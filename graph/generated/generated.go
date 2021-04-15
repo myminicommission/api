@@ -97,7 +97,6 @@ type ComplexityRoot struct {
 	Mutation struct {
 		CreateGame       func(childComplexity int, name string) int
 		CreateGameMini   func(childComplexity int, input *model.GameMiniInput) int
-		HandleLogin      func(childComplexity int, event model.LoginEvent) int
 		NewCommission    func(childComplexity int, input model.NewCommission) int
 		SaveMiniConfig   func(childComplexity int, input model.MiniConfigInput) int
 		UpdateCommission func(childComplexity int, input model.CommissionInput) int
@@ -146,7 +145,6 @@ type MutationResolver interface {
 	UpdateGame(ctx context.Context, input model.GameInput) (*model.Game, error)
 	CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error)
 	UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error)
-	HandleLogin(ctx context.Context, event model.LoginEvent) (*model.User, error)
 }
 type QueryResolver interface {
 	MyCommissions(ctx context.Context) ([]*model.Commission, error)
@@ -436,18 +434,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.CreateGameMini(childComplexity, args["input"].(*model.GameMiniInput)), true
-
-	case "Mutation.handleLogin":
-		if e.complexity.Mutation.HandleLogin == nil {
-			break
-		}
-
-		args, err := ec.field_Mutation_handleLogin_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
-		}
-
-		return e.complexity.Mutation.HandleLogin(childComplexity, args["event"].(model.LoginEvent)), true
 
 	case "Mutation.newCommission":
 		if e.complexity.Mutation.NewCommission == nil {
@@ -990,13 +976,6 @@ input GameMiniInput {
   size: MiniSize!
 }
 
-input LoginEvent {
-  nickname: String!
-  name: String
-  email: String!
-  email_verified: Boolean
-}
-
 """
 All the mutations.  Authentication required.
 """
@@ -1035,11 +1014,6 @@ type Mutation {
   Update a mini for a game
   """
   updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
-
-  """
-  Handle login event
-  """
-  handleLogin(event: LoginEvent!): User!
 }
 `, BuiltIn: false},
 }
@@ -1076,21 +1050,6 @@ func (ec *executionContext) field_Mutation_createGame_args(ctx context.Context, 
 		}
 	}
 	args["name"] = arg0
-	return args, nil
-}
-
-func (ec *executionContext) field_Mutation_handleLogin_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
-	var err error
-	args := map[string]interface{}{}
-	var arg0 model.LoginEvent
-	if tmp, ok := rawArgs["event"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("event"))
-		arg0, err = ec.unmarshalNLoginEvent2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐLoginEvent(ctx, tmp)
-		if err != nil {
-			return nil, err
-		}
-	}
-	args["event"] = arg0
 	return args, nil
 }
 
@@ -2800,48 +2759,6 @@ func (ec *executionContext) _Mutation_updateGameMini(ctx context.Context, field 
 	res := resTmp.(*model.GameMini)
 	fc.Result = res
 	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
-}
-
-func (ec *executionContext) _Mutation_handleLogin(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "Mutation",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   true,
-		IsResolver: true,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Mutation_handleLogin_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Mutation().HandleLogin(rctx, args["event"].(model.LoginEvent))
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.User)
-	fc.Result = res
-	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
@@ -4949,50 +4866,6 @@ func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj
 	return it, nil
 }
 
-func (ec *executionContext) unmarshalInputLoginEvent(ctx context.Context, obj interface{}) (model.LoginEvent, error) {
-	var it model.LoginEvent
-	var asMap = obj.(map[string]interface{})
-
-	for k, v := range asMap {
-		switch k {
-		case "nickname":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nickname"))
-			it.Nickname, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "name":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
-			it.Name, err = ec.unmarshalOString2ᚖstring(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "email":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email"))
-			it.Email, err = ec.unmarshalNString2string(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		case "email_verified":
-			var err error
-
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("email_verified"))
-			it.EmailVerified, err = ec.unmarshalOBoolean2ᚖbool(ctx, v)
-			if err != nil {
-				return it, err
-			}
-		}
-	}
-
-	return it, nil
-}
-
 func (ec *executionContext) unmarshalInputMiniConfigInput(ctx context.Context, obj interface{}) (model.MiniConfigInput, error) {
 	var it model.MiniConfigInput
 	var asMap = obj.(map[string]interface{})
@@ -5479,11 +5352,6 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "updateGameMini":
 			out.Values[i] = ec._Mutation_updateGameMini(ctx, field)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
-		case "handleLogin":
-			out.Values[i] = ec._Mutation_handleLogin(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -6276,11 +6144,6 @@ func (ec *executionContext) marshalNInt2int(ctx context.Context, sel ast.Selecti
 		}
 	}
 	return res
-}
-
-func (ec *executionContext) unmarshalNLoginEvent2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐLoginEvent(ctx context.Context, v interface{}) (model.LoginEvent, error) {
-	res, err := ec.unmarshalInputLoginEvent(ctx, v)
-	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) marshalNMiniConfig2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniConfig(ctx context.Context, sel ast.SelectionSet, v model.MiniConfig) graphql.Marshaler {
