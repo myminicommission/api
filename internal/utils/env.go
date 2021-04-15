@@ -35,3 +35,19 @@ func MustGetBool(k string) bool {
 
 	return b
 }
+
+// MustGetUint32 will return the env varaible as a uint32 of panic if not present
+func MustGetUint32(k string) uint32 {
+	v := os.Getenv(k)
+
+	if v == "" {
+		log.Panicf("ENV is missing key [%s]", k)
+	}
+
+	i, err := strconv.Atoi(v)
+	if err != nil {
+		log.Panicf("ENV err: [%s] %s", k, err.Error())
+	}
+
+	return uint32(i)
+}

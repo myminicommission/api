@@ -10,24 +10,14 @@ import (
 	_ "github.com/jinzhu/gorm/dialects/postgres"
 )
 
-var autoMigrate, logMode bool
-var dsn, dialect string
-
 // ORM struct to hold the GORM pointer to the DB
 type ORM struct {
 	DB *gorm.DB
 }
 
-func init() {
-	dialect = utils.MustGet("GORM_DIALECT")
-	dsn = utils.MustGet("GORM_CONNECTION_DSN")
-	logMode = utils.MustGetBool("GORM_LOGMODE")
-	autoMigrate = utils.MustGetBool("GORM_AUTOMIGRATE")
-}
-
 // Factory creates a db connection with the selected dialect and DSN
-func Factory() (*ORM, error) {
-	db, err := gorm.Open(dialect, dsn)
+func Factory(config *utils.ServerConfig) (*ORM, error) {
+	db, err := gorm.Open(config.Database.Dialect, config.Database.DSN)
 	if err != nil {
 		log.Panicf("[ORM] err: %s", err.Error())
 	}
@@ -36,11 +26,11 @@ func Factory() (*ORM, error) {
 		DB: db,
 	}
 
-	// log every sql command
-	db.LogMode(logMode)
+	// log every sql command if configured
+	db.LogMode(config.Database.LogMode)
 
 	// automigrate
-	if autoMigrate {
+	if config.Database.AutoMigrate {
 		err = migrations.ServiceAutoMigration(orm.DB)
 	}
 
