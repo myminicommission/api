@@ -1,6 +1,8 @@
 all: lint test bin/api
 test: unit-test
-start: lint test start/api start/bin
+start: lint test start/api
+down:
+	docker-compose down
 
 PLATFORM=local
 

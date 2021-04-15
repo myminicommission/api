@@ -16,8 +16,6 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
-const defaultPort = "3001"
-
 func main() {
 	levelStr := utils.MustGet("LOG_LEVEL")
 	level, err := logrus.ParseLevel(levelStr)
