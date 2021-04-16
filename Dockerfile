@@ -49,5 +49,6 @@ FROM scratch
 COPY --from=build /out/api /
 
 EXPOSE 8080
+STOPSIGNAL SIGINT
 
-CMD [ "/api" ]
+ENTRYPOINT [ "/api" ]
