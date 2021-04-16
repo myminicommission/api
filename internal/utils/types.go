@@ -1,7 +1,5 @@
 package utils
 
-import "github.com/sirupsen/logrus"
-
 // ContextKey defines a type for context keys shared in the app
 type ContextKey string
 
@@ -9,16 +7,10 @@ type ContextKey string
 type ServerConfig struct {
 	Port          string
 	SessionSecret string
-	Log           LogConfig
 	JWT           JWTConfig
 	GraphQL       GQLConfig
 	Database      DBConfig
 	AuthProviders []AuthProvider
-}
-
-// LogConfig defines the options for logrus logger
-type LogConfig struct {
-	Level logrus.Level
 }
 
 //JWTConfig defines the options for JWT tokens

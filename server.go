@@ -17,18 +17,7 @@ import (
 )
 
 func main() {
-	levelStr := utils.MustGet("LOG_LEVEL")
-	level, err := logrus.ParseLevel(levelStr)
-	// if there was an error parsing the level the default to Info
-	if err != nil {
-		log.Warnf("Could not parse [%s]. Defaulting to Info log level.", levelStr)
-		level = logrus.InfoLevel
-	}
-
 	var serverconf = &utils.ServerConfig{
-		Log: utils.LogConfig{
-			Level: level,
-		},
 		Port:          utils.MustGet("SERVER_PORT"),
 		SessionSecret: utils.MustGet("SESSION_SECRET"),
 		JWT: utils.JWTConfig{
@@ -43,7 +32,7 @@ func main() {
 		Database: utils.DBConfig{
 			Dialect:     utils.MustGet("GORM_DIALECT"),
 			DSN:         utils.MustGet("GORM_CONNECTION_DSN"),
-			LogMode:     utils.MustGetBool("GORM_LOGMODE"),
+			LogMode:     log.IsLevelEnabled(logrus.DebugLevel),
 			AutoMigrate: utils.MustGetBool("GORM_AUTOMIGRATE"),
 		},
 		AuthProviders: []utils.AuthProvider{
@@ -56,8 +45,6 @@ func main() {
 			},
 		},
 	}
-
-	logrus.SetLevel(serverconf.Log.Level)
 
 	// ORM stuff
 	orm, err := orm.Factory(serverconf)
@@ -73,9 +60,10 @@ func main() {
 
 	if serverconf.GraphQL.IsPlaygroundEnabled {
 		http.Handle(serverconf.GraphQL.PlaygroundPath, playground.Handler("GraphQL playground", serverconf.GraphQL.Path))
+		log.Infof("GraphQL playground enabled on http://localhost:%s%s", serverconf.Port, serverconf.GraphQL.PlaygroundPath)
 	}
 	http.Handle(serverconf.GraphQL.Path, srv)
 
-	log.Infof("connect to http://localhost:%s/ for GraphQL playground", serverconf.Port)
+	log.Infof("connect to http://localhost:%s%s for queries", serverconf.Port, serverconf.GraphQL.Path)
 	log.Fatal(http.ListenAndServe(":"+serverconf.Port, nil))
 }

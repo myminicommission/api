@@ -1,6 +1,8 @@
 package logger
 
 import (
+	"os"
+
 	"github.com/sirupsen/logrus"
 )
 
@@ -27,13 +29,22 @@ func NewLogger() *StandardLogger {
 
 	var standardLogger = &StandardLogger{baseLogger}
 
-	standardLogger.Formatter = &logrus.TextFormatter{
-		FullTimestamp: true,
+	// get the log level from the environment
+	levelStr := os.Getenv("LOG_LEVEL")
+	// if nothing was set then leave the defaults alone
+	if levelStr != "" {
+		level, err := logrus.ParseLevel(levelStr)
+		// if there was an error parsing the level the default to Info
+		if err != nil {
+			baseLogger.Warnf("Could not parse [%s]. Defaulting to Info log level.", levelStr)
+			level = logrus.InfoLevel
+		}
+		standardLogger.SetLevel(level)
 	}
-	// We could transform the errors into a JSON format, for external log SaaS tools such as splunk or logstash
-	// standardLogger.Formatter = &logrus.JSONFormatter{
-	//   PrettyPrint: true,
-	// }
+
+	standardLogger.Formatter = &logrus.JSONFormatter{
+		PrettyPrint: standardLogger.Level > logrus.InfoLevel,
+	}
 
 	return standardLogger
 }
@@ -44,6 +55,11 @@ var (
 	invalidArgValueMessage = Event{2, "Invalid value for argument: %s: %v"}
 	missingArgMessage      = Event{3, "Missing arg: %s"}
 )
+
+// IsLevelEnabled is a proxy to logger.IsLevelEnabled
+func IsLevelEnabled(level logrus.Level) bool {
+	return logger.IsLevelEnabled(level)
+}
 
 // Errorfn Log errors with format
 func Errorfn(fn string, err error) {
