@@ -22,6 +22,26 @@ import (
 	_ "github.com/joho/godotenv/autoload"
 )
 
+// CORS Middleware
+func CORS(next http.Handler) http.Handler {
+	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+
+		// Set headers
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "*")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusOK)
+			return
+		}
+
+		// Next
+		next.ServeHTTP(w, r)
+	})
+}
+
 func main() {
 	var serverconf = &utils.ServerConfig{
 		Port:          utils.MustGet("SERVER_PORT"),
@@ -63,6 +83,9 @@ func main() {
 
 	// mux
 	r := mux.NewRouter()
+
+	// use some middlewares
+	r.Use(CORS)
 
 	config := generated.Config{Resolvers: &graph.Resolver{
 		ORM: orm,
