@@ -16,5 +16,9 @@ func DBUserToGQLUser(i *models.User) (o *model.User, err error) {
 		Roles:     []*model.Role{},
 	}
 
+	if i.Picture != nil {
+		o.Picture = *i.Picture
+	}
+
 	return
 }

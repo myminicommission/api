@@ -1,6 +1,6 @@
 # syntax = docker/dockerfile:1-experimental
 
-FROM --platform=${BUILDPLATFORM} golang:1.15-alpine AS base
+FROM --platform=${BUILDPLATFORM} golang:1.16-alpine AS base
 RUN apk add git
 ENV CGO_ENABLED=0
 WORKDIR /src
@@ -8,6 +8,7 @@ COPY go.* .
 RUN go mod download
 
 FROM base AS build
+RUN apk --no-cache add ca-certificates
 ARG TARGETOS
 ARG TARGETARCH
 RUN --mount=target=. \
@@ -44,3 +45,13 @@ FROM scratch AS bin-windows
 COPY --from=build /out/api /api.exe
 
 FROM bin-${TARGETOS} AS bin
+
+FROM scratch
+# copy the ca-certificate.crt from the build stage
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
+COPY --from=build /out/api /
+
+EXPOSE 8080
+STOPSIGNAL SIGINT
+
+ENTRYPOINT [ "/api" ]

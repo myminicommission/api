@@ -56,10 +56,14 @@ type Game struct {
 	UpdatedAt time.Time   `json:"updatedAt"`
 }
 
+type GameInput struct {
+	ID   string `json:"id"`
+	Name string `json:"name"`
+}
+
 // Represents a miniature. This type represents all miniatures across the system.
 type GameMini struct {
 	ID        string    `json:"id"`
-	Game      *Game     `json:"game"`
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Name      string    `json:"name"`
@@ -67,6 +71,12 @@ type GameMini struct {
 }
 
 func (GameMini) IsMini() {}
+
+type GameMiniInput struct {
+	Game string   `json:"game"`
+	Name string   `json:"name"`
+	Size MiniSize `json:"size"`
+}
 
 // Saved mini configuration. This is used to override the default pricing for a specific mini.
 type MiniConfig struct {
@@ -77,6 +87,7 @@ type MiniConfig struct {
 	User      *User     `json:"user"`
 	Name      string    `json:"name"`
 	Size      MiniSize  `json:"size"`
+	Mini      *GameMini `json:"mini"`
 }
 
 func (MiniConfig) IsMini() {}
@@ -92,6 +103,7 @@ type MiniInput struct {
 	Quantity int      `json:"quantity"`
 	Name     string   `json:"name"`
 	Size     MiniSize `json:"size"`
+	Notes    *string  `json:"notes"`
 }
 
 // Input for creating a new commission (automatically sets the status to ESTIMATE)
@@ -104,12 +116,12 @@ type NewCommission struct {
 // Default prices as configured by the user
 type Prices struct {
 	ID         string  `json:"id"`
-	TIny       float64 `json:"tINY"`
-	SMall      float64 `json:"sMALL"`
-	MEdium     float64 `json:"mEDIUM"`
-	LArge      float64 `json:"lARGE"`
-	EXtralarge float64 `json:"eXTRALARGE"`
-	TItanic    float64 `json:"tITANIC"`
+	Tiny       float64 `json:"TINY"`
+	Small      float64 `json:"SMALL"`
+	Medium     float64 `json:"MEDIUM"`
+	Large      float64 `json:"LARGE"`
+	Extralarge float64 `json:"EXTRALARGE"`
+	Titanic    float64 `json:"TITANIC"`
 	User       *User   `json:"user"`
 }
 
@@ -121,6 +133,7 @@ type User struct {
 	CreatedAt time.Time `json:"createdAt"`
 	UpdatedAt time.Time `json:"updatedAt"`
 	Nickname  string    `json:"nickname"`
+	Picture   string    `json:"picture"`
 }
 
 // Enum MiniSize
@@ -221,7 +234,6 @@ func (e Role) MarshalGQL(w io.Writer) {
 type Status string
 
 const (
-	StatusEstimate   Status = "ESTIMATE"
 	StatusQuote      Status = "QUOTE"
 	StatusAccepted   Status = "ACCEPTED"
 	StatusWaiting    Status = "WAITING"
@@ -231,7 +243,6 @@ const (
 )
 
 var AllStatus = []Status{
-	StatusEstimate,
 	StatusQuote,
 	StatusAccepted,
 	StatusWaiting,
@@ -242,7 +253,7 @@ var AllStatus = []Status{
 
 func (e Status) IsValid() bool {
 	switch e {
-	case StatusEstimate, StatusQuote, StatusAccepted, StatusWaiting, StatusInProgress, StatusShipped, StatusComplete:
+	case StatusQuote, StatusAccepted, StatusWaiting, StatusInProgress, StatusShipped, StatusComplete:
 		return true
 	}
 	return false

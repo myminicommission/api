@@ -2,7 +2,8 @@ package migrations
 
 import (
 	"fmt"
-	"log"
+
+	log "github.com/myminicommission/api/internal/logger"
 
 	"github.com/jinzhu/gorm"
 	"github.com/myminicommission/api/internal/orm/migrations/jobs"
@@ -13,6 +14,11 @@ import (
 func updateMigration(db *gorm.DB) error {
 	return db.AutoMigrate(
 		&models.User{},
+		&models.Game{},
+		&models.GameMini{},
+		&models.Commission{},
+		&models.CommissionedMini{},
+		&models.MiniConfig{},
 	).Error
 }
 
@@ -21,7 +27,7 @@ func ServiceAutoMigration(db *gorm.DB) error {
 	// keep a lit of migrations
 	m := gormigrate.New(db, gormigrate.DefaultOptions, nil)
 	m.InitSchema(func(db *gorm.DB) error {
-		log.Println("[Migration.InitSchema] Initializing database scheme")
+		log.Info("[Migration.InitSchema] Initializing database scheme")
 		switch db.Dialect().GetName() {
 		case "postgres":
 			// lets create the UUID extension, the user has to have superuser permission
@@ -35,7 +41,9 @@ func ServiceAutoMigration(db *gorm.DB) error {
 		return nil
 	})
 
-	m.Migrate()
+	if err := m.Migrate(); err != nil {
+		return err
+	}
 
 	if err := updateMigration(db); err != nil {
 		return err
@@ -43,6 +51,9 @@ func ServiceAutoMigration(db *gorm.DB) error {
 
 	m = gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
 		jobs.SeedUsers,
+		jobs.SeedGames,
+		jobs.SeedCommissions,
+		jobs.SeedMiniConfigs,
 	})
 
 	return m.Migrate()

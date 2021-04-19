@@ -39,11 +39,10 @@ type Config struct {
 type ResolverRoot interface {
 	Mutation() MutationResolver
 	Query() QueryResolver
+	Directive() DirectiveResolver
 }
 
 type DirectiveRoot struct {
-	HasRole func(ctx context.Context, obj interface{}, next graphql.Resolver, role model.Role) (res interface{}, err error)
-	IsOwner func(ctx context.Context, obj interface{}, next graphql.Resolver, isOwner bool) (res interface{}, err error)
 }
 
 type ComplexityRoot struct {
@@ -79,7 +78,6 @@ type ComplexityRoot struct {
 
 	GameMini struct {
 		CreatedAt func(childComplexity int) int
-		Game      func(childComplexity int) int
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Size      func(childComplexity int) int
@@ -89,6 +87,7 @@ type ComplexityRoot struct {
 	MiniConfig struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
+		Mini      func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Price     func(childComplexity int) int
 		Size      func(childComplexity int) int
@@ -97,27 +96,36 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
+		CreateGame       func(childComplexity int, name string) int
+		CreateGameMini   func(childComplexity int, input *model.GameMiniInput) int
 		NewCommission    func(childComplexity int, input model.NewCommission) int
 		SaveMiniConfig   func(childComplexity int, input model.MiniConfigInput) int
 		UpdateCommission func(childComplexity int, input model.CommissionInput) int
+		UpdateGame       func(childComplexity int, input model.GameInput) int
+		UpdateGameMini   func(childComplexity int, id string, input model.GameMiniInput) int
 	}
 
 	Prices struct {
-		EXtralarge func(childComplexity int) int
+		Extralarge func(childComplexity int) int
 		ID         func(childComplexity int) int
-		LArge      func(childComplexity int) int
-		MEdium     func(childComplexity int) int
-		SMall      func(childComplexity int) int
-		TIny       func(childComplexity int) int
-		TItanic    func(childComplexity int) int
+		Large      func(childComplexity int) int
+		Medium     func(childComplexity int) int
+		Small      func(childComplexity int) int
+		Tiny       func(childComplexity int) int
+		Titanic    func(childComplexity int) int
 		User       func(childComplexity int) int
 	}
 
 	Query struct {
-		Commission  func(childComplexity int, id string) int
-		Commissions func(childComplexity int, status *model.Status, artist *string, patron *string) int
-		MiniConfigs func(childComplexity int, user string) int
-		User        func(childComplexity int, id string) int
+		Commission       func(childComplexity int, id string) int
+		Game             func(childComplexity int, id string) int
+		GameMini         func(childComplexity int, id string) int
+		GameMinis        func(childComplexity int, game string) int
+		Games            func(childComplexity int) int
+		MiniConfigs      func(childComplexity int) int
+		MyCommissions    func(childComplexity int) int
+		User             func(childComplexity int, id string) int
+		UserWithNickname func(childComplexity int, nname string) int
 	}
 
 	User struct {
@@ -125,6 +133,7 @@ type ComplexityRoot struct {
 		ID        func(childComplexity int) int
 		Name      func(childComplexity int) int
 		Nickname  func(childComplexity int) int
+		Picture   func(childComplexity int) int
 		Roles     func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 	}
@@ -134,12 +143,24 @@ type MutationResolver interface {
 	NewCommission(ctx context.Context, input model.NewCommission) (*model.Commission, error)
 	UpdateCommission(ctx context.Context, input model.CommissionInput) (*model.Commission, error)
 	SaveMiniConfig(ctx context.Context, input model.MiniConfigInput) (*model.MiniConfig, error)
+	CreateGame(ctx context.Context, name string) (*model.Game, error)
+	UpdateGame(ctx context.Context, input model.GameInput) (*model.Game, error)
+	CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error)
+	UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error)
 }
 type QueryResolver interface {
-	Commissions(ctx context.Context, status *model.Status, artist *string, patron *string) ([]*model.Commission, error)
+	MyCommissions(ctx context.Context) ([]*model.Commission, error)
 	Commission(ctx context.Context, id string) (*model.Commission, error)
 	User(ctx context.Context, id string) (*model.User, error)
-	MiniConfigs(ctx context.Context, user string) ([]*model.MiniConfig, error)
+	UserWithNickname(ctx context.Context, nname string) (*model.User, error)
+	MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error)
+	Games(ctx context.Context) ([]*model.Game, error)
+	Game(ctx context.Context, id string) (*model.Game, error)
+	GameMinis(ctx context.Context, game string) ([]*model.GameMini, error)
+	GameMini(ctx context.Context, id string) (*model.GameMini, error)
+}
+type DirectiveResolver interface {
+	IsRepeatable(ctx context.Context, obj *introspection.Directive) (bool, error)
 }
 
 type executableSchema struct {
@@ -311,13 +332,6 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GameMini.CreatedAt(childComplexity), true
 
-	case "GameMini.game":
-		if e.complexity.GameMini.Game == nil {
-			break
-		}
-
-		return e.complexity.GameMini.Game(childComplexity), true
-
 	case "GameMini.id":
 		if e.complexity.GameMini.ID == nil {
 			break
@@ -360,6 +374,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.MiniConfig.ID(childComplexity), true
 
+	case "MiniConfig.mini":
+		if e.complexity.MiniConfig.Mini == nil {
+			break
+		}
+
+		return e.complexity.MiniConfig.Mini(childComplexity), true
+
 	case "MiniConfig.name":
 		if e.complexity.MiniConfig.Name == nil {
 			break
@@ -394,6 +415,30 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.MiniConfig.User(childComplexity), true
+
+	case "Mutation.createGame":
+		if e.complexity.Mutation.CreateGame == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createGame_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateGame(childComplexity, args["name"].(string)), true
+
+	case "Mutation.createGameMini":
+		if e.complexity.Mutation.CreateGameMini == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_createGameMini_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.CreateGameMini(childComplexity, args["input"].(*model.GameMiniInput)), true
 
 	case "Mutation.newCommission":
 		if e.complexity.Mutation.NewCommission == nil {
@@ -431,12 +476,36 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Mutation.UpdateCommission(childComplexity, args["input"].(model.CommissionInput)), true
 
-	case "Prices.eXTRALARGE":
-		if e.complexity.Prices.EXtralarge == nil {
+	case "Mutation.updateGame":
+		if e.complexity.Mutation.UpdateGame == nil {
 			break
 		}
 
-		return e.complexity.Prices.EXtralarge(childComplexity), true
+		args, err := ec.field_Mutation_updateGame_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateGame(childComplexity, args["input"].(model.GameInput)), true
+
+	case "Mutation.updateGameMini":
+		if e.complexity.Mutation.UpdateGameMini == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateGameMini_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateGameMini(childComplexity, args["id"].(string), args["input"].(model.GameMiniInput)), true
+
+	case "Prices.EXTRALARGE":
+		if e.complexity.Prices.Extralarge == nil {
+			break
+		}
+
+		return e.complexity.Prices.Extralarge(childComplexity), true
 
 	case "Prices.id":
 		if e.complexity.Prices.ID == nil {
@@ -445,40 +514,40 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Prices.ID(childComplexity), true
 
-	case "Prices.lARGE":
-		if e.complexity.Prices.LArge == nil {
+	case "Prices.LARGE":
+		if e.complexity.Prices.Large == nil {
 			break
 		}
 
-		return e.complexity.Prices.LArge(childComplexity), true
+		return e.complexity.Prices.Large(childComplexity), true
 
-	case "Prices.mEDIUM":
-		if e.complexity.Prices.MEdium == nil {
+	case "Prices.MEDIUM":
+		if e.complexity.Prices.Medium == nil {
 			break
 		}
 
-		return e.complexity.Prices.MEdium(childComplexity), true
+		return e.complexity.Prices.Medium(childComplexity), true
 
-	case "Prices.sMALL":
-		if e.complexity.Prices.SMall == nil {
+	case "Prices.SMALL":
+		if e.complexity.Prices.Small == nil {
 			break
 		}
 
-		return e.complexity.Prices.SMall(childComplexity), true
+		return e.complexity.Prices.Small(childComplexity), true
 
-	case "Prices.tINY":
-		if e.complexity.Prices.TIny == nil {
+	case "Prices.TINY":
+		if e.complexity.Prices.Tiny == nil {
 			break
 		}
 
-		return e.complexity.Prices.TIny(childComplexity), true
+		return e.complexity.Prices.Tiny(childComplexity), true
 
-	case "Prices.tITANIC":
-		if e.complexity.Prices.TItanic == nil {
+	case "Prices.TITANIC":
+		if e.complexity.Prices.Titanic == nil {
 			break
 		}
 
-		return e.complexity.Prices.TItanic(childComplexity), true
+		return e.complexity.Prices.Titanic(childComplexity), true
 
 	case "Prices.user":
 		if e.complexity.Prices.User == nil {
@@ -499,29 +568,62 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.Commission(childComplexity, args["id"].(string)), true
 
-	case "Query.commissions":
-		if e.complexity.Query.Commissions == nil {
+	case "Query.game":
+		if e.complexity.Query.Game == nil {
 			break
 		}
 
-		args, err := ec.field_Query_commissions_args(context.TODO(), rawArgs)
+		args, err := ec.field_Query_game_args(context.TODO(), rawArgs)
 		if err != nil {
 			return 0, false
 		}
 
-		return e.complexity.Query.Commissions(childComplexity, args["status"].(*model.Status), args["artist"].(*string), args["patron"].(*string)), true
+		return e.complexity.Query.Game(childComplexity, args["id"].(string)), true
 
-	case "Query.MiniConfigs":
+	case "Query.gameMini":
+		if e.complexity.Query.GameMini == nil {
+			break
+		}
+
+		args, err := ec.field_Query_gameMini_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GameMini(childComplexity, args["id"].(string)), true
+
+	case "Query.gameMinis":
+		if e.complexity.Query.GameMinis == nil {
+			break
+		}
+
+		args, err := ec.field_Query_gameMinis_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.GameMinis(childComplexity, args["game"].(string)), true
+
+	case "Query.games":
+		if e.complexity.Query.Games == nil {
+			break
+		}
+
+		return e.complexity.Query.Games(childComplexity), true
+
+	case "Query.miniConfigs":
 		if e.complexity.Query.MiniConfigs == nil {
 			break
 		}
 
-		args, err := ec.field_Query_MiniConfigs_args(context.TODO(), rawArgs)
-		if err != nil {
-			return 0, false
+		return e.complexity.Query.MiniConfigs(childComplexity), true
+
+	case "Query.myCommissions":
+		if e.complexity.Query.MyCommissions == nil {
+			break
 		}
 
-		return e.complexity.Query.MiniConfigs(childComplexity, args["user"].(string)), true
+		return e.complexity.Query.MyCommissions(childComplexity), true
 
 	case "Query.user":
 		if e.complexity.Query.User == nil {
@@ -534,6 +636,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.User(childComplexity, args["id"].(string)), true
+
+	case "Query.userWithNickname":
+		if e.complexity.Query.UserWithNickname == nil {
+			break
+		}
+
+		args, err := ec.field_Query_userWithNickname_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.UserWithNickname(childComplexity, args["nname"].(string)), true
 
 	case "User.createdAt":
 		if e.complexity.User.CreatedAt == nil {
@@ -562,6 +676,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.User.Nickname(childComplexity), true
+
+	case "User.picture":
+		if e.complexity.User.Picture == nil {
+			break
+		}
+
+		return e.complexity.User.Picture(childComplexity), true
 
 	case "User.roles":
 		if e.complexity.User.Roles == nil {
@@ -662,7 +783,6 @@ enum MiniSize {
 Enum Status
 """
 enum Status {
-  ESTIMATE
   QUOTE
   ACCEPTED
   WAITING
@@ -679,16 +799,6 @@ enum Role {
   ARTIST
   CLIENT
 }
-
-"""
-hasRole directive
-"""
-directive @hasRole(role: Role!) on FIELD_DEFINITION
-
-"""
-isOwner directive
-"""
-directive @isOwner(isOwner: Boolean!) on FIELD_DEFINITION
 
 """
 Interface describing all minis
@@ -722,6 +832,7 @@ type User {
   createdAt: Time!
   updatedAt: Time!
   nickname: String!
+  picture: String!
 }
 
 """
@@ -729,7 +840,6 @@ Represents a miniature. This type represents all miniatures across the system.
 """
 type GameMini implements Mini {
   id: ID!
-  game: Game!
   createdAt: Time!
   updatedAt: Time!
   name: String!
@@ -752,12 +862,12 @@ Default prices as configured by the user
 """
 type Prices {
   id: ID!
-  tINY: Float!
-  sMALL: Float!
-  mEDIUM: Float!
-  lARGE: Float!
-  eXTRALARGE: Float!
-  tITANIC: Float!
+  TINY: Float!
+  SMALL: Float!
+  MEDIUM: Float!
+  LARGE: Float!
+  EXTRALARGE: Float!
+  TITANIC: Float!
   user: User!
 }
 
@@ -786,13 +896,14 @@ type MiniConfig implements Mini {
   user: User!
   name: String!
   size: MiniSize!
+  mini: GameMini!
 }
 
 type Query {
   """
-  Returns commissions for the authenticated and authorized user with optional status, artist, and patron arguments.
+  Returns commissions where the authenticated user is either the artist or the patron.
   """
-  commissions(status: Status, artist: ID, patron: ID): [Commission]!
+  myCommissions: [Commission]!
 
   """
   Retrieves a single commission based on ID. Requesting user must be authenticated and authorized.
@@ -803,7 +914,36 @@ type Query {
   Fetches a single user by their ID
   """
   user(id: ID!): User!
-  MiniConfigs(user: ID!): [MiniConfig]!
+
+  """
+  Fetches a single user by their nickname
+  """
+  userWithNickname(nname: String!): User!
+
+  """
+  Fetches mini configs for the authenticated user
+  """
+  miniConfigs: [MiniConfig]!
+
+  """
+  Fetches list of games
+  """
+  games: [Game]!
+
+  """
+  Fetches a specific game
+  """
+  game(id: ID!): Game!
+
+  """
+  Fetches minis for a specfic game
+  """
+  gameMinis(game: ID!): [GameMini]!
+
+  """
+  Fetches a specific game mini
+  """
+  gameMini(id: ID!): GameMini!
 }
 
 """
@@ -829,12 +969,24 @@ input MiniInput {
   quantity: Int!
   name: String!
   size: MiniSize!
+  notes: String
 }
 
 input MiniConfigInput {
   mini: ID!
   size: MiniSize
   price: Float
+}
+
+input GameInput {
+  id: ID!
+  name: String!
+}
+
+input GameMiniInput {
+  game: ID!
+  name: String!
+  size: MiniSize!
 }
 
 """
@@ -849,12 +1001,32 @@ type Mutation {
   """
   Updates a commission
   """
-  updateCommission(input: CommissionInput!): Commission! @isOwner(isOwner: True)
+  updateCommission(input: CommissionInput!): Commission!
 
   """
   Save a mini configuration
   """
   saveMiniConfig(input: MiniConfigInput!): MiniConfig!
+
+  """
+  Create a game
+  """
+  createGame(name: String!): Game!
+
+  """
+  Update a game
+  """
+  updateGame(input: GameInput!): Game!
+
+  """
+  Create a mini for a game
+  """
+  createGameMini(input: GameMiniInput): GameMini!
+
+  """
+  Update a mini for a game
+  """
+  updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
 }
 `, BuiltIn: false},
 }
@@ -864,33 +1036,33 @@ var parsedSchema = gqlparser.MustLoadSchema(sources...)
 
 // region    ***************************** args.gotpl *****************************
 
-func (ec *executionContext) dir_hasRole_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_createGameMini_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 model.Role
-	if tmp, ok := rawArgs["role"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("role"))
-		arg0, err = ec.unmarshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx, tmp)
+	var arg0 *model.GameMiniInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalOGameMiniInput2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMiniInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["role"] = arg0
+	args["input"] = arg0
 	return args, nil
 }
 
-func (ec *executionContext) dir_isOwner_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_createGame_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 bool
-	if tmp, ok := rawArgs["isOwner"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("isOwner"))
-		arg0, err = ec.unmarshalNBoolean2bool(ctx, tmp)
+	var arg0 string
+	if tmp, ok := rawArgs["name"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["isOwner"] = arg0
+	args["name"] = arg0
 	return args, nil
 }
 
@@ -939,18 +1111,42 @@ func (ec *executionContext) field_Mutation_updateCommission_args(ctx context.Con
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_MiniConfigs_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Mutation_updateGameMini_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
 	var arg0 string
-	if tmp, ok := rawArgs["user"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("user"))
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
 		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["user"] = arg0
+	args["id"] = arg0
+	var arg1 model.GameMiniInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg1, err = ec.unmarshalNGameMiniInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMiniInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg1
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateGame_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.GameInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNGameInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -984,36 +1180,63 @@ func (ec *executionContext) field_Query_commission_args(ctx context.Context, raw
 	return args, nil
 }
 
-func (ec *executionContext) field_Query_commissions_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+func (ec *executionContext) field_Query_gameMini_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
 	var err error
 	args := map[string]interface{}{}
-	var arg0 *model.Status
-	if tmp, ok := rawArgs["status"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("status"))
-		arg0, err = ec.unmarshalOStatus2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐStatus(ctx, tmp)
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["status"] = arg0
-	var arg1 *string
-	if tmp, ok := rawArgs["artist"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("artist"))
-		arg1, err = ec.unmarshalOID2ᚖstring(ctx, tmp)
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_gameMinis_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["game"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("game"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["artist"] = arg1
-	var arg2 *string
-	if tmp, ok := rawArgs["patron"]; ok {
-		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("patron"))
-		arg2, err = ec.unmarshalOID2ᚖstring(ctx, tmp)
+	args["game"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_game_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["id"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+		arg0, err = ec.unmarshalNID2string(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
 	}
-	args["patron"] = arg2
+	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_userWithNickname_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["nname"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("nname"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["nname"] = arg0
 	return args, nil
 }
 
@@ -1837,41 +2060,6 @@ func (ec *executionContext) _GameMini_id(ctx context.Context, field graphql.Coll
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _GameMini_game(ctx context.Context, field graphql.CollectedField, obj *model.GameMini) (ret graphql.Marshaler) {
-	defer func() {
-		if r := recover(); r != nil {
-			ec.Error(ctx, ec.Recover(ctx, r))
-			ret = graphql.Null
-		}
-	}()
-	fc := &graphql.FieldContext{
-		Object:     "GameMini",
-		Field:      field,
-		Args:       nil,
-		IsMethod:   false,
-		IsResolver: false,
-	}
-
-	ctx = graphql.WithFieldContext(ctx, fc)
-	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		ctx = rctx // use context from middleware stack in children
-		return obj.Game, nil
-	})
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	if resTmp == nil {
-		if !graphql.HasFieldError(ctx, fc) {
-			ec.Errorf(ctx, "must not be null")
-		}
-		return graphql.Null
-	}
-	res := resTmp.(*model.Game)
-	fc.Result = res
-	return ec.marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, field.Selections, res)
-}
-
 func (ec *executionContext) _GameMini_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.GameMini) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2257,6 +2445,41 @@ func (ec *executionContext) _MiniConfig_size(ctx context.Context, field graphql.
 	return ec.marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _MiniConfig_mini(ctx context.Context, field graphql.CollectedField, obj *model.MiniConfig) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "MiniConfig",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Mini, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Mutation_newCommission(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2323,32 +2546,8 @@ func (ec *executionContext) _Mutation_updateCommission(ctx context.Context, fiel
 	}
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
-		directive0 := func(rctx context.Context) (interface{}, error) {
-			ctx = rctx // use context from middleware stack in children
-			return ec.resolvers.Mutation().UpdateCommission(rctx, args["input"].(model.CommissionInput))
-		}
-		directive1 := func(ctx context.Context) (interface{}, error) {
-			isOwner, err := ec.unmarshalNBoolean2bool(ctx, "True")
-			if err != nil {
-				return nil, err
-			}
-			if ec.directives.IsOwner == nil {
-				return nil, errors.New("directive isOwner is not implemented")
-			}
-			return ec.directives.IsOwner(ctx, nil, directive0, isOwner)
-		}
-
-		tmp, err := directive1(rctx)
-		if err != nil {
-			return nil, graphql.ErrorOnPath(ctx, err)
-		}
-		if tmp == nil {
-			return nil, nil
-		}
-		if data, ok := tmp.(*model.Commission); ok {
-			return data, nil
-		}
-		return nil, fmt.Errorf(`unexpected type %T from directive, should be *github.com/myminicommission/api/graph/model.Commission`, tmp)
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateCommission(rctx, args["input"].(model.CommissionInput))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2407,6 +2606,174 @@ func (ec *executionContext) _Mutation_saveMiniConfig(ctx context.Context, field 
 	return ec.marshalNMiniConfig2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniConfig(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_createGame(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createGame_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateGame(rctx, args["name"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Game)
+	fc.Result = res
+	return ec.marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateGame(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateGame_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateGame(rctx, args["input"].(model.GameInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Game)
+	fc.Result = res
+	return ec.marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_createGameMini(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_createGameMini_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().CreateGameMini(rctx, args["input"].(*model.GameMiniInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateGameMini(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateGameMini_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateGameMini(rctx, args["id"].(string), args["input"].(model.GameMiniInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2442,7 +2809,7 @@ func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.Collec
 	return ec.marshalNID2string(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_TINY(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2460,7 +2827,7 @@ func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.Coll
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TIny, nil
+		return obj.Tiny, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2477,7 +2844,7 @@ func (ec *executionContext) _Prices_tINY(ctx context.Context, field graphql.Coll
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_SMALL(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2495,7 +2862,7 @@ func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.SMall, nil
+		return obj.Small, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2512,7 +2879,7 @@ func (ec *executionContext) _Prices_sMALL(ctx context.Context, field graphql.Col
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_MEDIUM(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2530,7 +2897,7 @@ func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.Co
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.MEdium, nil
+		return obj.Medium, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2547,7 +2914,7 @@ func (ec *executionContext) _Prices_mEDIUM(ctx context.Context, field graphql.Co
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_LARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2565,7 +2932,7 @@ func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.Col
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.LArge, nil
+		return obj.Large, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2582,7 +2949,7 @@ func (ec *executionContext) _Prices_lARGE(ctx context.Context, field graphql.Col
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_EXTRALARGE(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2600,7 +2967,7 @@ func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphq
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.EXtralarge, nil
+		return obj.Extralarge, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2617,7 +2984,7 @@ func (ec *executionContext) _Prices_eXTRALARGE(ctx context.Context, field graphq
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Prices_tITANIC(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
+func (ec *executionContext) _Prices_TITANIC(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2635,7 +3002,7 @@ func (ec *executionContext) _Prices_tITANIC(ctx context.Context, field graphql.C
 	ctx = graphql.WithFieldContext(ctx, fc)
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return obj.TItanic, nil
+		return obj.Titanic, nil
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2687,7 +3054,7 @@ func (ec *executionContext) _Prices_user(ctx context.Context, field graphql.Coll
 	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_commissions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_myCommissions(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2703,16 +3070,9 @@ func (ec *executionContext) _Query_commissions(ctx context.Context, field graphq
 	}
 
 	ctx = graphql.WithFieldContext(ctx, fc)
-	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_commissions_args(ctx, rawArgs)
-	if err != nil {
-		ec.Error(ctx, err)
-		return graphql.Null
-	}
-	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().Commissions(rctx, args["status"].(*model.Status), args["artist"].(*string), args["patron"].(*string))
+		return ec.resolvers.Query().MyCommissions(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2813,7 +3173,7 @@ func (ec *executionContext) _Query_user(ctx context.Context, field graphql.Colle
 	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
 }
 
-func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+func (ec *executionContext) _Query_userWithNickname(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
 			ec.Error(ctx, ec.Recover(ctx, r))
@@ -2830,7 +3190,7 @@ func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphq
 
 	ctx = graphql.WithFieldContext(ctx, fc)
 	rawArgs := field.ArgumentMap(ec.Variables)
-	args, err := ec.field_Query_MiniConfigs_args(ctx, rawArgs)
+	args, err := ec.field_Query_userWithNickname_args(ctx, rawArgs)
 	if err != nil {
 		ec.Error(ctx, err)
 		return graphql.Null
@@ -2838,7 +3198,42 @@ func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphq
 	fc.Args = args
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
-		return ec.resolvers.Query().MiniConfigs(rctx, args["user"].(string))
+		return ec.resolvers.Query().UserWithNickname(rctx, args["nname"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_miniConfigs(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MiniConfigs(rctx)
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -2853,6 +3248,167 @@ func (ec *executionContext) _Query_MiniConfigs(ctx context.Context, field graphq
 	res := resTmp.([]*model.MiniConfig)
 	fc.Result = res
 	return ec.marshalNMiniConfig2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniConfig(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_games(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Games(rctx)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.Game)
+	fc.Result = res
+	return ec.marshalNGame2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_game(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_game_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().Game(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.Game)
+	fc.Result = res
+	return ec.marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_gameMinis(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_gameMinis_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GameMinis(rctx, args["game"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_gameMini(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_gameMini_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().GameMini(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
@@ -3136,6 +3692,41 @@ func (ec *executionContext) _User_nickname(ctx context.Context, field graphql.Co
 	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _User_picture(ctx context.Context, field graphql.CollectedField, obj *model.User) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "User",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Picture, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) ___Directive_name(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -3271,6 +3862,41 @@ func (ec *executionContext) ___Directive_args(ctx context.Context, field graphql
 	res := resTmp.([]introspection.InputValue)
 	fc.Result = res
 	return ec.marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐInputValueᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) ___Directive_isRepeatable(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "__Directive",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Directive().IsRepeatable(rctx, obj)
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___EnumValue_name(ctx context.Context, field graphql.CollectedField, obj *introspection.EnumValue) (ret graphql.Marshaler) {
@@ -4259,6 +4885,70 @@ func (ec *executionContext) unmarshalInputCommissionInput(ctx context.Context, o
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputGameInput(ctx context.Context, obj interface{}) (model.GameInput, error) {
+	var it model.GameInput
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj interface{}) (model.GameMiniInput, error) {
+	var it model.GameMiniInput
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "game":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("game"))
+			it.Game, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "size":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("size"))
+			it.Size, err = ec.unmarshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 func (ec *executionContext) unmarshalInputMiniConfigInput(ctx context.Context, obj interface{}) (model.MiniConfigInput, error) {
 	var it model.MiniConfigInput
 	var asMap = obj.(map[string]interface{})
@@ -4330,6 +5020,14 @@ func (ec *executionContext) unmarshalInputMiniInput(ctx context.Context, obj int
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("size"))
 			it.Size, err = ec.unmarshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "notes":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("notes"))
+			it.Notes, err = ec.unmarshalOString2ᚖstring(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -4597,11 +5295,6 @@ func (ec *executionContext) _GameMini(ctx context.Context, sel ast.SelectionSet,
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "game":
-			out.Values[i] = ec._GameMini_game(ctx, field, obj)
-			if out.Values[i] == graphql.Null {
-				invalids++
-			}
 		case "createdAt":
 			out.Values[i] = ec._GameMini_createdAt(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
@@ -4679,6 +5372,11 @@ func (ec *executionContext) _MiniConfig(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "mini":
+			out.Values[i] = ec._MiniConfig_mini(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4720,6 +5418,26 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "createGame":
+			out.Values[i] = ec._Mutation_createGame(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateGame":
+			out.Values[i] = ec._Mutation_updateGame(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createGameMini":
+			out.Values[i] = ec._Mutation_createGameMini(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateGameMini":
+			out.Values[i] = ec._Mutation_updateGameMini(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4747,33 +5465,33 @@ func (ec *executionContext) _Prices(ctx context.Context, sel ast.SelectionSet, o
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "tINY":
-			out.Values[i] = ec._Prices_tINY(ctx, field, obj)
+		case "TINY":
+			out.Values[i] = ec._Prices_TINY(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "sMALL":
-			out.Values[i] = ec._Prices_sMALL(ctx, field, obj)
+		case "SMALL":
+			out.Values[i] = ec._Prices_SMALL(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "mEDIUM":
-			out.Values[i] = ec._Prices_mEDIUM(ctx, field, obj)
+		case "MEDIUM":
+			out.Values[i] = ec._Prices_MEDIUM(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "lARGE":
-			out.Values[i] = ec._Prices_lARGE(ctx, field, obj)
+		case "LARGE":
+			out.Values[i] = ec._Prices_LARGE(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "eXTRALARGE":
-			out.Values[i] = ec._Prices_eXTRALARGE(ctx, field, obj)
+		case "EXTRALARGE":
+			out.Values[i] = ec._Prices_EXTRALARGE(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
-		case "tITANIC":
-			out.Values[i] = ec._Prices_tITANIC(ctx, field, obj)
+		case "TITANIC":
+			out.Values[i] = ec._Prices_TITANIC(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -4808,7 +5526,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 		switch field.Name {
 		case "__typename":
 			out.Values[i] = graphql.MarshalString("Query")
-		case "commissions":
+		case "myCommissions":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -4816,7 +5534,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_commissions(ctx, field)
+				res = ec._Query_myCommissions(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -4850,7 +5568,7 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
-		case "MiniConfigs":
+		case "userWithNickname":
 			field := field
 			out.Concurrently(i, func() (res graphql.Marshaler) {
 				defer func() {
@@ -4858,7 +5576,77 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 						ec.Error(ctx, ec.Recover(ctx, r))
 					}
 				}()
-				res = ec._Query_MiniConfigs(ctx, field)
+				res = ec._Query_userWithNickname(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "miniConfigs":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_miniConfigs(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "games":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_games(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "game":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_game(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "gameMinis":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_gameMinis(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "gameMini":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_gameMini(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}
@@ -4920,6 +5708,11 @@ func (ec *executionContext) _User(ctx context.Context, sel ast.SelectionSet, obj
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "picture":
+			out.Values[i] = ec._User_picture(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -4945,20 +5738,34 @@ func (ec *executionContext) ___Directive(ctx context.Context, sel ast.SelectionS
 		case "name":
 			out.Values[i] = ec.___Directive_name(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "description":
 			out.Values[i] = ec.___Directive_description(ctx, field, obj)
 		case "locations":
 			out.Values[i] = ec.___Directive_locations(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
 		case "args":
 			out.Values[i] = ec.___Directive_args(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
-				invalids++
+				atomic.AddUint32(&invalids, 1)
 			}
+		case "isRepeatable":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec.___Directive_isRepeatable(ctx, field, obj)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5299,6 +6106,47 @@ func (ec *executionContext) marshalNFloat2float64(ctx context.Context, sel ast.S
 	return res
 }
 
+func (ec *executionContext) marshalNGame2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx context.Context, sel ast.SelectionSet, v model.Game) graphql.Marshaler {
+	return ec._Game(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNGame2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx context.Context, sel ast.SelectionSet, v []*model.Game) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalOGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+	return ret
+}
+
 func (ec *executionContext) marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx context.Context, sel ast.SelectionSet, v *model.Game) graphql.Marshaler {
 	if v == nil {
 		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
@@ -5307,6 +6155,15 @@ func (ec *executionContext) marshalNGame2ᚖgithubᚗcomᚋmyminicommissionᚋap
 		return graphql.Null
 	}
 	return ec._Game(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNGameInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameInput(ctx context.Context, v interface{}) (model.GameInput, error) {
+	res, err := ec.unmarshalInputGameInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) marshalNGameMini2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx context.Context, sel ast.SelectionSet, v model.GameMini) graphql.Marshaler {
+	return ec._GameMini(ctx, sel, &v)
 }
 
 func (ec *executionContext) marshalNGameMini2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx context.Context, sel ast.SelectionSet, v []*model.GameMini) graphql.Marshaler {
@@ -5344,6 +6201,21 @@ func (ec *executionContext) marshalNGameMini2ᚕᚖgithubᚗcomᚋmyminicommissi
 	}
 	wg.Wait()
 	return ret
+}
+
+func (ec *executionContext) marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx context.Context, sel ast.SelectionSet, v *model.GameMini) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._GameMini(ctx, sel, v)
+}
+
+func (ec *executionContext) unmarshalNGameMiniInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMiniInput(ctx context.Context, v interface{}) (model.GameMiniInput, error) {
+	res, err := ec.unmarshalInputGameMiniInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
@@ -5466,16 +6338,6 @@ func (ec *executionContext) marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋa
 func (ec *executionContext) unmarshalNNewCommission2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommission(ctx context.Context, v interface{}) (model.NewCommission, error) {
 	res, err := ec.unmarshalInputNewCommission(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) unmarshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) (model.Role, error) {
-	var res model.Role
-	err := res.UnmarshalGQL(v)
-	return res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalNRole2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, sel ast.SelectionSet, v model.Role) graphql.Marshaler {
-	return v
 }
 
 func (ec *executionContext) unmarshalNRole2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) ([]*model.Role, error) {
@@ -5872,6 +6734,13 @@ func (ec *executionContext) marshalOFloat2ᚖfloat64(ctx context.Context, sel as
 	return graphql.MarshalFloat(*v)
 }
 
+func (ec *executionContext) marshalOGame2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGame(ctx context.Context, sel ast.SelectionSet, v *model.Game) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._Game(ctx, sel, v)
+}
+
 func (ec *executionContext) marshalOGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx context.Context, sel ast.SelectionSet, v *model.GameMini) graphql.Marshaler {
 	if v == nil {
 		return graphql.Null
@@ -5879,19 +6748,12 @@ func (ec *executionContext) marshalOGameMini2ᚖgithubᚗcomᚋmyminicommission�
 	return ec._GameMini(ctx, sel, v)
 }
 
-func (ec *executionContext) unmarshalOID2ᚖstring(ctx context.Context, v interface{}) (*string, error) {
+func (ec *executionContext) unmarshalOGameMiniInput2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMiniInput(ctx context.Context, v interface{}) (*model.GameMiniInput, error) {
 	if v == nil {
 		return nil, nil
 	}
-	res, err := graphql.UnmarshalID(v)
+	res, err := ec.unmarshalInputGameMiniInput(ctx, v)
 	return &res, graphql.ErrorOnPath(ctx, err)
-}
-
-func (ec *executionContext) marshalOID2ᚖstring(ctx context.Context, sel ast.SelectionSet, v *string) graphql.Marshaler {
-	if v == nil {
-		return graphql.Null
-	}
-	return graphql.MarshalID(*v)
 }
 
 func (ec *executionContext) marshalOMiniConfig2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniConfig(ctx context.Context, sel ast.SelectionSet, v *model.MiniConfig) graphql.Marshaler {
