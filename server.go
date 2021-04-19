@@ -11,6 +11,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/gorilla/mux"
+
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
 	log "github.com/myminicommission/api/internal/logger"

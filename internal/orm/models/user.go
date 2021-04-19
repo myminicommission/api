@@ -6,5 +6,6 @@ type User struct {
 	Email    string  `gorm:"not null; unique_index:idx_email"`
 	UserID   *string // external user ID
 	Name     *string
-	NickName *string
+	NickName *string `gorm:"not null; unique_index:idx_nickname"`
+	Picture  *string
 }

@@ -140,16 +140,18 @@ func (m *AuthMiddleware) Authorize(next http.Handler) http.Handler {
 				email := fmt.Sprint(claims["email"])
 				nickname := fmt.Sprint(claims["nickname"])
 				name := fmt.Sprint(claims["name"])
+				picture := fmt.Sprint(claims["picture"])
 
 				user = models.User{
 					Name:     &name,
 					NickName: &nickname,
 					Email:    email,
+					Picture:  &picture,
 				}
 
 				// query for the user or create them if they don't exist
 				db := m.ORM.DB.New()
-				db = db.Where("email = ?", email)
+				db = db.Where("LOWER(nick_name) = LOWER(?)", nickname)
 				db = db.FirstOrCreate(&user)
 
 				if db.Error != nil {

@@ -68,6 +68,7 @@ type User {
   createdAt: Time!
   updatedAt: Time!
   nickname: String!
+  picture: String!
 }
 
 """

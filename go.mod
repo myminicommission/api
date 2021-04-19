@@ -23,7 +23,7 @@ require (
 	github.com/vektah/gqlparser/v2 v2.2.0
 	golang.org/x/net v0.0.0-20210414194228-064579744ee0 // indirect
 	golang.org/x/oauth2 v0.0.0-20210413134643-5e61552d6c78 // indirect
-	golang.org/x/sys v0.0.0-20210415045647-66c3f260301c // indirect
+	golang.org/x/sys v0.0.0-20210419170143-37df388d1f33 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/gormigrate.v1 v1.6.0
 )

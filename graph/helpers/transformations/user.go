@@ -11,6 +11,7 @@ func DBUserToGQLUser(i *models.User) (o *model.User, err error) {
 		ID:        i.ID.String(),
 		Name:      *i.Name,
 		Nickname:  *i.NickName,
+		Picture:   *i.Picture,
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
 		Roles:     []*model.Role{},
