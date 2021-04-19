@@ -8,6 +8,7 @@ COPY go.* .
 RUN go mod download
 
 FROM base AS build
+RUN apk --no-cache add ca-certificates
 ARG TARGETOS
 ARG TARGETARCH
 RUN --mount=target=. \
@@ -46,6 +47,8 @@ COPY --from=build /out/api /api.exe
 FROM bin-${TARGETOS} AS bin
 
 FROM scratch
+# copy the ca-certificate.crt from the build stage
+COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /out/api /
 
 EXPOSE 8080

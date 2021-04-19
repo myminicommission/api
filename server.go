@@ -14,6 +14,7 @@ import (
 	"github.com/myminicommission/api/graph"
 	"github.com/myminicommission/api/graph/generated"
 	log "github.com/myminicommission/api/internal/logger"
+	"github.com/myminicommission/api/internal/middlewares/auth"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/utils"
 	"github.com/sirupsen/logrus"
@@ -65,6 +66,10 @@ func main() {
 	r := mux.NewRouter()
 
 	// use some middlewares
+
+	// auth middleware
+	authMiddleware := auth.CreateMiddleware(serverconf, orm)
+	r.Use(authMiddleware.Authorize)
 
 	config := generated.Config{Resolvers: &graph.Resolver{
 		ORM: orm,
