@@ -51,7 +51,7 @@ FROM scratch
 COPY --from=build /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=build /out/api /
 
-EXPOSE 8080
+EXPOSE 3001
 STOPSIGNAL SIGINT
 
 ENTRYPOINT [ "/api" ]
