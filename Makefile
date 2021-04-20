@@ -17,3 +17,7 @@ start/db:
 .PHONY: stop/db
 stop/db:
 	docker-compose stop postgres
+
+.PHONY: bin/api
+bin/api:
+	@docker build --target build .
