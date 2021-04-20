@@ -26,12 +26,7 @@ import (
 
 func main() {
 	var serverconf = &utils.ServerConfig{
-		Port:          utils.MustGet("SERVER_PORT"),
-		SessionSecret: utils.MustGet("SESSION_SECRET"),
-		JWT: utils.JWTConfig{
-			Secret:    utils.MustGet("AUTH_JWT_SECRET"),
-			Algorithm: utils.MustGet("AUTH_JWT_SIGNING_ALGORITHM"),
-		},
+		Port: utils.MustGet("SERVER_PORT"),
 		GraphQL: utils.GQLConfig{
 			Path:                utils.MustGet("GQL_SERVER_GRAPHQL_PATH"),
 			PlaygroundPath:      utils.MustGet("GQL_SERVER_GRAPHQL_PLAYGROUND_PATH"),
