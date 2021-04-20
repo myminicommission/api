@@ -4,10 +4,10 @@ ENV CGO_ENABLED=0
 RUN apk --no-cache add ca-certificates
 
 WORKDIR /src
-COPY go.* .
+COPY go.* ./
 RUN go mod download
 
-COPY . .
+COPY . ./
 RUN golangci-lint run --timeout 10m0s ./... \
   && go test -v ./... \
   && go build -o /out/api .
