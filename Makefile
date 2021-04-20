@@ -1,30 +1,10 @@
-all: lint test bin/api
-test: unit-test
-start: lint test start/api
+start: start/api
 down:
 	docker-compose down
-
-PLATFORM=local
-
-.PHONY: bin/api
-bin/api:
-	@docker build --target bin --output bin/ --platform ${PLATFORM} .
-
-.PHONY: unit-test
-unit-test:
-	@docker build . --target unit-test
-
-.PHONY: lint
-lint:
-	@docker build . --target lint
 
 .PHONY: generate
 generate:
 	go generate ./...
-
-.PHONY: start/bin
-start/bin:
-	bin/api
 
 .PHONY: start/api
 start/api:

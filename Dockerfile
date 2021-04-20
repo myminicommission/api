@@ -1,50 +1,16 @@
-# syntax = docker/dockerfile:1-experimental
-
-FROM --platform=${BUILDPLATFORM} golang:1.16-alpine AS base
+FROM golangci/golangci-lint:v1.27-alpine AS build
 RUN apk add git
 ENV CGO_ENABLED=0
+RUN apk --no-cache add ca-certificates
+
 WORKDIR /src
 COPY go.* .
 RUN go mod download
 
-FROM base AS build
-RUN apk --no-cache add ca-certificates
-ARG TARGETOS
-ARG TARGETARCH
-RUN --mount=target=. \
-  --mount=type=cache,target=/root/.cache/go-build \
-  GOOS=${TARGETOS} \
-  GOARCH=${TARGETARCH} \
-  go build -o /out/api .
-
-FROM base AS unit-test
-RUN --mount=target=. \
-  --mount=type=cache,target=/root/.cache/go-build \
-  GOOS=${TARGETOS} \
-  GOARCH=${TARGETARCH} \
-  go test -v ./...
-
-FROM golangci/golangci-lint:v1.27-alpine AS lint-base
-
-FROM base AS lint
-RUN --mount=target=. \
-  --mount=from=lint-base,src=/usr/bin/golangci-lint,target=/usr/bin/golangci-lint \
-  --mount=type=cache,target=/root/.cache/go-build \
-  --mount=type=cache,target=/root/.cache/golangci-lint \
-  GOOS=${TARGETOS} \
-  GOARCH=${TARGETARCH} \
-  golangci-lint run --timeout 10m0s ./...
-
-FROM scratch AS bin-unix
-COPY --from=build /out/api /
-
-FROM bin-unix AS bin-linux
-FROM bin-unix AS bin-darwin
-
-FROM scratch AS bin-windows
-COPY --from=build /out/api /api.exe
-
-FROM bin-${TARGETOS} AS bin
+COPY . .
+RUN golangci-lint run --timeout 10m0s ./... \
+  && go test -v ./... \
+  && go build -o /out/api .
 
 FROM scratch
 # copy the ca-certificate.crt from the build stage
