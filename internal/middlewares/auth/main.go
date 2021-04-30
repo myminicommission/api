@@ -13,6 +13,8 @@ import (
 	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/orm/models"
+	"github.com/myminicommission/api/internal/orm/mutations"
+	"github.com/myminicommission/api/internal/orm/queries"
 	"github.com/myminicommission/api/internal/utils"
 
 	"github.com/gofrs/uuid"
@@ -87,7 +89,7 @@ func (m *AuthMiddleware) Authorize(next http.Handler) http.Handler {
 	log.Debug("[Middleware] AuthMiddleware.Authorize")
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		// setup a place to hold the user
-		var user models.User
+		var user *models.User
 
 		// extract the auth header
 		authHeader := r.Header.Get("Authorization")
@@ -142,26 +144,31 @@ func (m *AuthMiddleware) Authorize(next http.Handler) http.Handler {
 				name := fmt.Sprint(claims["name"])
 				picture := fmt.Sprint(claims["picture"])
 
-				user = models.User{
-					Name:     &name,
-					NickName: &nickname,
-					Email:    email,
-					Picture:  &picture,
-				}
+				// get the user (if there is one)
+				user, err = queries.GetUserWithNickname(m.ORM, nickname)
+				if err != nil {
+					// handle the error
+					log.Errorf("Error looking up user: %s", err.Error())
 
-				// query for the user or create them if they don't exist
-				db := m.ORM.DB.New()
-				db = db.Where("LOWER(nick_name) = LOWER(?)", nickname)
-				db = db.FirstOrCreate(&user)
-
-				if db.Error != nil {
-					log.Errorf("Error while looking up / creating user %s", db.Error.Error())
+					// create the user if one wasn't found
+					if err.Error() == "record not found" {
+						user, err = mutations.CreateUser(m.ORM, &models.User{
+							Name:     &name,
+							NickName: &nickname,
+							Email:    email,
+							Picture:  &picture,
+						})
+						if err != nil {
+							// handle the erorr
+							log.Errorf("Error while creating the user: %s", err.Error())
+						}
+					}
 				}
 			}
 		}
 
 		if user.ID != uuid.Nil {
-			ctx := context.WithValue(r.Context(), userCtxKey, &user)
+			ctx := context.WithValue(r.Context(), userCtxKey, user)
 			r = r.WithContext(ctx)
 		}
 

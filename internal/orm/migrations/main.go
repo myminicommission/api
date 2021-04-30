@@ -19,6 +19,7 @@ func updateMigration(db *gorm.DB) error {
 		&models.Commission{},
 		&models.CommissionedMini{},
 		&models.MiniConfig{},
+		&models.Socials{},
 	).Error
 }
 

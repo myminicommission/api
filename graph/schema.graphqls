@@ -59,6 +59,16 @@ type Commission {
 }
 
 """
+Social links for a user
+"""
+type Socials {
+  facebook: String
+  instagram: String
+  twitch: String
+  twitter: String
+}
+
+"""
 Basic user representation.
 """
 type User {
@@ -69,6 +79,8 @@ type User {
   updatedAt: Time!
   nickname: String!
   picture: String!
+  forHire: Boolean!
+  socials: Socials
 }
 
 """

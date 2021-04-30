@@ -12,11 +12,12 @@ import (
 	"github.com/myminicommission/api/graph/helpers"
 	"github.com/myminicommission/api/graph/helpers/transformations"
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/orm/queries"
 )
 
 func (r *mutationResolver) NewCommission(ctx context.Context, input model.NewCommission) (*model.Commission, error) {
 	// TODO: determine current user or reject request
-	user, err := r.GetUser("TestUser2")
+	user, err := queries.GetUserWithNickname(r.ORM, "TestUser2")
 	if err != nil {
 		return nil, err
 	}
@@ -30,7 +31,7 @@ func (r *mutationResolver) UpdateCommission(ctx context.Context, input model.Com
 
 func (r *mutationResolver) SaveMiniConfig(ctx context.Context, input model.MiniConfigInput) (*model.MiniConfig, error) {
 	// TODO: determine current user or reject request
-	user, err := r.GetUser("TestUser1")
+	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +57,7 @@ func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input 
 
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
 	// TODO: determine current user or reject request
-	user, err := r.GetUser("TestUser1")
+	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")
 	if err != nil {
 		return nil, err
 	}
@@ -72,7 +73,7 @@ func (r *queryResolver) User(ctx context.Context, id string) (*model.User, error
 }
 
 func (r *queryResolver) UserWithNickname(ctx context.Context, nname string) (*model.User, error) {
-	user, err := r.GetUser(nname)
+	user, err := queries.GetUserWithNickname(r.ORM, nname)
 	if err != nil {
 		return nil, err
 	}
@@ -82,7 +83,7 @@ func (r *queryResolver) UserWithNickname(ctx context.Context, nname string) (*mo
 
 func (r *queryResolver) MiniConfigs(ctx context.Context) ([]*model.MiniConfig, error) {
 	// TODO: determine current user or reject request
-	user, err := r.GetUser("TestUser1")
+	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")
 	if err != nil {
 		return []*model.MiniConfig{}, err
 	}

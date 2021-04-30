@@ -125,6 +125,14 @@ type Prices struct {
 	User       *User   `json:"user"`
 }
 
+// Social links for a user
+type Socials struct {
+	Facebook  *string `json:"facebook"`
+	Instagram *string `json:"instagram"`
+	Twitch    *string `json:"twitch"`
+	Twitter   *string `json:"twitter"`
+}
+
 // Basic user representation.
 type User struct {
 	ID        string    `json:"id"`
@@ -134,6 +142,8 @@ type User struct {
 	UpdatedAt time.Time `json:"updatedAt"`
 	Nickname  string    `json:"nickname"`
 	Picture   string    `json:"picture"`
+	ForHire   bool      `json:"forHire"`
+	Socials   *Socials  `json:"socials"`
 }
 
 // Enum MiniSize

@@ -14,16 +14,16 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.3.0
-	github.com/lib/pq v1.10.0 // indirect
+	github.com/lib/pq v1.10.1 // indirect
 	github.com/markbates/goth v1.67.1 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/sirupsen/logrus v1.8.1
 	github.com/stretchr/testify v1.5.1 // indirect
 	github.com/urfave/negroni v1.0.0
-	github.com/vektah/gqlparser/v2 v2.2.0
+	github.com/vektah/gqlparser/v2 v2.1.0
 	golang.org/x/net v0.0.0-20210414194228-064579744ee0 // indirect
 	golang.org/x/oauth2 v0.0.0-20210413134643-5e61552d6c78 // indirect
-	golang.org/x/sys v0.0.0-20210419170143-37df388d1f33 // indirect
+	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887 // indirect
 	google.golang.org/appengine v1.6.7 // indirect
 	gopkg.in/gormigrate.v1 v1.6.0
 )

@@ -21,15 +21,20 @@ func GetUser(orm *orm.ORM, id uuid.UUID) (*models.User, error) {
 	return &user, nil
 }
 
-// CreateUser creates a User record
-func CreateUser(orm *orm.ORM, nickname, name string) (*models.User, error) {
-	user := models.User{
-		NickName: &nickname,
-		Name:     &name,
-	}
-
+// GetUserWithNickname returns the DB model for a User for the given nickname
+func GetUserWithNickname(orm *orm.ORM, nickName string) (*models.User, error) {
+	var user models.User
 	db := orm.DB.New()
-	db = db.Create(&user)
+	db = db.Preload("Socials")
+	db = db.First(&user, "LOWER(nick_name) = LOWER(?)", nickName)
+	return &user, db.Error
+}
 
+// GetUserWithEmail returns the DB model for a User for the given email
+func GetUserWithEmail(orm *orm.ORM, email string) (*models.User, error) {
+	var user models.User
+	db := orm.DB.New()
+	db = db.Preload("socials")
+	db = db.First(&user, "LOWER(email) = LOWER(?)", email)
 	return &user, db.Error
 }

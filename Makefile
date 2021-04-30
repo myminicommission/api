@@ -1,6 +1,6 @@
 start: start/api
 down:
-	docker-compose down
+	docker compose down
 
 .PHONY: generate
 generate:
@@ -12,12 +12,8 @@ start/api:
 
 .PHONY: start/db
 start/db:
-	docker-compose up postgres
+	docker compose up postgres
 
 .PHONY: stop/db
 stop/db:
-	docker-compose stop postgres
-
-.PHONY: bin/api
-bin/api:
-	@docker build --target build .
+	docker compose stop postgres
