@@ -6,10 +6,8 @@ jobs:
   ci:
     name: CI
     runs-on: ubuntu-latest
-    env:
-      DOCKER_BUILDKIT: "1"
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Run all checks
-        run: make bin/api
+        run: make test-lint-and-build

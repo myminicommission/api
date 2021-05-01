@@ -17,3 +17,7 @@ start/db:
 .PHONY: stop/db
 stop/db:
 	docker compose stop postgres
+
+.PHONY: test-lint-and-build
+test-lint-and-build:
+	@docker build --target build .
