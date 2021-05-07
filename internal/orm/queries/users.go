@@ -11,6 +11,7 @@ import (
 func GetUser(orm *orm.ORM, id uuid.UUID) (*models.User, error) {
 	var user models.User
 	db := orm.DB.New()
+	db = db.Preload("Socials")
 	db = db.First(&user, "id = ?", id.String())
 
 	if db.Error != nil {

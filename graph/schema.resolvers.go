@@ -5,6 +5,7 @@ package graph
 
 import (
 	"context"
+	"errors"
 	"fmt"
 
 	"github.com/gofrs/uuid"
@@ -12,6 +13,7 @@ import (
 	"github.com/myminicommission/api/graph/helpers"
 	"github.com/myminicommission/api/graph/helpers/transformations"
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/orm/mutations"
 	"github.com/myminicommission/api/internal/orm/queries"
 )
 
@@ -53,6 +55,36 @@ func (r *mutationResolver) CreateGameMini(ctx context.Context, input *model.Game
 
 func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error) {
 	panic(fmt.Errorf("not implemented"))
+}
+
+func (r *mutationResolver) UpdateProfile(ctx context.Context, input model.ProfileInput) (*model.GenericRequestStatus, error) {
+	resp := model.GenericRequestStatus{
+		Success: false,
+	}
+	currentUser := r.GetCurrentUser(ctx)
+	if currentUser == nil {
+		return &resp, errors.New("no user authenticated for this request")
+	}
+
+	if input.ID != currentUser.ID.String() {
+		return &resp, errors.New("authenticated user is not authorized to make changes to requested user")
+	}
+
+	// Get the specified user
+	user, err := queries.GetUser(r.ORM, uuid.FromStringOrNil(input.ID))
+	if err != nil {
+		return &resp, err
+	}
+
+	// send the input to the database
+	err = mutations.UpdateProfile(r.ORM, user, &input)
+	if err != nil {
+		return &resp, err
+	}
+
+	// return success (true)
+	resp.Success = true
+	return &resp, nil
 }
 
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {

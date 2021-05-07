@@ -78,6 +78,10 @@ type GameMiniInput struct {
 	Size MiniSize `json:"size"`
 }
 
+type GenericRequestStatus struct {
+	Success bool `json:"success"`
+}
+
 // Saved mini configuration. This is used to override the default pricing for a specific mini.
 type MiniConfig struct {
 	ID        string    `json:"id"`
@@ -123,6 +127,20 @@ type Prices struct {
 	Extralarge float64 `json:"EXTRALARGE"`
 	Titanic    float64 `json:"TITANIC"`
 	User       *User   `json:"user"`
+}
+
+type ProfileInput struct {
+	ID      string               `json:"id"`
+	Name    string               `json:"name"`
+	ForHire bool                 `json:"forHire"`
+	Socials *ProfileInputSocials `json:"socials"`
+}
+
+type ProfileInputSocials struct {
+	Facebook  *string `json:"facebook"`
+	Instagram *string `json:"instagram"`
+	Twitch    *string `json:"twitch"`
+	Twitter   *string `json:"twitter"`
 }
 
 // Social links for a user

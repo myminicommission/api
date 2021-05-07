@@ -36,6 +36,10 @@ enum Role {
   CLIENT
 }
 
+type GenericRequestStatus {
+  success: Boolean!
+}
+
 """
 Interface describing all minis
 """
@@ -237,6 +241,20 @@ input GameMiniInput {
   size: MiniSize!
 }
 
+input ProfileInputSocials {
+  facebook: String
+  instagram: String
+  twitch: String
+  twitter: String
+}
+
+input ProfileInput {
+  id: ID!
+  name: String!
+  forHire: Boolean!
+  socials: ProfileInputSocials!
+}
+
 """
 All the mutations.  Authentication required.
 """
@@ -275,4 +293,9 @@ type Mutation {
   Update a mini for a game
   """
   updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
+
+  """
+  Update your profile data
+  """
+  updateProfile(input: ProfileInput!): GenericRequestStatus!
 }

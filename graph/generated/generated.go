@@ -83,6 +83,10 @@ type ComplexityRoot struct {
 		UpdatedAt func(childComplexity int) int
 	}
 
+	GenericRequestStatus struct {
+		Success func(childComplexity int) int
+	}
+
 	MiniConfig struct {
 		CreatedAt func(childComplexity int) int
 		ID        func(childComplexity int) int
@@ -102,6 +106,7 @@ type ComplexityRoot struct {
 		UpdateCommission func(childComplexity int, input model.CommissionInput) int
 		UpdateGame       func(childComplexity int, input model.GameInput) int
 		UpdateGameMini   func(childComplexity int, id string, input model.GameMiniInput) int
+		UpdateProfile    func(childComplexity int, input model.ProfileInput) int
 	}
 
 	Prices struct {
@@ -155,6 +160,7 @@ type MutationResolver interface {
 	UpdateGame(ctx context.Context, input model.GameInput) (*model.Game, error)
 	CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error)
 	UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error)
+	UpdateProfile(ctx context.Context, input model.ProfileInput) (*model.GenericRequestStatus, error)
 }
 type QueryResolver interface {
 	MyCommissions(ctx context.Context) ([]*model.Commission, error)
@@ -365,6 +371,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.GameMini.UpdatedAt(childComplexity), true
 
+	case "GenericRequestStatus.success":
+		if e.complexity.GenericRequestStatus.Success == nil {
+			break
+		}
+
+		return e.complexity.GenericRequestStatus.Success(childComplexity), true
+
 	case "MiniConfig.createdAt":
 		if e.complexity.MiniConfig.CreatedAt == nil {
 			break
@@ -504,6 +517,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.UpdateGameMini(childComplexity, args["id"].(string), args["input"].(model.GameMiniInput)), true
+
+	case "Mutation.updateProfile":
+		if e.complexity.Mutation.UpdateProfile == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_updateProfile_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.UpdateProfile(childComplexity, args["input"].(model.ProfileInput)), true
 
 	case "Prices.EXTRALARGE":
 		if e.complexity.Prices.Extralarge == nil {
@@ -847,6 +872,10 @@ enum Role {
   CLIENT
 }
 
+type GenericRequestStatus {
+  success: Boolean!
+}
+
 """
 Interface describing all minis
 """
@@ -1048,6 +1077,20 @@ input GameMiniInput {
   size: MiniSize!
 }
 
+input ProfileInputSocials {
+  facebook: String
+  instagram: String
+  twitch: String
+  twitter: String
+}
+
+input ProfileInput {
+  id: ID!
+  name: String!
+  forHire: Boolean!
+  socials: ProfileInputSocials!
+}
+
 """
 All the mutations.  Authentication required.
 """
@@ -1086,6 +1129,11 @@ type Mutation {
   Update a mini for a game
   """
   updateGameMini(id: ID!, input: GameMiniInput!): GameMini!
+
+  """
+  Update your profile data
+  """
+  updateProfile(input: ProfileInput!): GenericRequestStatus!
 }
 `, BuiltIn: false},
 }
@@ -1201,6 +1249,21 @@ func (ec *executionContext) field_Mutation_updateGame_args(ctx context.Context, 
 	if tmp, ok := rawArgs["input"]; ok {
 		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
 		arg0, err = ec.unmarshalNGameInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameInput(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_updateProfile_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.ProfileInput
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNProfileInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐProfileInput(ctx, tmp)
 		if err != nil {
 			return nil, err
 		}
@@ -2259,6 +2322,41 @@ func (ec *executionContext) _GameMini_size(ctx context.Context, field graphql.Co
 	return ec.marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _GenericRequestStatus_success(ctx context.Context, field graphql.CollectedField, obj *model.GenericRequestStatus) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "GenericRequestStatus",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Success, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _MiniConfig_id(ctx context.Context, field graphql.CollectedField, obj *model.MiniConfig) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -2831,6 +2929,48 @@ func (ec *executionContext) _Mutation_updateGameMini(ctx context.Context, field 
 	res := resTmp.(*model.GameMini)
 	fc.Result = res
 	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Mutation_updateProfile(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_updateProfile_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().UpdateProfile(rctx, args["input"].(model.ProfileInput))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GenericRequestStatus)
+	fc.Result = res
+	return ec.marshalNGenericRequestStatus2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGenericRequestStatus(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
@@ -5292,6 +5432,94 @@ func (ec *executionContext) unmarshalInputNewCommission(ctx context.Context, obj
 	return it, nil
 }
 
+func (ec *executionContext) unmarshalInputProfileInput(ctx context.Context, obj interface{}) (model.ProfileInput, error) {
+	var it model.ProfileInput
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "id":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("id"))
+			it.ID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "name":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+			it.Name, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "forHire":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("forHire"))
+			it.ForHire, err = ec.unmarshalNBoolean2bool(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "socials":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("socials"))
+			it.Socials, err = ec.unmarshalNProfileInputSocials2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐProfileInputSocials(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputProfileInputSocials(ctx context.Context, obj interface{}) (model.ProfileInputSocials, error) {
+	var it model.ProfileInputSocials
+	var asMap = obj.(map[string]interface{})
+
+	for k, v := range asMap {
+		switch k {
+		case "facebook":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("facebook"))
+			it.Facebook, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "instagram":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("instagram"))
+			it.Instagram, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "twitch":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("twitch"))
+			it.Twitch, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "twitter":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("twitter"))
+			it.Twitter, err = ec.unmarshalOString2ᚖstring(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
 // endregion **************************** input.gotpl *****************************
 
 // region    ************************** interface.gotpl ***************************
@@ -5545,6 +5773,33 @@ func (ec *executionContext) _GameMini(ctx context.Context, sel ast.SelectionSet,
 	return out
 }
 
+var genericRequestStatusImplementors = []string{"GenericRequestStatus"}
+
+func (ec *executionContext) _GenericRequestStatus(ctx context.Context, sel ast.SelectionSet, obj *model.GenericRequestStatus) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, genericRequestStatusImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("GenericRequestStatus")
+		case "success":
+			out.Values[i] = ec._GenericRequestStatus_success(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
 var miniConfigImplementors = []string{"MiniConfig", "Mini"}
 
 func (ec *executionContext) _MiniConfig(ctx context.Context, sel ast.SelectionSet, obj *model.MiniConfig) graphql.Marshaler {
@@ -5654,6 +5909,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			}
 		case "updateGameMini":
 			out.Values[i] = ec._Mutation_updateGameMini(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updateProfile":
+			out.Values[i] = ec._Mutation_updateProfile(ctx, field)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -6460,6 +6720,20 @@ func (ec *executionContext) unmarshalNGameMiniInput2githubᚗcomᚋmyminicommiss
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
+func (ec *executionContext) marshalNGenericRequestStatus2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGenericRequestStatus(ctx context.Context, sel ast.SelectionSet, v model.GenericRequestStatus) graphql.Marshaler {
+	return ec._GenericRequestStatus(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNGenericRequestStatus2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGenericRequestStatus(ctx context.Context, sel ast.SelectionSet, v *model.GenericRequestStatus) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._GenericRequestStatus(ctx, sel, v)
+}
+
 func (ec *executionContext) unmarshalNID2string(ctx context.Context, v interface{}) (string, error) {
 	res, err := graphql.UnmarshalID(v)
 	return res, graphql.ErrorOnPath(ctx, err)
@@ -6580,6 +6854,16 @@ func (ec *executionContext) marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋa
 func (ec *executionContext) unmarshalNNewCommission2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommission(ctx context.Context, v interface{}) (model.NewCommission, error) {
 	res, err := ec.unmarshalInputNewCommission(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNProfileInput2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐProfileInput(ctx context.Context, v interface{}) (model.ProfileInput, error) {
+	res, err := ec.unmarshalInputProfileInput(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNProfileInputSocials2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐProfileInputSocials(ctx context.Context, v interface{}) (*model.ProfileInputSocials, error) {
+	res, err := ec.unmarshalInputProfileInputSocials(ctx, v)
+	return &res, graphql.ErrorOnPath(ctx, err)
 }
 
 func (ec *executionContext) unmarshalNRole2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐRole(ctx context.Context, v interface{}) ([]*model.Role, error) {

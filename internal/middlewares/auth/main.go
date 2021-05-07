@@ -63,7 +63,8 @@ type ctxKey struct {
 	name string
 }
 
-var userCtxKey = &ctxKey{name: "user"}
+// UserCtxKey is the context key for users
+var UserCtxKey = &ctxKey{name: "user"}
 
 func CreateMiddleware(serverConfig *utils.ServerConfig, orm *orm.ORM) AuthMiddleware {
 	m := AuthMiddleware{
@@ -93,83 +94,86 @@ func (m *AuthMiddleware) Authorize(next http.Handler) http.Handler {
 
 		// extract the auth header
 		authHeader := r.Header.Get("Authorization")
-		authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
 
-		// if the token is present (ie, not blank), decode it
 		if authHeader != "" {
-			log.Debugf("Auth Token: %s", authHeader)
+			authHeader = strings.Replace(authHeader, "Bearer ", "", 1)
 
-			var claims jwt.MapClaims
+			// if the token is present (ie, not blank), decode it
+			if authHeader != "" {
+				log.Debugf("Auth Token: %s", authHeader)
 
-			// parse the token
-			token, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
-				if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
-					return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
-				}
+				var claims jwt.MapClaims
 
-				// extract the claims
-				claims = token.Claims.(jwt.MapClaims)
+				// parse the token
+				token, err := jwt.Parse(authHeader, func(token *jwt.Token) (interface{}, error) {
+					if _, ok := token.Method.(*jwt.SigningMethodRSA); !ok {
+						return nil, fmt.Errorf("unexpected signing method: %v", token.Header["alg"])
+					}
 
-				// check the audience claims
-				checkAud := claims.VerifyAudience(m.auth0Conf.ClientKey, false)
-				if !checkAud {
-					return nil, errors.New("invalid audience")
-				}
+					// extract the claims
+					claims = token.Claims.(jwt.MapClaims)
 
-				// check the issuer claims
-				checkIss := claims.VerifyIssuer(fmt.Sprintf("https://%s/", m.auth0Conf.Domain), false)
-				if !checkIss {
-					return nil, errors.New("invalid issuer")
-				}
+					// check the audience claims
+					checkAud := claims.VerifyAudience(m.auth0Conf.ClientKey, false)
+					if !checkAud {
+						return nil, errors.New("invalid audience")
+					}
 
-				key, err := getAuth0JWKS(m.auth0Conf.Domain, token.Header["kid"].(string))
+					// check the issuer claims
+					checkIss := claims.VerifyIssuer(fmt.Sprintf("https://%s/", m.auth0Conf.Domain), false)
+					if !checkIss {
+						return nil, errors.New("invalid issuer")
+					}
+
+					key, err := getAuth0JWKS(m.auth0Conf.Domain, token.Header["kid"].(string))
+					if err != nil {
+						return nil, err
+					}
+
+					cert := "-----BEGIN CERTIFICATE-----\n" + key + "\n-----END CERTIFICATE-----"
+					result, _ := jwt.ParseRSAPublicKeyFromPEM([]byte(cert))
+
+					return result, nil
+				})
+
 				if err != nil {
-					return nil, err
+					log.Errorf("Error parsing token: %s", err.Error())
 				}
 
-				cert := "-----BEGIN CERTIFICATE-----\n" + key + "\n-----END CERTIFICATE-----"
-				result, _ := jwt.ParseRSAPublicKeyFromPEM([]byte(cert))
+				if token.Valid {
+					// if valid, lookup user in the DB and set them in context...
+					email := fmt.Sprint(claims["email"])
+					nickname := fmt.Sprint(claims["nickname"])
+					name := fmt.Sprint(claims["name"])
+					picture := fmt.Sprint(claims["picture"])
 
-				return result, nil
-			})
+					// get the user (if there is one)
+					user, err = queries.GetUserWithNickname(m.ORM, nickname)
+					if err != nil {
+						// handle the error
+						log.Errorf("Error looking up user: %s", err.Error())
 
-			if err != nil {
-				log.Errorf("Error parsing token: %s", err.Error())
-			}
-
-			if token.Valid {
-				// if valid, lookup user in the DB and set them in context...
-				email := fmt.Sprint(claims["email"])
-				nickname := fmt.Sprint(claims["nickname"])
-				name := fmt.Sprint(claims["name"])
-				picture := fmt.Sprint(claims["picture"])
-
-				// get the user (if there is one)
-				user, err = queries.GetUserWithNickname(m.ORM, nickname)
-				if err != nil {
-					// handle the error
-					log.Errorf("Error looking up user: %s", err.Error())
-
-					// create the user if one wasn't found
-					if err.Error() == "record not found" {
-						user, err = mutations.CreateUser(m.ORM, &models.User{
-							Name:     &name,
-							NickName: &nickname,
-							Email:    email,
-							Picture:  &picture,
-						})
-						if err != nil {
-							// handle the erorr
-							log.Errorf("Error while creating the user: %s", err.Error())
+						// create the user if one wasn't found
+						if err.Error() == "record not found" {
+							user, err = mutations.CreateUser(m.ORM, &models.User{
+								Name:     &name,
+								NickName: &nickname,
+								Email:    email,
+								Picture:  &picture,
+							})
+							if err != nil {
+								// handle the erorr
+								log.Errorf("Error while creating the user: %s", err.Error())
+							}
 						}
 					}
 				}
 			}
-		}
 
-		if user.ID != uuid.Nil {
-			ctx := context.WithValue(r.Context(), userCtxKey, user)
-			r = r.WithContext(ctx)
+			if user.ID != uuid.Nil {
+				ctx := context.WithValue(r.Context(), UserCtxKey, user)
+				r = r.WithContext(ctx)
+			}
 		}
 
 		// continue with the request
