@@ -1,4 +1,4 @@
-FROM golangci/golangci-lint:v1.27-alpine AS build
+FROM golangci/golangci-lint:latest-alpine AS build
 RUN apk add git
 ENV CGO_ENABLED=0
 RUN apk --no-cache add ca-certificates
