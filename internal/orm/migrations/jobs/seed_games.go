@@ -7,12 +7,27 @@ import (
 	"gopkg.in/gormigrate.v1"
 )
 
-var firstGame *models.Game = &models.Game{
-	Name: "Star Wars Legion",
-	Minis: []*models.GameMini{
-		{
-			Name: "Darth Vader",
-			Size: model.MiniSizeMedium,
+var firstGames []*models.Game = []*models.Game{
+	{
+		Name: "Star Wars Legion",
+		Minis: []*models.GameMini{
+			{
+				Name: "Darth Vader",
+				Size: model.MiniSizeMedium,
+			},
+		},
+	},
+	{
+		Name: "Warhammer 40,000",
+		Minis: []*models.GameMini{
+			{
+				Name: "Drukhari: Drazhar",
+				Size: model.MiniSizeMedium,
+			},
+			{
+				Name: "Drukhari: Raider",
+				Size: model.MiniSizeLarge,
+			},
 		},
 	},
 }
@@ -21,9 +36,21 @@ var firstGame *models.Game = &models.Game{
 var SeedGames *gormigrate.Migration = &gormigrate.Migration{
 	ID: "SEED_GAMES",
 	Migrate: func(db *gorm.DB) error {
-		return db.Create(&firstGame).Error
+		for _, game := range firstGames {
+			err := db.Create(&game).Error
+			if err != nil {
+				return err
+			}
+		}
+		return nil
 	},
 	Rollback: func(db *gorm.DB) error {
-		return db.Delete(&firstGame).Error
+		for _, game := range firstGames {
+			err := db.Delete(&game).Error
+			if err != nil {
+				return err
+			}
+		}
+		return nil
 	},
 }
