@@ -85,3 +85,50 @@ func GetGameMini(orm *orm.ORM, id uuid.UUID) (*model.GameMini, error) {
 
 	return mini, nil
 }
+
+// GetGameMiniByNameAndGameName returns a single GameMini with the given name and game name
+func GetGameMiniByNameAndGameName(orm *orm.ORM, name, gameName string) (*model.GameMini, error) {
+	dbGameMini, err := queries.GetMiniByNameAndGameName(orm, name, gameName)
+	if err != nil {
+		return nil, err
+	}
+
+	mini, err := transformations.DBGameMiniToGQLGameMini(dbGameMini)
+	if err != nil {
+		return nil, err
+	}
+
+	return mini, nil
+}
+
+// CreateGame creates and returns a new game with the given name
+func CreateGame(orm *orm.ORM, name string) (*model.Game, error) {
+	dbGame, err := queries.CreateGame(orm, name)
+	if err != nil {
+		return nil, err
+	}
+
+	// transform the game for GQL
+	game, err := transformations.DBGameToGQLGame(dbGame)
+	if err != nil {
+		return nil, err
+	}
+
+	return game, nil
+}
+
+func CreateGameMini(orm *orm.ORM, input *model.GameMiniInput) (*model.GameMini, error) {
+	game := uuid.FromStringOrNil(input.Game)
+	dbMini, err := queries.CreateGameMini(orm, game, input.Name)
+	if err != nil {
+		return nil, err
+	}
+
+	// transform the mini for GQL
+	mini, err := transformations.DBGameMiniToGQLGameMini(dbMini)
+	if err != nil {
+		return nil, err
+	}
+
+	return mini, nil
+}

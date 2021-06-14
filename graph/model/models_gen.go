@@ -73,9 +73,9 @@ type GameMini struct {
 func (GameMini) IsMini() {}
 
 type GameMiniInput struct {
-	Game string   `json:"game"`
-	Name string   `json:"name"`
-	Size MiniSize `json:"size"`
+	Game string    `json:"game"`
+	Name string    `json:"name"`
+	Size *MiniSize `json:"size"`
 }
 
 type GenericRequestStatus struct {
