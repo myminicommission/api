@@ -6,7 +6,6 @@ import (
 	log "github.com/myminicommission/api/internal/logger"
 
 	"github.com/jinzhu/gorm"
-	"github.com/myminicommission/api/internal/orm/migrations/jobs"
 	"github.com/myminicommission/api/internal/orm/models"
 	"gopkg.in/gormigrate.v1"
 )
@@ -50,12 +49,5 @@ func ServiceAutoMigration(db *gorm.DB) error {
 		return err
 	}
 
-	m = gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
-		jobs.SeedUsers,
-		jobs.SeedGames,
-		jobs.SeedCommissions,
-		jobs.SeedMiniConfigs,
-	})
-
-	return m.Migrate()
+	return nil
 }
