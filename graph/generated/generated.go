@@ -127,6 +127,7 @@ type ComplexityRoot struct {
 		GameMinis        func(childComplexity int, game string) int
 		Games            func(childComplexity int) int
 		MiniConfigs      func(childComplexity int) int
+		MiniWithName     func(childComplexity int, name string, game string) int
 		MyCommissions    func(childComplexity int) int
 		User             func(childComplexity int, id string) int
 		UserWithNickname func(childComplexity int, nname string) int
@@ -172,6 +173,7 @@ type QueryResolver interface {
 	Game(ctx context.Context, id string) (*model.Game, error)
 	GameMinis(ctx context.Context, game string) ([]*model.GameMini, error)
 	GameMini(ctx context.Context, id string) (*model.GameMini, error)
+	MiniWithName(ctx context.Context, name string, game string) (*model.GameMini, error)
 }
 
 type executableSchema struct {
@@ -648,6 +650,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 
 		return e.complexity.Query.MiniConfigs(childComplexity), true
 
+	case "Query.miniWithName":
+		if e.complexity.Query.MiniWithName == nil {
+			break
+		}
+
+		args, err := ec.field_Query_miniWithName_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.MiniWithName(childComplexity, args["name"].(string), args["game"].(string)), true
+
 	case "Query.myCommissions":
 		if e.complexity.Query.MyCommissions == nil {
 			break
@@ -1032,6 +1046,11 @@ type Query {
   Fetches a specific game mini
   """
   gameMini(id: ID!): GameMini!
+
+  """
+  Fetches a mini by name and game name
+  """
+  miniWithName(name: String!, game: String!): GameMini!
 }
 
 """
@@ -1074,7 +1093,7 @@ input GameInput {
 input GameMiniInput {
   game: ID!
   name: String!
-  size: MiniSize!
+  size: MiniSize
 }
 
 input ProfileInputSocials {
@@ -1344,6 +1363,30 @@ func (ec *executionContext) field_Query_game_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_miniWithName_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["name"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["game"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("game"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["game"] = arg1
 	return args, nil
 }
 
@@ -3610,6 +3653,48 @@ func (ec *executionContext) _Query_gameMini(ctx context.Context, field graphql.C
 	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Query_miniWithName(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_miniWithName_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MiniWithName(rctx, args["name"].(string), args["game"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Query___type(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -5298,7 +5383,7 @@ func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("size"))
-			it.Size, err = ec.unmarshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
+			it.Size, err = ec.unmarshalOMiniSize2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -6126,6 +6211,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 					}
 				}()
 				res = ec._Query_gameMini(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
+		case "miniWithName":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_miniWithName(ctx, field)
 				if res == graphql.Null {
 					atomic.AddUint32(&invalids, 1)
 				}

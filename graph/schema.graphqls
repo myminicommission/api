@@ -196,6 +196,11 @@ type Query {
   Fetches a specific game mini
   """
   gameMini(id: ID!): GameMini!
+
+  """
+  Fetches a mini by name and game name
+  """
+  miniWithName(name: String!, game: String!): GameMini!
 }
 
 """
@@ -238,7 +243,7 @@ input GameInput {
 input GameMiniInput {
   game: ID!
   name: String!
-  size: MiniSize!
+  size: MiniSize
 }
 
 input ProfileInputSocials {

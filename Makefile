@@ -1,6 +1,6 @@
 start: start/api
 down:
-	docker compose down
+	@docker compose down
 
 .PHONY: generate
 generate:
@@ -8,15 +8,15 @@ generate:
 
 .PHONY: start/api
 start/api:
-	docker-compose --compatibility up --build api
+	@docker compose up --build api
 
 .PHONY: start/db
 start/db:
-	docker compose up postgres
+	@docker compose up postgres
 
 .PHONY: stop/db
 stop/db:
-	docker compose stop postgres
+	@docker compose stop postgres
 
 .PHONY: test-lint-and-build
 test-lint-and-build:
