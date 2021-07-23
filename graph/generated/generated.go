@@ -1059,7 +1059,7 @@ Input for creating a new commission (automatically sets the status to ESTIMATE)
 input NewCommission {
   comments: String
   minis: [MiniInput]!
-  artist: ID!
+  artistNickname: String!
 }
 
 """
@@ -5503,11 +5503,11 @@ func (ec *executionContext) unmarshalInputNewCommission(ctx context.Context, obj
 			if err != nil {
 				return it, err
 			}
-		case "artist":
+		case "artistNickname":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("artist"))
-			it.Artist, err = ec.unmarshalNID2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("artistNickname"))
+			it.ArtistNickname, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}

@@ -209,7 +209,7 @@ Input for creating a new commission (automatically sets the status to ESTIMATE)
 input NewCommission {
   comments: String
   minis: [MiniInput]!
-  artist: ID!
+  artistNickname: String!
 }
 
 """

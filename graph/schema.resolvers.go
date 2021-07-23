@@ -20,12 +20,12 @@ import (
 
 func (r *mutationResolver) NewCommission(ctx context.Context, input model.NewCommission) (*model.Commission, error) {
 	// TODO: determine current user or reject request
-	user, err := queries.GetUserWithNickname(r.ORM, "TestUser2")
-	if err != nil {
-		return nil, err
+	currentUser := r.GetCurrentUser(ctx)
+	if currentUser == nil {
+		return nil, errors.New("no user authenticated for this request")
 	}
 
-	return helpers.NewCommission(r.ORM, &input, user.ID)
+	return helpers.NewCommission(r.ORM, &input, currentUser.ID)
 }
 
 func (r *mutationResolver) UpdateCommission(ctx context.Context, input model.CommissionInput) (*model.Commission, error) {

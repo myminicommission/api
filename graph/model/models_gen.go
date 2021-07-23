@@ -112,9 +112,9 @@ type MiniInput struct {
 
 // Input for creating a new commission (automatically sets the status to ESTIMATE)
 type NewCommission struct {
-	Comments *string      `json:"comments"`
-	Minis    []*MiniInput `json:"minis"`
-	Artist   string       `json:"artist"`
+	Comments       *string      `json:"comments"`
+	Minis          []*MiniInput `json:"minis"`
+	ArtistNickname string       `json:"artistNickname"`
 }
 
 // Default prices as configured by the user

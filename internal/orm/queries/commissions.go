@@ -33,6 +33,9 @@ func GetCommission(orm *orm.ORM, id uuid.UUID) (*models.Commission, error) {
 	var commission models.Commission
 
 	db := orm.DB.New()
+	db = db.Preload("Artist")
+	db = db.Preload("Patron")
+	db = db.Preload("Minis")
 	db = db.First(&commission, "id = ?", id.String())
 
 	if db.Error != nil {

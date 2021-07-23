@@ -2,18 +2,22 @@ package transformations
 
 import (
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm/models"
 )
 
 // DBCommissionToGQLCommission transforms a DB Commission to a GQL Commission
 func DBCommissionToGQLCommission(i *models.Commission) (o *model.Commission, err error) {
+	logger.Debug(i)
 	artist, err := DBUserToGQLUser(i.Artist)
 	if err != nil {
+		logger.Errorf("error marshalling artist: %v - %v", i.Artist, err)
 		return
 	}
 
 	patron, err := DBUserToGQLUser(i.Patron)
 	if err != nil {
+		logger.Errorf("error marshalling patron: %v - %v", i.Patron, err)
 		return
 	}
 
@@ -26,6 +30,8 @@ func DBCommissionToGQLCommission(i *models.Commission) (o *model.Commission, err
 		CreatedAt: i.CreatedAt,
 		UpdatedAt: i.UpdatedAt,
 	}
+
+	println(o)
 
 	// transform the minis
 	for _, dbMini := range i.Minis {
@@ -45,6 +51,7 @@ func DBCommissionedMiniToGQLCommissionedMini(i *models.CommissionedMini) (o *mod
 	notes := i.Notes
 	o = &model.CommissionedMini{
 		ID:        i.ID.String(),
+		Name:      i.Name,
 		Price:     i.Price,
 		Size:      i.Size,
 		Quantity:  i.Quantity,
