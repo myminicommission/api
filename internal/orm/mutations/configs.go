@@ -8,8 +8,7 @@ import (
 
 // SaveMiniConfig creates or updates a MiniConfig record
 func SaveMiniConfig(orm *orm.ORM, i *models.MiniConfig) (*models.MiniConfig, error) {
-	db := orm.DB.New()
-	db = db.Save(i)
+	db := orm.DB.Save(i)
 	if db.Error != nil {
 		return nil, db.Error
 	}

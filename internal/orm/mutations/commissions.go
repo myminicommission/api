@@ -76,8 +76,12 @@ func CreateCommission(orm *orm.ORM, i *model.NewCommission, patronID uuid.UUID) 
 
 		// get the corresponding MiniConfig, if there is one
 		miniConfig, err := queries.GetMiniConfig(orm, gameMini, artist)
-		if err != nil && err != gorm.ErrRecordNotFound {
-			return nil, err
+		if err != nil {
+			if isNotFound := err.Error() == gorm.ErrRecordNotFound.Error(); !isNotFound {
+				log.WithError(err).Errorf("there was an error getting mini config for mini %s (%s)", gameMini.Name, gameMini.ID.String())
+				return nil, err
+			}
+
 		}
 
 		if miniConfig != nil && err == nil {
@@ -104,8 +108,7 @@ func CreateCommission(orm *orm.ORM, i *model.NewCommission, patronID uuid.UUID) 
 	}
 
 	// save the new commission
-	db := orm.DB.New()
-	db = db.Create(&commission)
+	err = orm.DB.Create(&commission).Error
 
-	return &commission, db.Error
+	return &commission, err
 }

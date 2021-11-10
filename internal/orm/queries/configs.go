@@ -9,8 +9,7 @@ import (
 func GetMiniConfigs(orm *orm.ORM, user *models.User) ([]*models.MiniConfig, error) {
 	var configs []*models.MiniConfig
 
-	db := orm.DB.New()
-	db = db.Where("user_id = ?", user.ID.String())
+	db := orm.DB.Where("user_id = ?", user.ID.String())
 	db = db.Preload("Mini")
 	db = db.Preload("User")
 	db = db.Find(&configs)
@@ -22,8 +21,7 @@ func GetMiniConfigs(orm *orm.ORM, user *models.User) ([]*models.MiniConfig, erro
 func GetMiniConfig(orm *orm.ORM, mini *models.GameMini, user *models.User) (*models.MiniConfig, error) {
 	var config models.MiniConfig
 
-	db := orm.DB.New()
-	db = db.Where("mini_id = ?", mini.ID.String())
+	db := orm.DB.Where("mini_id = ?", mini.ID.String())
 	db = db.Where("user_id = ?", user.ID.String())
 	db = db.Preload("User")
 	db = db.Preload("Mini")

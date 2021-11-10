@@ -89,6 +89,10 @@ func (r *mutationResolver) UpdateProfile(ctx context.Context, input model.Profil
 	return &resp, nil
 }
 
+func (r *mutationResolver) NewCommissionDiscussionItem(ctx context.Context, input model.NewCommissionDiscussionItem) (*model.DiscussionItem, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
 	// TODO: determine current user or reject request
 	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")

@@ -4,6 +4,7 @@ down:
 
 .PHONY: generate
 generate:
+	go get github.com/99designs/gqlgen/cmd
 	go generate ./...
 
 .PHONY: start/api
@@ -21,3 +22,10 @@ stop/db:
 .PHONY: test-lint-and-build
 test-lint-and-build:
 	@docker build --target build .
+
+.PHONY: clean
+clean:
+	rm -rf graph/generated
+	rm -rf graph/model
+	rm -rf bin
+	rm -f coverage.out

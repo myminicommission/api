@@ -26,7 +26,8 @@ import (
 
 func main() {
 	var serverconf = &utils.ServerConfig{
-		Port: utils.MustGet("PORT"),
+		Port:   utils.MustGet("PORT"),
+		Logger: log.NewLogger(),
 		GraphQL: utils.GQLConfig{
 			Path:                utils.MustGet("GQL_SERVER_GRAPHQL_PATH"),
 			PlaygroundPath:      utils.MustGet("GQL_SERVER_GRAPHQL_PLAYGROUND_PATH"),

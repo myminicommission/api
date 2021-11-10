@@ -60,6 +60,7 @@ type Commission {
   createdAt: Time!
   updatedAt: Time!
   total: Float!
+  discussionItems: [DiscussionItem]!
 }
 
 """
@@ -149,6 +150,17 @@ type MiniConfig implements Mini {
   name: String!
   size: MiniSize!
   mini: GameMini!
+}
+
+"""
+A discussion item represents an element of a conversation
+"""
+type DiscussionItem {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  author: User!
+  body: String!
 }
 
 type Query {
@@ -261,6 +273,14 @@ input ProfileInput {
 }
 
 """
+Creates a new discussion item related to a commission
+"""
+input NewCommissionDiscussionItem {
+  commissionId: ID!
+  body: String!
+}
+
+"""
 All the mutations.  Authentication required.
 """
 type Mutation {
@@ -303,4 +323,11 @@ type Mutation {
   Update your profile data
   """
   updateProfile(input: ProfileInput!): GenericRequestStatus!
+
+  """
+  Creates a new discussion item on a commission
+  """
+  newCommissionDiscussionItem(
+    input: NewCommissionDiscussionItem!
+  ): DiscussionItem!
 }

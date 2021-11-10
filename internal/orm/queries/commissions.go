@@ -5,6 +5,7 @@ import (
 	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/orm/models"
+	"gorm.io/gorm/clause"
 )
 
 // GetMyCommissions returns commissions where the
@@ -12,12 +13,11 @@ import (
 func GetMyCommissions(orm *orm.ORM, id uuid.UUID) ([]*models.Commission, error) {
 	var commissions []*models.Commission
 
-	db := orm.DB.New()
-	db = db.Where("artist_id = ?", id.String())
+	db := orm.DB.Where("artist_id = ?", id.String())
 	db = db.Or("patron_id = ?", id.String())
-	db = db.Preload("Artist")
-	db = db.Preload("Patron")
-	db = db.Preload("Minis")
+	db = db.Preload(clause.Associations)
+	db = db.Preload("CommissionDiscussionItems." + clause.Associations)
+	db = db.Preload("CommissionDiscussionItems.DiscussionItem." + clause.Associations)
 	db = db.Find(&commissions)
 
 	if db.Error != nil {
@@ -32,10 +32,9 @@ func GetMyCommissions(orm *orm.ORM, id uuid.UUID) ([]*models.Commission, error) 
 func GetCommission(orm *orm.ORM, id uuid.UUID) (*models.Commission, error) {
 	var commission models.Commission
 
-	db := orm.DB.New()
-	db = db.Preload("Artist")
-	db = db.Preload("Patron")
-	db = db.Preload("Minis")
+	db := orm.DB.Preload(clause.Associations)
+	db = db.Preload("CommissionDiscussionItems." + clause.Associations)
+	db = db.Preload("CommissionDiscussionItems.DiscussionItem." + clause.Associations)
 	db = db.First(&commission, "id = ?", id.String())
 
 	if db.Error != nil {
@@ -50,8 +49,7 @@ func GetCommission(orm *orm.ORM, id uuid.UUID) (*models.Commission, error) {
 func GetCommissionedMinis(orm *orm.ORM, id uuid.UUID) ([]*models.CommissionedMini, error) {
 	var minis []*models.CommissionedMini
 
-	db := orm.DB.New()
-	db = db.Where("commission_id = ?", id.String())
+	db := orm.DB.Where("commission_id = ?", id.String())
 	db = db.Find(&minis)
 
 	if db.Error != nil {
@@ -66,8 +64,7 @@ func GetCommissionedMinis(orm *orm.ORM, id uuid.UUID) ([]*models.CommissionedMin
 func GetCommissionedMini(orm *orm.ORM, id uuid.UUID) (*models.CommissionedMini, error) {
 	var mini models.CommissionedMini
 
-	db := orm.DB.New()
-	db = db.First(&mini, "id = ?", id.String())
+	db := orm.DB.First(&mini, "id = ?", id.String())
 
 	if db.Error != nil {
 		log.Errorf("[ORM][commissioned_minis] %s", db.Error.Error())
