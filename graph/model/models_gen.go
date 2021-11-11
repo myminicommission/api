@@ -16,14 +16,15 @@ type Mini interface {
 
 // This is the heart of the application. Without this, nothing else matters.
 type Commission struct {
-	ID        string              `json:"id"`
-	Artist    *User               `json:"artist"`
-	Patron    *User               `json:"patron"`
-	Status    Status              `json:"status"`
-	Minis     []*CommissionedMini `json:"minis"`
-	CreatedAt time.Time           `json:"createdAt"`
-	UpdatedAt time.Time           `json:"updatedAt"`
-	Total     float64             `json:"total"`
+	ID              string              `json:"id"`
+	Artist          *User               `json:"artist"`
+	Patron          *User               `json:"patron"`
+	Status          Status              `json:"status"`
+	Minis           []*CommissionedMini `json:"minis"`
+	CreatedAt       time.Time           `json:"createdAt"`
+	UpdatedAt       time.Time           `json:"updatedAt"`
+	Total           float64             `json:"total"`
+	DiscussionItems []*DiscussionItem   `json:"discussionItems"`
 }
 
 // Input for maintaining commissions
@@ -46,6 +47,15 @@ type CommissionedMini struct {
 }
 
 func (CommissionedMini) IsMini() {}
+
+// A discussion item represents an element of a conversation
+type DiscussionItem struct {
+	ID        string    `json:"id"`
+	CreatedAt time.Time `json:"createdAt"`
+	UpdatedAt time.Time `json:"updatedAt"`
+	Author    *User     `json:"author"`
+	Body      string    `json:"body"`
+}
 
 // Games are collections of minis
 type Game struct {
@@ -73,9 +83,9 @@ type GameMini struct {
 func (GameMini) IsMini() {}
 
 type GameMiniInput struct {
-	Game string   `json:"game"`
-	Name string   `json:"name"`
-	Size MiniSize `json:"size"`
+	Game string    `json:"game"`
+	Name string    `json:"name"`
+	Size *MiniSize `json:"size"`
 }
 
 type GenericRequestStatus struct {
@@ -112,9 +122,15 @@ type MiniInput struct {
 
 // Input for creating a new commission (automatically sets the status to ESTIMATE)
 type NewCommission struct {
-	Comments *string      `json:"comments"`
-	Minis    []*MiniInput `json:"minis"`
-	Artist   string       `json:"artist"`
+	Comments       *string      `json:"comments"`
+	Minis          []*MiniInput `json:"minis"`
+	ArtistNickname string       `json:"artistNickname"`
+}
+
+// Creates a new discussion item related to a commission
+type NewCommissionDiscussionItem struct {
+	CommissionID string `json:"commissionId"`
+	Body         string `json:"body"`
 }
 
 // Default prices as configured by the user

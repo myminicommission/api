@@ -3,27 +3,21 @@ module github.com/myminicommission/api
 go 1.16
 
 require (
-	github.com/99designs/gqlgen v0.13.0
-	github.com/agnivade/levenshtein v1.1.0 // indirect
+	github.com/99designs/gqlgen v0.14.0
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
+	github.com/go-gormigrate/gormigrate/v2 v2.0.0
 	github.com/gofrs/uuid v4.0.0+incompatible
-	github.com/golang/protobuf v1.5.2 // indirect
-	github.com/google/martian/v3 v3.1.0
 	github.com/gorilla/mux v1.8.0
-	github.com/gorilla/sessions v1.2.1
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/jinzhu/gorm v1.9.16
 	github.com/joho/godotenv v1.3.0
-	github.com/lib/pq v1.10.1 // indirect
-	github.com/markbates/goth v1.67.1 // indirect
 	github.com/mitchellh/mapstructure v1.4.1 // indirect
 	github.com/sirupsen/logrus v1.8.1
-	github.com/stretchr/testify v1.5.1 // indirect
+	github.com/stretchr/testify v1.7.0 // indirect
 	github.com/urfave/negroni v1.0.0
-	github.com/vektah/gqlparser/v2 v2.1.0
-	golang.org/x/net v0.0.0-20210414194228-064579744ee0 // indirect
-	golang.org/x/oauth2 v0.0.0-20210413134643-5e61552d6c78 // indirect
-	golang.org/x/sys v0.0.0-20210426230700-d19ff857e887 // indirect
-	google.golang.org/appengine v1.6.7 // indirect
+	github.com/vektah/gqlparser/v2 v2.2.0
 	gopkg.in/gormigrate.v1 v1.6.0
+	gopkg.in/yaml.v2 v2.3.0 // indirect
+	gorm.io/driver/postgres v1.2.1
+	gorm.io/gorm v1.22.2
 )

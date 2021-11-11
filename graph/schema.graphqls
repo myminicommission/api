@@ -60,6 +60,7 @@ type Commission {
   createdAt: Time!
   updatedAt: Time!
   total: Float!
+  discussionItems: [DiscussionItem]!
 }
 
 """
@@ -151,6 +152,17 @@ type MiniConfig implements Mini {
   mini: GameMini!
 }
 
+"""
+A discussion item represents an element of a conversation
+"""
+type DiscussionItem {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  author: User!
+  body: String!
+}
+
 type Query {
   """
   Returns commissions where the authenticated user is either the artist or the patron.
@@ -196,6 +208,11 @@ type Query {
   Fetches a specific game mini
   """
   gameMini(id: ID!): GameMini!
+
+  """
+  Fetches a mini by name and game name
+  """
+  miniWithName(name: String!, game: String!): GameMini!
 }
 
 """
@@ -204,7 +221,7 @@ Input for creating a new commission (automatically sets the status to ESTIMATE)
 input NewCommission {
   comments: String
   minis: [MiniInput]!
-  artist: ID!
+  artistNickname: String!
 }
 
 """
@@ -238,7 +255,7 @@ input GameInput {
 input GameMiniInput {
   game: ID!
   name: String!
-  size: MiniSize!
+  size: MiniSize
 }
 
 input ProfileInputSocials {
@@ -253,6 +270,14 @@ input ProfileInput {
   name: String!
   forHire: Boolean!
   socials: ProfileInputSocials!
+}
+
+"""
+Creates a new discussion item related to a commission
+"""
+input NewCommissionDiscussionItem {
+  commissionId: ID!
+  body: String!
 }
 
 """
@@ -298,4 +323,11 @@ type Mutation {
   Update your profile data
   """
   updateProfile(input: ProfileInput!): GenericRequestStatus!
+
+  """
+  Creates a new discussion item on a commission
+  """
+  newCommissionDiscussionItem(
+    input: NewCommissionDiscussionItem!
+  ): DiscussionItem!
 }

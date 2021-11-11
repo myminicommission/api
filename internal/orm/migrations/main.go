@@ -1,60 +1,105 @@
 package migrations
 
 import (
-	"fmt"
-
-	log "github.com/myminicommission/api/internal/logger"
-
-	"github.com/jinzhu/gorm"
-	"github.com/myminicommission/api/internal/orm/migrations/jobs"
+	"github.com/go-gormigrate/gormigrate/v2"
 	"github.com/myminicommission/api/internal/orm/models"
-	"gopkg.in/gormigrate.v1"
+	"gorm.io/gorm"
 )
-
-func updateMigration(db *gorm.DB) error {
-	return db.AutoMigrate(
-		&models.User{},
-		&models.Game{},
-		&models.GameMini{},
-		&models.Commission{},
-		&models.CommissionedMini{},
-		&models.MiniConfig{},
-		&models.Socials{},
-	).Error
-}
 
 // ServiceAutoMigration migrates all the tables and modifications to the connected source
 func ServiceAutoMigration(db *gorm.DB) error {
-	// keep a lit of migrations
-	m := gormigrate.New(db, gormigrate.DefaultOptions, nil)
-	m.InitSchema(func(db *gorm.DB) error {
-		log.Info("[Migration.InitSchema] Initializing database scheme")
-		switch db.Dialect().GetName() {
-		case "postgres":
-			// lets create the UUID extension, the user has to have superuser permission
-			db.Exec("create extension \"uuid-ossp\";")
-		}
-
-		if err := updateMigration(db); err != nil {
-			return fmt.Errorf("[Migration.InitSchema]: %v", err)
-		}
-		// add more jobs below
-		return nil
-	})
-
-	if err := m.Migrate(); err != nil {
-		return err
-	}
-
-	if err := updateMigration(db); err != nil {
-		return err
-	}
-
-	m = gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
-		jobs.SeedUsers,
-		jobs.SeedGames,
-		jobs.SeedCommissions,
-		jobs.SeedMiniConfigs,
+	// keep a list of migrations
+	m := gormigrate.New(db, gormigrate.DefaultOptions, []*gormigrate.Migration{
+		// users
+		{
+			ID: "users_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.User{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("users")
+			},
+		},
+		// games
+		{
+			ID: "games_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.Game{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("games")
+			},
+		},
+		// 		&models.GameMini{},
+		{
+			ID: "game_minis_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.GameMini{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("game_minis")
+			},
+		},
+		// 		&models.Commission{},
+		{
+			ID: "commissions_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.Commission{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("commissions")
+			},
+		},
+		// 		&models.DiscussionItem{},
+		{
+			ID: "discussion_items_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.DiscussionItem{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("discussion_items")
+			},
+		},
+		// 		&models.CommissionDiscussionItem{},
+		{
+			ID: "commission_discussion_items_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.CommissionDiscussionItem{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("commission_discussion_items")
+			},
+		},
+		// 		&models.CommissionedMini{},
+		{
+			ID: "commissioned_minis_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.CommissionedMini{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("commissioned_minis")
+			},
+		},
+		// 		&models.MiniConfig{},
+		{
+			ID: "mini_configs_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.MiniConfig{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("mini_configs")
+			},
+		},
+		// 		&models.Socials{},
+		{
+			ID: "socials_table",
+			Migrate: func(d *gorm.DB) error {
+				return d.AutoMigrate(&models.Socials{})
+			},
+			Rollback: func(d *gorm.DB) error {
+				return d.Migrator().DropTable("socials")
+			},
+		},
 	})
 
 	return m.Migrate()

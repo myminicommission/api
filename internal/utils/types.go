@@ -1,5 +1,9 @@
 package utils
 
+import (
+	"github.com/myminicommission/api/internal/logger"
+)
+
 // ContextKey defines a type for context keys shared in the app
 type ContextKey string
 
@@ -11,6 +15,7 @@ type ServerConfig struct {
 	GraphQL       GQLConfig
 	Database      DBConfig
 	AuthProviders []AuthProvider
+	Logger        *logger.StandardLogger
 }
 
 //JWTConfig defines the options for JWT tokens

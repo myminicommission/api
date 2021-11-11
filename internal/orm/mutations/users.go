@@ -12,8 +12,7 @@ func CreateUser(orm *orm.ORM, user *models.User) (*models.User, error) {
 		user.Socials = &models.Socials{}
 	}
 
-	db := orm.DB.New()
-	db = db.Create(user)
+	db := orm.DB.Create(user)
 
 	return user, db.Error
 }
@@ -43,8 +42,7 @@ func UpdateProfile(orm *orm.ORM, user *models.User, input *model.ProfileInput) e
 
 	user.Socials = socials
 
-	db := orm.DB.New()
-	db = db.Save(user)
+	db := orm.DB.Save(user)
 
 	return db.Error
 }

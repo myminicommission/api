@@ -13,18 +13,19 @@ import (
 	"github.com/myminicommission/api/graph/helpers"
 	"github.com/myminicommission/api/graph/helpers/transformations"
 	"github.com/myminicommission/api/graph/model"
+	"github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm/mutations"
 	"github.com/myminicommission/api/internal/orm/queries"
 )
 
 func (r *mutationResolver) NewCommission(ctx context.Context, input model.NewCommission) (*model.Commission, error) {
 	// TODO: determine current user or reject request
-	user, err := queries.GetUserWithNickname(r.ORM, "TestUser2")
-	if err != nil {
-		return nil, err
+	currentUser := r.GetCurrentUser(ctx)
+	if currentUser == nil {
+		return nil, errors.New("no user authenticated for this request")
 	}
 
-	return helpers.NewCommission(r.ORM, &input, user.ID)
+	return helpers.NewCommission(r.ORM, &input, currentUser.ID)
 }
 
 func (r *mutationResolver) UpdateCommission(ctx context.Context, input model.CommissionInput) (*model.Commission, error) {
@@ -42,7 +43,8 @@ func (r *mutationResolver) SaveMiniConfig(ctx context.Context, input model.MiniC
 }
 
 func (r *mutationResolver) CreateGame(ctx context.Context, name string) (*model.Game, error) {
-	panic(fmt.Errorf("not implemented"))
+	logger.Infof("Acount to create game: %s", name)
+	return helpers.CreateGame(r.ORM, name)
 }
 
 func (r *mutationResolver) UpdateGame(ctx context.Context, input model.GameInput) (*model.Game, error) {
@@ -50,7 +52,7 @@ func (r *mutationResolver) UpdateGame(ctx context.Context, input model.GameInput
 }
 
 func (r *mutationResolver) CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error) {
-	panic(fmt.Errorf("not implemented"))
+	return helpers.CreateGameMini(r.ORM, input)
 }
 
 func (r *mutationResolver) UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error) {
@@ -87,13 +89,17 @@ func (r *mutationResolver) UpdateProfile(ctx context.Context, input model.Profil
 	return &resp, nil
 }
 
+func (r *mutationResolver) NewCommissionDiscussionItem(ctx context.Context, input model.NewCommissionDiscussionItem) (*model.DiscussionItem, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
-	// TODO: determine current user or reject request
-	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")
-	if err != nil {
-		return nil, err
+	currentUser := r.GetCurrentUser(ctx)
+	if currentUser == nil {
+		return nil, errors.New("no user authenticated for this request")
 	}
-	return helpers.MyCommissions(r.ORM, user.ID)
+
+	return helpers.MyCommissions(r.ORM, currentUser.ID)
 }
 
 func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commission, error) {
@@ -136,6 +142,10 @@ func (r *queryResolver) GameMinis(ctx context.Context, game string) ([]*model.Ga
 
 func (r *queryResolver) GameMini(ctx context.Context, id string) (*model.GameMini, error) {
 	return helpers.GetGameMini(r.ORM, uuid.FromStringOrNil(id))
+}
+
+func (r *queryResolver) MiniWithName(ctx context.Context, name string, game string) (*model.GameMini, error) {
+	return helpers.GetGameMiniByNameAndGameName(r.ORM, name, game)
 }
 
 // Mutation returns generated.MutationResolver implementation.

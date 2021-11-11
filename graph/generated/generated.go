@@ -46,14 +46,15 @@ type DirectiveRoot struct {
 
 type ComplexityRoot struct {
 	Commission struct {
-		Artist    func(childComplexity int) int
-		CreatedAt func(childComplexity int) int
-		ID        func(childComplexity int) int
-		Minis     func(childComplexity int) int
-		Patron    func(childComplexity int) int
-		Status    func(childComplexity int) int
-		Total     func(childComplexity int) int
-		UpdatedAt func(childComplexity int) int
+		Artist          func(childComplexity int) int
+		CreatedAt       func(childComplexity int) int
+		DiscussionItems func(childComplexity int) int
+		ID              func(childComplexity int) int
+		Minis           func(childComplexity int) int
+		Patron          func(childComplexity int) int
+		Status          func(childComplexity int) int
+		Total           func(childComplexity int) int
+		UpdatedAt       func(childComplexity int) int
 	}
 
 	CommissionedMini struct {
@@ -64,6 +65,14 @@ type ComplexityRoot struct {
 		Price     func(childComplexity int) int
 		Quantity  func(childComplexity int) int
 		Size      func(childComplexity int) int
+		UpdatedAt func(childComplexity int) int
+	}
+
+	DiscussionItem struct {
+		Author    func(childComplexity int) int
+		Body      func(childComplexity int) int
+		CreatedAt func(childComplexity int) int
+		ID        func(childComplexity int) int
 		UpdatedAt func(childComplexity int) int
 	}
 
@@ -99,14 +108,15 @@ type ComplexityRoot struct {
 	}
 
 	Mutation struct {
-		CreateGame       func(childComplexity int, name string) int
-		CreateGameMini   func(childComplexity int, input *model.GameMiniInput) int
-		NewCommission    func(childComplexity int, input model.NewCommission) int
-		SaveMiniConfig   func(childComplexity int, input model.MiniConfigInput) int
-		UpdateCommission func(childComplexity int, input model.CommissionInput) int
-		UpdateGame       func(childComplexity int, input model.GameInput) int
-		UpdateGameMini   func(childComplexity int, id string, input model.GameMiniInput) int
-		UpdateProfile    func(childComplexity int, input model.ProfileInput) int
+		CreateGame                  func(childComplexity int, name string) int
+		CreateGameMini              func(childComplexity int, input *model.GameMiniInput) int
+		NewCommission               func(childComplexity int, input model.NewCommission) int
+		NewCommissionDiscussionItem func(childComplexity int, input model.NewCommissionDiscussionItem) int
+		SaveMiniConfig              func(childComplexity int, input model.MiniConfigInput) int
+		UpdateCommission            func(childComplexity int, input model.CommissionInput) int
+		UpdateGame                  func(childComplexity int, input model.GameInput) int
+		UpdateGameMini              func(childComplexity int, id string, input model.GameMiniInput) int
+		UpdateProfile               func(childComplexity int, input model.ProfileInput) int
 	}
 
 	Prices struct {
@@ -127,6 +137,7 @@ type ComplexityRoot struct {
 		GameMinis        func(childComplexity int, game string) int
 		Games            func(childComplexity int) int
 		MiniConfigs      func(childComplexity int) int
+		MiniWithName     func(childComplexity int, name string, game string) int
 		MyCommissions    func(childComplexity int) int
 		User             func(childComplexity int, id string) int
 		UserWithNickname func(childComplexity int, nname string) int
@@ -161,6 +172,7 @@ type MutationResolver interface {
 	CreateGameMini(ctx context.Context, input *model.GameMiniInput) (*model.GameMini, error)
 	UpdateGameMini(ctx context.Context, id string, input model.GameMiniInput) (*model.GameMini, error)
 	UpdateProfile(ctx context.Context, input model.ProfileInput) (*model.GenericRequestStatus, error)
+	NewCommissionDiscussionItem(ctx context.Context, input model.NewCommissionDiscussionItem) (*model.DiscussionItem, error)
 }
 type QueryResolver interface {
 	MyCommissions(ctx context.Context) ([]*model.Commission, error)
@@ -172,6 +184,7 @@ type QueryResolver interface {
 	Game(ctx context.Context, id string) (*model.Game, error)
 	GameMinis(ctx context.Context, game string) ([]*model.GameMini, error)
 	GameMini(ctx context.Context, id string) (*model.GameMini, error)
+	MiniWithName(ctx context.Context, name string, game string) (*model.GameMini, error)
 }
 
 type executableSchema struct {
@@ -202,6 +215,13 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Commission.CreatedAt(childComplexity), true
+
+	case "Commission.discussionItems":
+		if e.complexity.Commission.DiscussionItems == nil {
+			break
+		}
+
+		return e.complexity.Commission.DiscussionItems(childComplexity), true
 
 	case "Commission.id":
 		if e.complexity.Commission.ID == nil {
@@ -300,6 +320,41 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.CommissionedMini.UpdatedAt(childComplexity), true
+
+	case "DiscussionItem.author":
+		if e.complexity.DiscussionItem.Author == nil {
+			break
+		}
+
+		return e.complexity.DiscussionItem.Author(childComplexity), true
+
+	case "DiscussionItem.body":
+		if e.complexity.DiscussionItem.Body == nil {
+			break
+		}
+
+		return e.complexity.DiscussionItem.Body(childComplexity), true
+
+	case "DiscussionItem.createdAt":
+		if e.complexity.DiscussionItem.CreatedAt == nil {
+			break
+		}
+
+		return e.complexity.DiscussionItem.CreatedAt(childComplexity), true
+
+	case "DiscussionItem.id":
+		if e.complexity.DiscussionItem.ID == nil {
+			break
+		}
+
+		return e.complexity.DiscussionItem.ID(childComplexity), true
+
+	case "DiscussionItem.updatedAt":
+		if e.complexity.DiscussionItem.UpdatedAt == nil {
+			break
+		}
+
+		return e.complexity.DiscussionItem.UpdatedAt(childComplexity), true
 
 	case "Game.createdAt":
 		if e.complexity.Game.CreatedAt == nil {
@@ -469,6 +524,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Mutation.NewCommission(childComplexity, args["input"].(model.NewCommission)), true
+
+	case "Mutation.newCommissionDiscussionItem":
+		if e.complexity.Mutation.NewCommissionDiscussionItem == nil {
+			break
+		}
+
+		args, err := ec.field_Mutation_newCommissionDiscussionItem_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Mutation.NewCommissionDiscussionItem(childComplexity, args["input"].(model.NewCommissionDiscussionItem)), true
 
 	case "Mutation.saveMiniConfig":
 		if e.complexity.Mutation.SaveMiniConfig == nil {
@@ -647,6 +714,18 @@ func (e *executableSchema) Complexity(typeName, field string, childComplexity in
 		}
 
 		return e.complexity.Query.MiniConfigs(childComplexity), true
+
+	case "Query.miniWithName":
+		if e.complexity.Query.MiniWithName == nil {
+			break
+		}
+
+		args, err := ec.field_Query_miniWithName_args(context.TODO(), rawArgs)
+		if err != nil {
+			return 0, false
+		}
+
+		return e.complexity.Query.MiniWithName(childComplexity, args["name"].(string), args["game"].(string)), true
 
 	case "Query.myCommissions":
 		if e.complexity.Query.MyCommissions == nil {
@@ -896,6 +975,7 @@ type Commission {
   createdAt: Time!
   updatedAt: Time!
   total: Float!
+  discussionItems: [DiscussionItem]!
 }
 
 """
@@ -987,6 +1067,17 @@ type MiniConfig implements Mini {
   mini: GameMini!
 }
 
+"""
+A discussion item represents an element of a conversation
+"""
+type DiscussionItem {
+  id: ID!
+  createdAt: Time!
+  updatedAt: Time!
+  author: User!
+  body: String!
+}
+
 type Query {
   """
   Returns commissions where the authenticated user is either the artist or the patron.
@@ -1032,6 +1123,11 @@ type Query {
   Fetches a specific game mini
   """
   gameMini(id: ID!): GameMini!
+
+  """
+  Fetches a mini by name and game name
+  """
+  miniWithName(name: String!, game: String!): GameMini!
 }
 
 """
@@ -1040,7 +1136,7 @@ Input for creating a new commission (automatically sets the status to ESTIMATE)
 input NewCommission {
   comments: String
   minis: [MiniInput]!
-  artist: ID!
+  artistNickname: String!
 }
 
 """
@@ -1074,7 +1170,7 @@ input GameInput {
 input GameMiniInput {
   game: ID!
   name: String!
-  size: MiniSize!
+  size: MiniSize
 }
 
 input ProfileInputSocials {
@@ -1089,6 +1185,14 @@ input ProfileInput {
   name: String!
   forHire: Boolean!
   socials: ProfileInputSocials!
+}
+
+"""
+Creates a new discussion item related to a commission
+"""
+input NewCommissionDiscussionItem {
+  commissionId: ID!
+  body: String!
 }
 
 """
@@ -1134,6 +1238,13 @@ type Mutation {
   Update your profile data
   """
   updateProfile(input: ProfileInput!): GenericRequestStatus!
+
+  """
+  Creates a new discussion item on a commission
+  """
+  newCommissionDiscussionItem(
+    input: NewCommissionDiscussionItem!
+  ): DiscussionItem!
 }
 `, BuiltIn: false},
 }
@@ -1170,6 +1281,21 @@ func (ec *executionContext) field_Mutation_createGame_args(ctx context.Context, 
 		}
 	}
 	args["name"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Mutation_newCommissionDiscussionItem_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 model.NewCommissionDiscussionItem
+	if tmp, ok := rawArgs["input"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("input"))
+		arg0, err = ec.unmarshalNNewCommissionDiscussionItem2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommissionDiscussionItem(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["input"] = arg0
 	return args, nil
 }
 
@@ -1344,6 +1470,30 @@ func (ec *executionContext) field_Query_game_args(ctx context.Context, rawArgs m
 		}
 	}
 	args["id"] = arg0
+	return args, nil
+}
+
+func (ec *executionContext) field_Query_miniWithName_args(ctx context.Context, rawArgs map[string]interface{}) (map[string]interface{}, error) {
+	var err error
+	args := map[string]interface{}{}
+	var arg0 string
+	if tmp, ok := rawArgs["name"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("name"))
+		arg0, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["name"] = arg0
+	var arg1 string
+	if tmp, ok := rawArgs["game"]; ok {
+		ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("game"))
+		arg1, err = ec.unmarshalNString2string(ctx, tmp)
+		if err != nil {
+			return nil, err
+		}
+	}
+	args["game"] = arg1
 	return args, nil
 }
 
@@ -1695,6 +1845,41 @@ func (ec *executionContext) _Commission_total(ctx context.Context, field graphql
 	return ec.marshalNFloat2float64(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Commission_discussionItems(ctx context.Context, field graphql.CollectedField, obj *model.Commission) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Commission",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.DiscussionItems, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.([]*model.DiscussionItem)
+	fc.Result = res
+	return ec.marshalNDiscussionItem2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _CommissionedMini_id(ctx context.Context, field graphql.CollectedField, obj *model.CommissionedMini) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -1970,6 +2155,181 @@ func (ec *executionContext) _CommissionedMini_size(ctx context.Context, field gr
 	res := resTmp.(model.MiniSize)
 	fc.Result = res
 	return ec.marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionItem_id(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.ID, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNID2string(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionItem_createdAt(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.CreatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionItem_updatedAt(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.UpdatedAt, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(time.Time)
+	fc.Result = res
+	return ec.marshalNTime2timeᚐTime(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionItem_author(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Author, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.User)
+	fc.Result = res
+	return ec.marshalNUser2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐUser(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _DiscussionItem_body(ctx context.Context, field graphql.CollectedField, obj *model.DiscussionItem) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "DiscussionItem",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.Body, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(string)
+	fc.Result = res
+	return ec.marshalNString2string(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) _Game_id(ctx context.Context, field graphql.CollectedField, obj *model.Game) (ret graphql.Marshaler) {
@@ -2973,6 +3333,48 @@ func (ec *executionContext) _Mutation_updateProfile(ctx context.Context, field g
 	return ec.marshalNGenericRequestStatus2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGenericRequestStatus(ctx, field.Selections, res)
 }
 
+func (ec *executionContext) _Mutation_newCommissionDiscussionItem(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Mutation",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Mutation_newCommissionDiscussionItem_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Mutation().NewCommissionDiscussionItem(rctx, args["input"].(model.NewCommissionDiscussionItem))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.DiscussionItem)
+	fc.Result = res
+	return ec.marshalNDiscussionItem2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx, field.Selections, res)
+}
+
 func (ec *executionContext) _Prices_id(ctx context.Context, field graphql.CollectedField, obj *model.Prices) (ret graphql.Marshaler) {
 	defer func() {
 		if r := recover(); r != nil {
@@ -3594,6 +3996,48 @@ func (ec *executionContext) _Query_gameMini(ctx context.Context, field graphql.C
 	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
 		ctx = rctx // use context from middleware stack in children
 		return ec.resolvers.Query().GameMini(rctx, args["id"].(string))
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(*model.GameMini)
+	fc.Result = res
+	return ec.marshalNGameMini2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐGameMini(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) _Query_miniWithName(ctx context.Context, field graphql.CollectedField) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "Query",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   true,
+		IsResolver: true,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	rawArgs := field.ArgumentMap(ec.Variables)
+	args, err := ec.field_Query_miniWithName_args(ctx, rawArgs)
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	fc.Args = args
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return ec.resolvers.Query().MiniWithName(rctx, args["name"].(string), args["game"].(string))
 	})
 	if err != nil {
 		ec.Error(ctx, err)
@@ -4256,6 +4700,41 @@ func (ec *executionContext) ___Directive_args(ctx context.Context, field graphql
 	res := resTmp.([]introspection.InputValue)
 	fc.Result = res
 	return ec.marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋgqlgenᚋgraphqlᚋintrospectionᚐInputValueᚄ(ctx, field.Selections, res)
+}
+
+func (ec *executionContext) ___Directive_isRepeatable(ctx context.Context, field graphql.CollectedField, obj *introspection.Directive) (ret graphql.Marshaler) {
+	defer func() {
+		if r := recover(); r != nil {
+			ec.Error(ctx, ec.Recover(ctx, r))
+			ret = graphql.Null
+		}
+	}()
+	fc := &graphql.FieldContext{
+		Object:     "__Directive",
+		Field:      field,
+		Args:       nil,
+		IsMethod:   false,
+		IsResolver: false,
+	}
+
+	ctx = graphql.WithFieldContext(ctx, fc)
+	resTmp, err := ec.ResolverMiddleware(ctx, func(rctx context.Context) (interface{}, error) {
+		ctx = rctx // use context from middleware stack in children
+		return obj.IsRepeatable, nil
+	})
+	if err != nil {
+		ec.Error(ctx, err)
+		return graphql.Null
+	}
+	if resTmp == nil {
+		if !graphql.HasFieldError(ctx, fc) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	res := resTmp.(bool)
+	fc.Result = res
+	return ec.marshalNBoolean2bool(ctx, field.Selections, res)
 }
 
 func (ec *executionContext) ___EnumValue_name(ctx context.Context, field graphql.CollectedField, obj *introspection.EnumValue) (ret graphql.Marshaler) {
@@ -5210,7 +5689,10 @@ func (ec *executionContext) ___Type_ofType(ctx context.Context, field graphql.Co
 
 func (ec *executionContext) unmarshalInputCommissionInput(ctx context.Context, obj interface{}) (model.CommissionInput, error) {
 	var it model.CommissionInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5246,7 +5728,10 @@ func (ec *executionContext) unmarshalInputCommissionInput(ctx context.Context, o
 
 func (ec *executionContext) unmarshalInputGameInput(ctx context.Context, obj interface{}) (model.GameInput, error) {
 	var it model.GameInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5274,7 +5759,10 @@ func (ec *executionContext) unmarshalInputGameInput(ctx context.Context, obj int
 
 func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj interface{}) (model.GameMiniInput, error) {
 	var it model.GameMiniInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5298,7 +5786,7 @@ func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj
 			var err error
 
 			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("size"))
-			it.Size, err = ec.unmarshalNMiniSize2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
+			it.Size, err = ec.unmarshalOMiniSize2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐMiniSize(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5310,7 +5798,10 @@ func (ec *executionContext) unmarshalInputGameMiniInput(ctx context.Context, obj
 
 func (ec *executionContext) unmarshalInputMiniConfigInput(ctx context.Context, obj interface{}) (model.MiniConfigInput, error) {
 	var it model.MiniConfigInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5346,7 +5837,10 @@ func (ec *executionContext) unmarshalInputMiniConfigInput(ctx context.Context, o
 
 func (ec *executionContext) unmarshalInputMiniInput(ctx context.Context, obj interface{}) (model.MiniInput, error) {
 	var it model.MiniInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5398,7 +5892,10 @@ func (ec *executionContext) unmarshalInputMiniInput(ctx context.Context, obj int
 
 func (ec *executionContext) unmarshalInputNewCommission(ctx context.Context, obj interface{}) (model.NewCommission, error) {
 	var it model.NewCommission
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5418,11 +5915,42 @@ func (ec *executionContext) unmarshalInputNewCommission(ctx context.Context, obj
 			if err != nil {
 				return it, err
 			}
-		case "artist":
+		case "artistNickname":
 			var err error
 
-			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("artist"))
-			it.Artist, err = ec.unmarshalNID2string(ctx, v)
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("artistNickname"))
+			it.ArtistNickname, err = ec.unmarshalNString2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		}
+	}
+
+	return it, nil
+}
+
+func (ec *executionContext) unmarshalInputNewCommissionDiscussionItem(ctx context.Context, obj interface{}) (model.NewCommissionDiscussionItem, error) {
+	var it model.NewCommissionDiscussionItem
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
+
+	for k, v := range asMap {
+		switch k {
+		case "commissionId":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("commissionId"))
+			it.CommissionID, err = ec.unmarshalNID2string(ctx, v)
+			if err != nil {
+				return it, err
+			}
+		case "body":
+			var err error
+
+			ctx := graphql.WithPathContext(ctx, graphql.NewPathWithField("body"))
+			it.Body, err = ec.unmarshalNString2string(ctx, v)
 			if err != nil {
 				return it, err
 			}
@@ -5434,7 +5962,10 @@ func (ec *executionContext) unmarshalInputNewCommission(ctx context.Context, obj
 
 func (ec *executionContext) unmarshalInputProfileInput(ctx context.Context, obj interface{}) (model.ProfileInput, error) {
 	var it model.ProfileInput
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5478,7 +6009,10 @@ func (ec *executionContext) unmarshalInputProfileInput(ctx context.Context, obj 
 
 func (ec *executionContext) unmarshalInputProfileInputSocials(ctx context.Context, obj interface{}) (model.ProfileInputSocials, error) {
 	var it model.ProfileInputSocials
-	var asMap = obj.(map[string]interface{})
+	asMap := map[string]interface{}{}
+	for k, v := range obj.(map[string]interface{}) {
+		asMap[k] = v
+	}
 
 	for k, v := range asMap {
 		switch k {
@@ -5609,6 +6143,11 @@ func (ec *executionContext) _Commission(ctx context.Context, sel ast.SelectionSe
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "discussionItems":
+			out.Values[i] = ec._Commission_discussionItems(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -5665,6 +6204,53 @@ func (ec *executionContext) _CommissionedMini(ctx context.Context, sel ast.Selec
 			}
 		case "size":
 			out.Values[i] = ec._CommissionedMini_size(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		default:
+			panic("unknown field " + strconv.Quote(field.Name))
+		}
+	}
+	out.Dispatch()
+	if invalids > 0 {
+		return graphql.Null
+	}
+	return out
+}
+
+var discussionItemImplementors = []string{"DiscussionItem"}
+
+func (ec *executionContext) _DiscussionItem(ctx context.Context, sel ast.SelectionSet, obj *model.DiscussionItem) graphql.Marshaler {
+	fields := graphql.CollectFields(ec.OperationContext, sel, discussionItemImplementors)
+
+	out := graphql.NewFieldSet(fields)
+	var invalids uint32
+	for i, field := range fields {
+		switch field.Name {
+		case "__typename":
+			out.Values[i] = graphql.MarshalString("DiscussionItem")
+		case "id":
+			out.Values[i] = ec._DiscussionItem_id(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "createdAt":
+			out.Values[i] = ec._DiscussionItem_createdAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "updatedAt":
+			out.Values[i] = ec._DiscussionItem_updatedAt(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "author":
+			out.Values[i] = ec._DiscussionItem_author(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "body":
+			out.Values[i] = ec._DiscussionItem_body(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -5917,6 +6503,11 @@ func (ec *executionContext) _Mutation(ctx context.Context, sel ast.SelectionSet)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
+		case "newCommissionDiscussionItem":
+			out.Values[i] = ec._Mutation_newCommissionDiscussionItem(ctx, field)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
 		default:
 			panic("unknown field " + strconv.Quote(field.Name))
 		}
@@ -6131,6 +6722,20 @@ func (ec *executionContext) _Query(ctx context.Context, sel ast.SelectionSet) gr
 				}
 				return res
 			})
+		case "miniWithName":
+			field := field
+			out.Concurrently(i, func() (res graphql.Marshaler) {
+				defer func() {
+					if r := recover(); r != nil {
+						ec.Error(ctx, ec.Recover(ctx, r))
+					}
+				}()
+				res = ec._Query_miniWithName(ctx, field)
+				if res == graphql.Null {
+					atomic.AddUint32(&invalids, 1)
+				}
+				return res
+			})
 		case "__type":
 			out.Values[i] = ec._Query___type(ctx, field)
 		case "__schema":
@@ -6265,6 +6870,11 @@ func (ec *executionContext) ___Directive(ctx context.Context, sel ast.SelectionS
 			}
 		case "args":
 			out.Values[i] = ec.___Directive_args(ctx, field, obj)
+			if out.Values[i] == graphql.Null {
+				invalids++
+			}
+		case "isRepeatable":
+			out.Values[i] = ec.___Directive_isRepeatable(ctx, field, obj)
 			if out.Values[i] == graphql.Null {
 				invalids++
 			}
@@ -6538,6 +7148,7 @@ func (ec *executionContext) marshalNCommission2ᚕᚖgithubᚗcomᚋmyminicommis
 
 	}
 	wg.Wait()
+
 	return ret
 }
 
@@ -6590,7 +7201,60 @@ func (ec *executionContext) marshalNCommissionedMini2ᚕᚖgithubᚗcomᚋmymini
 
 	}
 	wg.Wait()
+
 	return ret
+}
+
+func (ec *executionContext) marshalNDiscussionItem2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx context.Context, sel ast.SelectionSet, v model.DiscussionItem) graphql.Marshaler {
+	return ec._DiscussionItem(ctx, sel, &v)
+}
+
+func (ec *executionContext) marshalNDiscussionItem2ᚕᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx context.Context, sel ast.SelectionSet, v []*model.DiscussionItem) graphql.Marshaler {
+	ret := make(graphql.Array, len(v))
+	var wg sync.WaitGroup
+	isLen1 := len(v) == 1
+	if !isLen1 {
+		wg.Add(len(v))
+	}
+	for i := range v {
+		i := i
+		fc := &graphql.FieldContext{
+			Index:  &i,
+			Result: &v[i],
+		}
+		ctx := graphql.WithFieldContext(ctx, fc)
+		f := func(i int) {
+			defer func() {
+				if r := recover(); r != nil {
+					ec.Error(ctx, ec.Recover(ctx, r))
+					ret = nil
+				}
+			}()
+			if !isLen1 {
+				defer wg.Done()
+			}
+			ret[i] = ec.marshalODiscussionItem2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx, sel, v[i])
+		}
+		if isLen1 {
+			f(i)
+		} else {
+			go f(i)
+		}
+
+	}
+	wg.Wait()
+
+	return ret
+}
+
+func (ec *executionContext) marshalNDiscussionItem2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx context.Context, sel ast.SelectionSet, v *model.DiscussionItem) graphql.Marshaler {
+	if v == nil {
+		if !graphql.HasFieldError(ctx, graphql.GetFieldContext(ctx)) {
+			ec.Errorf(ctx, "must not be null")
+		}
+		return graphql.Null
+	}
+	return ec._DiscussionItem(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalNFloat2float64(ctx context.Context, v interface{}) (float64, error) {
@@ -6646,6 +7310,7 @@ func (ec *executionContext) marshalNGame2ᚕᚖgithubᚗcomᚋmyminicommission�
 
 	}
 	wg.Wait()
+
 	return ret
 }
 
@@ -6702,6 +7367,7 @@ func (ec *executionContext) marshalNGameMini2ᚕᚖgithubᚗcomᚋmyminicommissi
 
 	}
 	wg.Wait()
+
 	return ret
 }
 
@@ -6802,6 +7468,7 @@ func (ec *executionContext) marshalNMiniConfig2ᚕᚖgithubᚗcomᚋmyminicommis
 
 	}
 	wg.Wait()
+
 	return ret
 }
 
@@ -6853,6 +7520,11 @@ func (ec *executionContext) marshalNMiniSize2githubᚗcomᚋmyminicommissionᚋa
 
 func (ec *executionContext) unmarshalNNewCommission2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommission(ctx context.Context, v interface{}) (model.NewCommission, error) {
 	res, err := ec.unmarshalInputNewCommission(ctx, v)
+	return res, graphql.ErrorOnPath(ctx, err)
+}
+
+func (ec *executionContext) unmarshalNNewCommissionDiscussionItem2githubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐNewCommissionDiscussionItem(ctx context.Context, v interface{}) (model.NewCommissionDiscussionItem, error) {
+	res, err := ec.unmarshalInputNewCommissionDiscussionItem(ctx, v)
 	return res, graphql.ErrorOnPath(ctx, err)
 }
 
@@ -6921,6 +7593,7 @@ func (ec *executionContext) marshalNRole2ᚕᚖgithubᚗcomᚋmyminicommission�
 
 	}
 	wg.Wait()
+
 	return ret
 }
 
@@ -7016,6 +7689,13 @@ func (ec *executionContext) marshalN__Directive2ᚕgithubᚗcomᚋ99designsᚋgq
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7089,6 +7769,13 @@ func (ec *executionContext) marshalN__DirectiveLocation2ᚕstringᚄ(ctx context
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7138,6 +7825,13 @@ func (ec *executionContext) marshalN__InputValue2ᚕgithubᚗcomᚋ99designsᚋg
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7179,6 +7873,13 @@ func (ec *executionContext) marshalN__Type2ᚕgithubᚗcomᚋ99designsᚋgqlgen�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7243,6 +7944,13 @@ func (ec *executionContext) marshalOCommissionedMini2ᚖgithubᚗcomᚋmyminicom
 		return graphql.Null
 	}
 	return ec._CommissionedMini(ctx, sel, v)
+}
+
+func (ec *executionContext) marshalODiscussionItem2ᚖgithubᚗcomᚋmyminicommissionᚋapiᚋgraphᚋmodelᚐDiscussionItem(ctx context.Context, sel ast.SelectionSet, v *model.DiscussionItem) graphql.Marshaler {
+	if v == nil {
+		return graphql.Null
+	}
+	return ec._DiscussionItem(ctx, sel, v)
 }
 
 func (ec *executionContext) unmarshalOFloat2ᚖfloat64(ctx context.Context, v interface{}) (*float64, error) {
@@ -7413,6 +8121,13 @@ func (ec *executionContext) marshalO__EnumValue2ᚕgithubᚗcomᚋ99designsᚋgq
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7453,6 +8168,13 @@ func (ec *executionContext) marshalO__Field2ᚕgithubᚗcomᚋ99designsᚋgqlgen
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7493,6 +8215,13 @@ func (ec *executionContext) marshalO__InputValue2ᚕgithubᚗcomᚋ99designsᚋg
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
@@ -7540,6 +8269,13 @@ func (ec *executionContext) marshalO__Type2ᚕgithubᚗcomᚋ99designsᚋgqlgen�
 
 	}
 	wg.Wait()
+
+	for _, e := range ret {
+		if e == graphql.Null {
+			return graphql.Null
+		}
+	}
+
 	return ret
 }
 
