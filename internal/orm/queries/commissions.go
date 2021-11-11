@@ -5,6 +5,7 @@ import (
 	log "github.com/myminicommission/api/internal/logger"
 	"github.com/myminicommission/api/internal/orm"
 	"github.com/myminicommission/api/internal/orm/models"
+	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
 )
 
@@ -21,8 +22,10 @@ func GetMyCommissions(orm *orm.ORM, id uuid.UUID) ([]*models.Commission, error) 
 	db = db.Find(&commissions)
 
 	if db.Error != nil {
-		log.Errorf("[ORM][commissions] %s", db.Error.Error())
-		return nil, db.Error
+		if db.Error.Error() != gorm.ErrRecordNotFound.Error() {
+			log.Errorf("[ORM][commissions] %s", db.Error.Error())
+			return nil, db.Error
+		}
 	}
 
 	return commissions, nil

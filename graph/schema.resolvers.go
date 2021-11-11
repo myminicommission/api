@@ -94,12 +94,12 @@ func (r *mutationResolver) NewCommissionDiscussionItem(ctx context.Context, inpu
 }
 
 func (r *queryResolver) MyCommissions(ctx context.Context) ([]*model.Commission, error) {
-	// TODO: determine current user or reject request
-	user, err := queries.GetUserWithNickname(r.ORM, "TestUser1")
-	if err != nil {
-		return nil, err
+	currentUser := r.GetCurrentUser(ctx)
+	if currentUser == nil {
+		return nil, errors.New("no user authenticated for this request")
 	}
-	return helpers.MyCommissions(r.ORM, user.ID)
+
+	return helpers.MyCommissions(r.ORM, currentUser.ID)
 }
 
 func (r *queryResolver) Commission(ctx context.Context, id string) (*model.Commission, error) {
